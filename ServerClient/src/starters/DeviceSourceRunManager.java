@@ -69,9 +69,11 @@ public class DeviceSourceRunManager {
 		for(DeviceSource deviceSource : SystemConfig.getInstance().getDeviceSources()){
 			if(deviceSource.isAutoStartUp()){
 				DeviceSourceProcess deviceSourceProcess = this.startDeviceSource(deviceSource);
-				Thread thread  = new Thread(new DeviceSourceProcessTraceLogger(deviceSourceProcess));
-				thread.setPriority(Thread.MIN_PRIORITY);
-				thread.start();
+				if(deviceSourceProcess.getProcess() != null){
+					Thread thread  = new Thread(new DeviceSourceProcessTraceLogger(deviceSourceProcess));
+					thread.setPriority(Thread.MIN_PRIORITY);
+					thread.start();
+				}
 				this.startedProcesses.add(deviceSourceProcess);
 			}
 		}

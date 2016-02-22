@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Random;
 
 import connectivity.androiddevicesource.MainActivity;
 import connectivity.androiddevicesource.commands.CommandResult;
@@ -11,7 +12,7 @@ import connectivity.androiddevicesource.executors.CommandExecutor;
 import android.util.Log;
 
 public class WiFiConnection implements Runnable {
-	
+	public static int  gen = new Random().nextInt();
 	private DataInputStream input;
 	private DataOutputStream output;
 	private MainActivity activity;
@@ -41,11 +42,13 @@ public class WiFiConnection implements Runnable {
 				Log.i("WiFiConnection:: ", "Received data is: " + receivedData);
 				CommandResult result = CommandExecutor.getInstance(this.activity).executeCommand(receivedData);
 				Log.i("WiFiConnection:: ", "Answer to write: " + result.getJSONString());
-				//for(int i = 0; i < 10; ++i)
-				{
-					this.output.writeBytes(result.getJSONString());
-					this.output.flush();
-				}
+				StringBuilder builder = new StringBuilder(result.getJSONString());
+//				for(int i = 0; i < 99999; ++i)
+//				{
+//					builder.append(result.getJSONString());
+//				}
+				this.output.writeBytes(builder.toString());
+				this.output.flush();
 				Log.i("WiFiConnection:: ", "answer is written");
 				Log.i("WiFiConnection:: ", "waiting for new data....");
 			}

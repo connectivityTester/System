@@ -3,6 +3,9 @@ package connectivity.androiddevicesource.commands;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Random;
+
+import connectivity.androiddevicesource.connections.WiFiConnection;
 import connectivity.androiddevicesource.types.CommandResultTypes;
 
 public class CommandResult {
@@ -10,6 +13,7 @@ public class CommandResult {
     private CommandResultTypes type;
     private String answerData;
     private int deviceSourceId = -1;
+
 
     public CommandResult( CommandResultTypes resultType, String answerData){
         this.type = resultType;
@@ -42,7 +46,7 @@ public class CommandResult {
                 e.printStackTrace();
             }
         }
-        return result.toString();
+        return result.toString()+"\n";
     }
 
     public CommandResultTypes getType()  { return this.type;        }

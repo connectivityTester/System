@@ -31,7 +31,7 @@ public class DeviceSourceProcessChecker implements Runnable{
 			}
 			while(iterator.hasNext()){
 				process = iterator.next();
-				if(!process.getProcess().isAlive()){
+				if(process.getProcess() != null && !process.getProcess().isAlive()){
 					this.workSpace.updateDeviceStatus(process.getDeviceSource(), DeviceSourceStatus.STOPED);
 					StringBuffer logMessage = new StringBuffer("Device source \"");
 					logMessage.append(process.getDeviceSource().getName());

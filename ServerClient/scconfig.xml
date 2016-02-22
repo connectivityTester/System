@@ -29,11 +29,11 @@
 		</device_source>
 		<device_source>
 			<name>TraceServer</name>
-			<id autostart="false">3</id>
+			<id autostart="true">3</id>
 			<!-- Parameters below are optional -->
-			<address>192.168.0.104</address>
+			<address>172.30.138.25</address>
 			<start_up_parameters>
-				<parameter>C:\Program Files (x86)\Java\jre1.8.0_71\bin\java.exe -jar TraceServer.jar</parameter>
+				<parameter>C:\Program Files (x86)\Java\jre1.8.0_60\bin\java.exe -jar TraceServer.jar</parameter>
 			</start_up_parameters>
 		</device_source>
 	</device_sources>

@@ -83,7 +83,7 @@ public class SystemDataHandler implements ActionDataHanlder{
 					" miliseconds will be used)", this, MessageLogTypes.HEADER);
 		}
 		try {
-			Logger.logToUser("Start waiting... (" + timeout +" seconds)", systemDataHandler, MessageLogTypes.INFO);
+			Logger.logToUser("Start waiting... (" + timeout/1000 + " seconds)", systemDataHandler, MessageLogTypes.INFO);
 			Thread.sleep(timeout);
 			Logger.logToUser("Finish waiting...", systemDataHandler, MessageLogTypes.INFO);
 		} catch (InterruptedException e1) {

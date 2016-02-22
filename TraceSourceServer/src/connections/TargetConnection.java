@@ -56,6 +56,7 @@ public class TargetConnection {
 					break;
 			}
 		}
+		Logger.log(LogLevels.INFO, this, "Actually, target is connected : " + this.isTargetConnected);
 		return this.isTargetConnected;
 	}
 	
@@ -63,11 +64,11 @@ public class TargetConnection {
 	public boolean executeCallback(List<String> callbackParameters) {
 		Logger.log(LogLevels.INFO, this, "Function executeCallback was started");
 		boolean executionResult = true;
-		boolean connectionResult = false;
+		Logger.log(LogLevels.INFO, this, "Actually, target is connected : " + this.isTargetConnected);
 		if(!this.isTargetConnected){
-			connectionResult = this.connectToTarget();
+			this.isTargetConnected = this.connectToTarget();
 		}
-		if(!connectionResult){
+		if(!this.isTargetConnected){
 			Logger.log(LogLevels.INFO, this, "Function executeCallback will not be executed "
 					+ "because target was not connected successfully");
 			executionResult = false;

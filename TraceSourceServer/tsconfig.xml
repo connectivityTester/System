@@ -1,12 +1,12 @@
 <root>
-	<targetComunicationIPAddress value="127.0.0.1"/>
+	<targetComunicationIPAddress value="172.30.138.95"/>
 	<targetComunicationPort value="851"/>
-	<targetComunicationProtocol value="1"/>
-	<defaultCNLFilePath value="_"/>
-	<defaultTextLogPath value="TCLLibrary.logs"/>
-	<defaultSystemLogPath value="System.logs"/>
+	<targetComunicationProtocol value="0"/>
+	<defaultCNLFilePath value=".\TraceServerLogs\_"/>
+	<defaultTextLogPath value=".\TraceServerLogs\TCLLibrary.logs"/>
+	<defaultSystemLogPath value=".\TraceServerLogs\System.logs"/>
 	<defaultCallbackValue value="0"/>
 	<deviceId value="2"/>
-	<commandServerIPAddress value="192.168.0.104"/>
+	<commandServerIPAddress value="172.30.138.25"/>
 	<commandServerPort value="1268"/>
 </root>

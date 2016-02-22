@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<test>
+	<variables>
+		<variable name="LOOP_COUNTER" value="1"/>
+		<variable name="BT_DEVICE_ADDRESS" value="pp"/>
+		<variable name="BT_DEVICE_NAME" value="equus95"/>
+		<variable name="TRACE" value="BtPrjC`Logic: requestActivateDiscoverableMode. activate=True"/>
+	</variables>
+	<actions>
+		<action>
+			<command executor="target">execute_callback</command>
+			<params>
+				<param name="process" value="ScpCtrl_HU"/>
+				<param name="callback_name" value="DIS2_SCP_BluetoothProj_SetLocalBluetoothName"/>
+				<param name="callback_value" value="~BT_DEVICE_NAME~"/>
+			</params>
+		</action>
+		<action>
+			<command executor="target">wait_for_traces</command>
+			<params>
+				<param name="trace_pattern" value="BtPrj.*requestSetLocalBluetoothName.*Name=#BT_DEVICE_NAME#"/>
+				<param name="trace_pattern" value="BtPrj.*responseSetLocalBluetoothName.*Result=True"/>
+				<param name="timeout" value="2000"/>
+			</params>
+		</action>
+	</actions>
+</test>

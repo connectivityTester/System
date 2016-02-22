@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<test>
+	<variables>
+		<variable name="BT_DEVICE_NAME" value="equus95"/>
+		<variable name="BT_DEVICE_ADDRESS" value="68:3E:34:47:5D:C6"/>
+	</variables>
+	<actions>
+		<action>
+			<command device="2">unpair_device</command>
+			<params>
+				<param name="device" value="~BT_DEVICE_NAME~"/>
+			</params>
+			<fail retry="1">skip</fail>
+		</action>
+		<action>
+			<command>sleep</command>
+			<params>
+				<param name="timeout" value="1000"/>
+			</params>
+		</action>
+		<action>
+			<command>answers</command>
+			<params>
+				<param device="2" value="phone.*device" type="text"/>
+				<param name="timeout" value="2000"/>
+			</params>
+		</action>
+	</actions>
+</test>

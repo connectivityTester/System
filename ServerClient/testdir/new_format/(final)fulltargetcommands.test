@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<test>
+	<variables>
+		<variable name="BT_DEVICE_NAME" value="equus95"/>
+		<variable name="BT_DEVICE_ADDRESS" value="68:3E:34:47:5D:C6"/>
+	</variables>
+	<actions>
+		<action>
+			<command device="3">execute_callback</command>
+			<type>impact</type>
+			<params>
+				<param name="process" value="ScpCtrl_HU"/>
+				<param name="callback_name" value="DIS2_SCP_BluetoothProj_SetLocalBluetoothName"/>
+				<param name="callback_value" value="~BT_DEVICE_NAME~"/>
+			</params>
+		</action>
+		<action>
+			<command>answers</command>
+			<params>
+				<param device="2" value="BtPrj.*requestSetLocalBluetoothName" type="text"/>
+				<param device="2" value="BtPrj.*responseSetLocalBluetoothName" type="text"/>
+				<param name="timeout" value="30000"/>
+			</params>
+		</action>
+	</actions>
+</test>

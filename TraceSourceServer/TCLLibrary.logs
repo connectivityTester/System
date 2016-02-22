@@ -1,0 +1,37 @@
+2016-02-22 17:20:31 [ ProtocolHandler ] do_start()
+2016-02-22 17:20:31 [ ProtocolHandler ] Sending thread is going to start...
+2016-02-22 17:20:31 [ Message Buffer ] Buffered 0 byte(s) in 0 messages
+2016-02-22 17:20:31 [ ProtocolHandler ] Receiving thread is going to start...
+2016-02-22 17:20:31 ProtocolHandler started
+2016-02-22 17:20:31 [ TcpTraceSource ] do_start()
+2016-02-22 17:20:31 [ TcpTraceSource ] Opening socket...
+2016-02-22 17:20:31 [ ProtocolHandler ] [receivingThreadProc] ReceivingThread entered
+2016-02-22 17:20:31 [ ProtocolHandler ] [sendingThreadProc] SendingThread entered
+2016-02-22 17:20:31 Connected to 127.0.0.1:851
+2016-02-22 17:20:31 [ TcpTraceSource ] Socket OK
+2016-02-22 17:20:31 [ TcpTraceSource ] Sending and receiving threads are going to start...
+2016-02-22 17:20:31 [ TcpTraceSource ] [sendingThreadProc] Sending thread entered
+2016-02-22 17:20:31 Sending thread started
+2016-02-22 17:20:31 [ TcpTraceSource ] [receivingThreadProc] Receiving thread entered
+2016-02-22 17:20:31 Receiving thread started
+2016-02-22 17:20:31 [ TcpTraceSource ] [notifyInitialized] Notifier thread entered
+2016-02-22 17:20:31 [ ProtocolHandler ] Medium parser skipped 78 byte(s)
+2016-02-22 17:20:31 [ ProtocolHandler ] Medium parser skipped 201 byte(s)
+2016-02-22 17:20:34 [ Message Buffer ] Buffered 0 byte(s) in 0 messages
+2016-02-22 17:20:34 [ TcpTraceSource ] [notifyInitialized] Notifier thread exited
+2016-02-22 17:20:34 [ ProtocolHandler ] Enable console T
+2016-02-22 17:20:37 [ Message Buffer ] Buffered 0 byte(s) in 0 messages
+2016-02-22 17:20:39 Initialization timeout... Will retry
+2016-02-22 17:20:40 [ Message Buffer ] Buffered 0 byte(s) in 0 messages
+2016-02-22 17:20:43 [ Message Buffer ] Buffered 0 byte(s) in 0 messages
+2016-02-22 17:20:44 Initialization timeout... Will retry
+2016-02-22 17:20:46 [ Message Buffer ] Buffered 0 byte(s) in 0 messages
+2016-02-22 17:20:49 [ Message Buffer ] Buffered 0 byte(s) in 0 messages
+2016-02-22 17:20:49 Initialization timeout... Will retry
+2016-02-22 17:20:49 [ ProtocolHandler ] Disable console T
+2016-02-22 17:20:49 Initialization failed
+2016-02-22 17:20:52 [ Message Buffer ] Buffered 0 byte(s) in 0 messages
+2016-02-22 17:20:55 [ Message Buffer ] Buffered 0 byte(s) in 0 messages
+2016-02-22 17:20:58 [ Message Buffer ] Buffered 0 byte(s) in 0 messages
+2016-02-22 17:21:01 [ Message Buffer ] Buffered 0 byte(s) in 0 messages
+2016-02-22 17:21:04 [ Message Buffer ] Buffered 0 byte(s) in 0 messages

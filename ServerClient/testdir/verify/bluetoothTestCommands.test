@@ -1,0 +1,308 @@
+<?xml version="1.0"?>
+<test>
+	<variables>
+		<variable name="BT_DEVICE_NAME" value="equus95"/>
+		<!--
+		<variable name="BT_DEVICE_ADDRESS" value="18:3A:2D:4F:DB:EE"/> 
+		-->
+		<variable name="BT_DEVICE_ADDRESS" value="68:3E:34:47:5D:C6"/> <!-- MEIZU M2 NOTE -->
+	</variables>
+	<actions>
+		<action>
+			<command executor="target">execute_callback</command>
+			<params>
+				<param name="process" value="ScpCtrl_HU"/>
+				<param name="callback_name" value="DIS2_SCP_BluetoothProj_DeleteTrustedDevice"/>
+				<param name="callback_value" value="~BT_DEVICE_ADDRESS~"/>
+			</params>
+		</action>
+		<action>
+			<command executor="TEL_1">unpair_device</command>
+			<params>
+				<param name="device" value="~BT_DEVICE_NAME~"/>
+			</params>
+			<fail>skip</fail>
+		</action>
+		<action>
+			<command executor="target">execute_callback</command>
+			<params>
+				<param name="process" value="ScpCtrl_HU"/>
+				<param name="callback_name" value="DIS2_SCP_BluetoothProj_SetLocalBluetoothName"/>
+				<param name="callback_value" value="~BT_DEVICE_NAME~"/>
+			</params>
+		</action>
+		<action>
+			<command executor="target">wait_for_traces</command>
+			<params>
+				<param name="trace_pattern" value="BtPrj.*requestSetLocalBluetoothName.*"/>
+				<param name="trace_pattern" value="BtPrj.*responseSetLocalBluetoothName.*"/>
+				<param name="timeout" value="8000"/>
+			</params>
+			<fail>skip</fail>
+		</action>
+		<action>
+			<command executor="target">execute_callback</command>
+			<params>
+				<param name="process" value="ScpCtrl_HU"/>
+				<param name="callback_name" value="DIS2_SCP_BluetoothProj_ActivateDiscoverableMode"/>
+				<param name="callback_value" value="1"/>
+			</params>
+		</action>
+		<action>
+			<command executor="target">wait_for_traces</command>
+			<params>
+				<param name="trace_pattern" value="BtPrjC.*requestActivateDiscoverableMode.*"/>
+				<param name="trace_pattern" value="BtPrjC.*ActivateDiscovModeCmd.*C_S.*"/>
+				<param name="trace_pattern" value="BtPrjC.*ActivateDiscovModeCmd.*C_F.*Res=S.*"/>
+				<param name="trace_pattern" value="BtPrjC.*responseActivateDiscoverableMode.*Result=RESULT_OK.*"/>
+				<param name="timeout" value="5000"/>
+			</params>
+			<fail>skip</fail>
+		</action>
+		<!--
+			-->
+		<action>
+			<command executor="TEL_1">bt_off</command>
+		</action>
+		<action>
+			<command>sleep</command>
+			<params>
+				<param name="timeout" value="1000"/>
+			</params>
+		</action>
+		<action>
+			<command executor="TEL_1">bt_on</command>
+		</action>
+		<!--		
+		<action>
+			<command executor="TEL_1">search_device</command>
+			<params>
+				<param name="device" value="~BT_DEVICE_NAME~"/>
+			</params>
+		</action>
+		-->
+		<action>
+			<command executor="TEL_1">pair_to_target</command>
+			<params>
+				<param name="target_name" value="~BT_DEVICE_NAME~"/>
+			</params>
+		</action>
+		<action>
+			<command executor="target">wait_for_traces</command>
+			<params>
+				<param name="trace_pattern" value="BtPrj.*onBtDeviceListUpdate.*"/>  
+				<param name="trace_pattern" value="BtPrj.*informationPasskeyRequired.*PasskeyState=PS_SSP_SHOW_AND_CONFIRM.*"/>
+				<param name="trace_pattern" value="BtPrj.*requestAcceptPasskey.*BluetoothAddress=~BT_DEVICE_ADDRESS~.*"/>
+				<!--
+				<param name="trace_pattern" value="CALL.*SGBluetoothGap_BSS_GAP.*SimplePairingConfirm.*address.*~BT_DEVICE_ADDRESS~.*BSS_GAP_AUTHENTICATION_ACCEPT.*"/> 
+				-->
+				<param name="timeout" value="15000"/>
+			</params>
+			<fail>skip</fail>
+		</action>
+		<action>
+			<command executor="TEL_1">confirm_connection</command>
+			<params>
+				<param name="confirm" value="true"/>
+			</params>
+		</action>
+		<action>
+			<command executor="target">wait_for_traces</command>
+			<params>
+				<param name="trace_pattern" value="BtPrjC.*ConnDeviceCmd.*PairDevCmd.*responsePasskeyResponse.*Result=RESULT_OK.*"/>
+				<param name="trace_pattern" value="BtPrjC.*ConnDeviceCmd.*PairDevCmd.*C_F.*Res=S.*"/>
+				<param name="trace_pattern" value="BtPrjC.*ConnDeviceCmd.*informationIncomingServiceRequest.*BtServiceType=ST_TELEPHONY_HFP.*"/>
+				<param name="trace_pattern" value="BtPrjC.*ConnDeviceCmd.*informationIncomingServiceRequest.*BtServiceType=ST_AUDIO_SINK.*"/>
+				<!--
+				<param name="trace_pattern" value="BtPrjC.*ConnDeviceCmd.*ConnServiceCmd.*requestConnectionOfService.*ServiceType=ST_TELEPHONY_HFP.*"/>
+				<param name="trace_pattern" value="BtPrjC.*ConnDeviceCmd.*ConnServiceCmd.*responseConnectService.*BtServiceType=ST_TELEPHONY_HFP.*Result=RESULT_OK.*"/>
+				<param name="trace_pattern" value="BtPrjC.*ConnDeviceCmd.*ConnServiceCmd.*requestConnectionOfService.*ServiceType=ST_AUDIO_SINK.*"/>
+				<param name="trace_pattern" value="BtPrjC.*ConnDeviceCmd.*ConnServiceCmd.*responseConnectService.*BtServiceType=ST_AUDIO_SINK.*Result=RESULT_OK.*"/>
+			-->
+				<param name="trace_pattern" value="BtPrjC.*ConnDeviceCmd: C_F.*Res=S"/>
+				<param name="timeout" value="10000"/>
+			</params>
+			<fail>skip</fail>
+		</action>	
+		<action>
+			<command>sleep</command>
+			<params>
+				<param name="timeout" value="3000"/>
+			</params>
+		</action>
+		<action>
+			<command executor="target">execute_callback</command>
+			<params>
+				<param name="process" value="ScpCtrl_HU"/>
+				<param name="callback_name" value="DIS2_SCP_BluetoothProj_DisconnectDevice"/>
+				<param name="callback_value" value="~BT_DEVICE_ADDRESS~"/>
+			</params>
+		</action>
+		<action>
+			<command executor="target">wait_for_traces</command>
+			<params>
+				<param name="trace_pattern" value="BtP.*requestDisconnectDevice.*"/>
+				<param name="trace_pattern" value="BtP.*responseDisconnectDevice.*"/>
+				<param name="timeout" value="6000"/>
+			</params>
+			<fail>skip</fail>
+		</action>
+	
+		<action>
+			<command>sleep</command>
+			<params>
+				<param name="timeout" value="2000"/>
+			</params>
+		</action>
+		<action>
+			<command executor="TEL_1">connect_to_target</command>
+			<params>
+				<param name="device" value="~BT_DEVICE_NAME~"/>
+			</params>
+		</action>	
+		<action>
+			<command executor="target">wait_for_traces</command>
+			<params>
+				<param name="trace_pattern" value="BtPrjC.*onBtDeviceListUpdate.*"/>
+				<param name="trace_pattern" value="BtPrjC.*ConnDeviceCmd.*C_S.*"/>
+				<param name="trace_pattern" value="BtPrjC.*ConnDeviceCmd.*C_F.*Res=S.*"/>
+				<param name="timeout" value="7000"/>
+			</params>
+			<fail>skip</fail>
+		</action>
+		<action>
+			<command>sleep</command>
+			<params>
+				<param name="timeout" value="15000"/>
+			</params>
+		</action>
+		<action>
+			<command executor="TEL_1">deactivate_profile</command>
+			<params>
+				<param name="profile" value="A2DP"/>
+			</params>
+		</action>
+		<action>
+			<command executor="target">wait_for_traces</command>
+			<params>
+				<param name="trace_pattern" value="BtPrjC.*informationDeviceStatusChanged.*btServiceType=ST_AVRCP_TARGET.*btServiceActive=CS_NOT_CONNECTED.*"/>
+				<param name="trace_pattern" value="BtPrjC.*informationDeviceStatusChanged.*btServiceType=ST_AUDIO_SINK.*btServiceActive=CS_NOT_CONNECTED.*"/>
+				<param name="timeout" value="6000"/>
+			</params>
+			<fail>skip</fail>
+		</action>
+		<action>
+			<command>sleep</command>
+			<params>
+				<param name="timeout" value="10000"/>
+			</params>
+		</action>
+		<action>
+			<command executor="TEL_1">activate_profile</command>
+			<params>
+				<param name="profile" value="A2DP"/>
+			</params>
+		</action>
+		<action>
+			<command executor="target">wait_for_traces</command>
+			<params>
+				<param name="trace_pattern" value="BtPrjC.*informationIncomingServiceRequest.*BtServiceType=ST_AUDIO_SINK.*"/>
+				<param name="trace_pattern" value="BtPrjC.*ConnServiceCmd.*C_S.*"/>
+				<param name="trace_pattern" value="BtPrjC.*ConnServiceCmd.*requestConnectionOfService.*ServiceType=ST_AUDIO_SINK.*"/>
+				<param name="trace_pattern" value="BtPrjC.*responseConnectService.*BtServiceType=ST_AUDIO_SINK.*Result=RESULT_OK.*"/>
+				<param name="trace_pattern" value="BtPrjC.*ConnServiceCmd.*C_F.*Res=S.*"/>
+				<param name="timeout" value="6000"/>
+			</params>
+			<fail>skip</fail>
+		</action>
+
+		<action>
+			<command>sleep</command>
+			<params>
+				<param name="timeout" value="10000"/>
+			</params>
+		</action>
+		<action>
+			<command executor="TEL_1">deactivate_profile</command>
+			<params>
+				<param name="profile" value="HFP"/>
+			</params>
+		</action>
+		<action>
+			<command executor="target">wait_for_traces</command>
+			<params>
+				<param name="trace_pattern" value="BtPrj.*hasServicesConnectionStatusChanged.*ST_TELEPHONY_HFP.*S_CONNECTED.*CS_NOT_CONNECTED.*"/>
+				<param name="trace_pattern" value="BtPrj.*informationDeviceStatusChanged.*ST_TELEPHONY_HFP.*CS_NOT_CONNECTED.*"/>
+				<param name="timeout" value="6000"/>
+			</params>
+			<fail>skip</fail>
+		</action>
+		<action>
+			<command>sleep</command>
+			<params>
+				<param name="timeout" value="10000"/>
+			</params>
+		</action>		
+		<action>
+			<command executor="TEL_1">activate_profile</command>
+			<params>
+				<param name="profile" value="HFP"/>
+			</params>
+		</action>
+		<action>
+			<command executor="target">wait_for_traces</command>
+			<params>
+				<param name="trace_pattern" value="BtPrjC.*informationIncomingServiceRequest.*BtServiceType=ST_TELEPHONY_HFP.*"/>
+				<param name="trace_pattern" value="BtPrjC.*ConnServiceCmd.*C_S.*"/>
+				<param name="trace_pattern" value="BtPrjC.*ConnServiceCmd.*requestConnectionOfService.*ServiceType=ST_TELEPHONY_HFP.*"/>
+				<param name="trace_pattern" value="BtPrjC.*hasServicesConnectionStatusChanged.*Service ST_TELEPHONY_HFP.*CS_NOT_CONNECTED.*CS_CONNECTED.*"/>
+				<param name="trace_pattern" value="BtPrjC.*informationDeviceStatusChanged.*btServiceType=ST_TELEPHONY_HFP.*btServiceActive=CS_CONNECTED.*"/>
+				<param name="trace_pattern" value="BtPrjC.*ConnServiceCmd.*responseConnectService.*BtServiceType=ST_TELEPHONY_HFP.*Result=RESULT_OK.*"/>
+				<param name="trace_pattern" value="BtPrjC.*ConnServiceCmd.*C_F.*Res=S.*"/>
+				<param name="timeout" value="6000"/>
+			</params>
+			<fail>skip</fail>
+		</action>
+		<action>
+			<command executor="TEL_1">disconnect_device</command>
+			<params>
+				<param name="device" value="~BT_DEVICE_NAME~"/>
+			</params>
+		</action> 
+		<!--
+		-->	
+		<action>
+			<command executor="target">wait_for_traces</command>
+			<params>
+				<param name="trace_pattern" value="BtPrjC.*onBtDeviceListUpdate.*18:3A:2D:4F:DB:EE.*CS_CONNECTED.*DisconnReason-UNKNOWN.*"/>
+				<param name="trace_pattern" value="BtPrjC.*fixLogConnStatus.*18:3A:2D:4F:DB:EE.*CS_CONNECTED.*LCS_NOT_CONNECTED.*DisconnReason:UNKNOWN.*"/>
+				<param name="trace_pattern" value="BtPrjC.*setBtDevices.*18:3A:2D:4F:DB:EE.*CS_CONNECTED.*LCS_CONNECTING.*DisconnReason:UNKNOWN.*"/>
+				<param name="trace_pattern" value="BtPrjC.*hasServicesConnectionStatusChanged.*ST_TELEPHONY_HFP.*CS_NOT_CONNECTED.*"/>
+				<param name="trace_pattern" value="BtPrjC.*hasServicesConnectionStatusChanged.*ST_AUDIO_SINK.*CS_NOT_CONNECTED.*"/>
+				<param name="trace_pattern" value="BtPrjC.*hasServicesConnectionStatusChanged.*ST_AVRCP_TARGET.*CS_NOT_CONNECTED.*"/>
+				<param name="timeout" value="6000"/>
+			</params>
+			<fail>skip</fail>
+		</action>
+		<action>
+			<command executor="TEL_1">confirm_connection</command>
+			<params>
+				<param name="confirm" value="true"/>
+			</params>
+		</action>
+		<action>
+			<command executor="target">wait_for_traces</command>
+			<params>
+				<param name="trace_pattern" value="BtPrjC.*ConnDeviceCmd: C_F.*Res=S"/>
+				<param name="timeout" value="10000"/>
+			</params>
+			<fail>skip</fail>
+		</action>	
+		<action>
+			<command>sleep</command>
+			<params>
+				<param name="timeout" value="3000"/>
+			</params>
+		</action>
+	</actions>
+</test>

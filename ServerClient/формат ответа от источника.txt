@@ -1,0 +1,25 @@
+[
+ {
+  "id"  : "1",
+  "type": "PICTURE",
+  "data": "qwe"
+ },
+ {
+  "id"  : "1",
+  "type": "TEXT",
+  "data": "qwe"
+ },
+ {
+  "id"  : "1",
+  "type": "AUDIO",
+  "data": "qwe"
+ },
+]
+
+или
+
+ {
+  "id"  : "1",
+  "type": "AUDIO",
+  "data": "qwe"
+ }

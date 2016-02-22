@@ -1,0 +1,12 @@
+<root>
+	<targetComunicationIPAddress value="192.168.0.102"/>
+	<targetComunicationPort value="851"/>
+	<targetComunicationProtocol value="0"/>
+	<defaultCNLFilePath value="_"/>
+	<defaultTextLogPath value="TCLLibrary.logs"/>
+	<defaultSystemLogPath value="System.logs"/>
+	<defaultCallbackValue value="0"/>
+	<deviceId value="2"/>
+	<commandServerIPAddress value="192.168.0.104"/>
+	<commandServerPort value="1268"/>
+</root>

@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<test>
+	<variables>
+		<variable name="BT_DEVICE_NAME" value="equus95"/>
+		<variable name="BT_DEVICE_ADDRESS" value="68:3E:34:47:5D:C6"/>
+	</variables>
+	<actions>
+		<action>
+			<command device="1">execute_callback</command>
+			<type>impact</type>
+			<params>
+				<param name="process" value="ScpCtrl_HU"/>
+				<param name="callback_name" value="DIS2_SCP_BluetoothProj_DeleteTrustedDevice"/>
+				<param name="callback_value" value="~BT_DEVICE_ADDRESS~"/>
+			</params>
+		</action>
+		<action>
+			<command device="2">unpair_device</command>
+			<type>impact</type>
+			<params>
+				<param name="device" value="~BT_DEVICE_NAME~"/>
+			</params>
+			<fail retry="1">skip</fail>
+		</action>
+		<action>
+			<command device="1">execute_callback</command>
+			<type>impact</type>
+			<params>
+				<param name="process" value="ScpCtrl_HU"/>
+				<param name="callback_name" value="DIS2_SCP_BluetoothProj_SetLocalBluetoothName"/>
+				<param name="callback_value" value="~BT_DEVICE_NAME~"/>
+			</params>
+		</action>
+		<action>
+			<command device="1">wait_for_traces</command>
+			<type>response</type>
+			<params>
+				<param name="trace_pattern" value="BtPrj.*requestSetLocalBluetoothName.*"/>
+				<param name="trace_pattern" value="BtPrj.*responseSetLocalBluetoothName.*"/>
+				<param name="timeout" value="8000"/>
+			</params>
+			<fail>skip</fail>
+		</action>
+		<action>
+			<command device="1">execute_callback</command>
+			<type>impact</type>
+			<params>
+				<param name="process" value="ScpCtrl_HU"/>
+				<param name="callback_name" value="DIS2_SCP_BluetoothProj_ActivateDiscoverableMode"/>
+				<param name="callback_value" value="1"/>
+			</params>
+		</action>
+		<action>
+			<command device="1">wait_for_traces</command>
+			<type>response</type>
+			<params>
+				<param name="trace_pattern" value="BtPrjC.*requestActivateDiscoverableMode.*"/>
+				<param name="trace_pattern" value="BtPrjC.*ActivateDiscovModeCmd.*C_S.*"/>
+				<param name="trace_pattern" value="BtPrjC.*ActivateDiscovModeCmd.*C_F.*Res=S.*"/>
+				<param name="trace_pattern" value="BtPrjC.*responseActivateDiscoverableMode.*Result=RESULT_OK.*"/>
+				<param name="timeout" value="5000"/>
+			</params>
+			<fail>skip</fail>
+		</action>
+		<action>
+			<command>sleep</command>
+			<params>
+				<param name="timeout" value="1000"/>
+			</params>
+		</action>
+	</actions>
+</test>

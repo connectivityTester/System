@@ -6,7 +6,7 @@
 	<defaultTextLogPath value=".\TraceServerLogs\TCLLibrary.logs"/>
 	<defaultSystemLogPath value=".\TraceServerLogs\System.logs"/>
 	<defaultCallbackValue value="0"/>
-	<deviceId value="2"/>
+	<deviceId value="3"/>
 	<commandServerIPAddress value="172.30.138.25"/>
 	<commandServerPort value="1268"/>
 </root>

@@ -20,9 +20,9 @@
 		<action>
 			<command>answers</command>
 			<params>
-				<param device="2" value="BtPrj.*requestSetLocalBluetoothName" type="text"/>
-				<param device="2" value="BtPrj.*responseSetLocalBluetoothName" type="text"/>
-				<param name="timeout" value="8000"/>
+				<param device="3" value="BtPrj.*requestSetLocalBluetoothName" type="text"/>
+				<param device="3" value="BtPrj.*responseSetLocalBluetoothName" type="text"/>
+				<param name="timeout" value="9000"/>
 			</params>
 			<fail retry="1">skip</fail>
 		</action>
@@ -38,9 +38,9 @@
 		<action>
 			<command>answers</command>
 			<params>
-				<param device="2" value="BtPrj.*requestSetLocalBluetoothName" type="text"/>
-				<param device="2" value="BtPrj.*responseSetLocalBluetoothName" type="text"/>
-				<param name="timeout" value="4000"/>
+				<param device="3" value="BtPrj.*requestSetLocalBluetoothName" type="text"/>
+				<param device="3" value="BtPrj.*responseSetLocalBluetoothName" type="text"/>
+				<param name="timeout" value="6000"/>
 			</params>
 			<fail retry="1">skip</fail>
 		</action>
@@ -56,8 +56,8 @@
 		<action>
 			<command>answers</command>
 			<params>
-				<param device="2" value="BtPrj.*requestSetLocalBluetoothName" type="text"/>
-				<param device="2" value="BtPrj.*responseSetLocalBluetoothName" type="text"/>
+				<param device="3" value="BtPrj.*requestSetLocalBluetoothName" type="text"/>
+				<param device="3" value="BtPrj.*responseSetLocalBluetoothName" type="text"/>
 				<param name="timeout" value="6000"/>
 			</params>
 			<fail retry="1">skip</fail>
@@ -74,9 +74,9 @@
 		<action>
 			<command>answers</command>
 			<params>
-				<param device="2" value="BtPrj.*requestSetLocalBluetoothName" type="text"/>
-				<param device="2" value="BtPrj.*responseSetLocalBluetoothName" type="text"/>
-				<param name="timeout" value="3000"/>
+				<param device="3" value="BtPrj.*requestSetLocalBluetoothName" type="text"/>
+				<param device="3" value="BtPrj.*responseSetLocalBluetoothName" type="text"/>
+				<param name="timeout" value="6000"/>
 			</params>
 			<fail retry="1">skip</fail>
 		</action>

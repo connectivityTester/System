@@ -1,32 +1,39 @@
 package buffers;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import com.google.gson.Gson;
 import types.IncomingMessageType;
+import types.LogLevels;
+import utils.Logger;
 
-public class TextMessageMatcherTask extends MessageMatcherTask {
+public class TextMessageMatcherTask extends MessageMatcher {
 
-	public TextMessageMatcherTask (String pattern, int deviceSourceId, ConcurrentLinkedQueue<ParsedIncomingMessage> queue) {
-		super(pattern, deviceSourceId, queue);
+	private final Gson jsonParser = new Gson();
+	
+	public TextMessageMatcherTask ( int deviceSourceId, ConcurrentLinkedQueue<String> queue) {
+		super(deviceSourceId, queue);
 	}
 
 	@Override
-	public ParsedIncomingMessage call() {
-		ParsedIncomingMessage message = null;
-		Pattern compiledPattern = Pattern.compile(".*" + this.messagePattern + ".*");
-		Matcher matcher = null;
-		ParsedIncomingMessage answer = null;
-		Iterator<ParsedIncomingMessage> iterator = this.queue.iterator();
-		while (iterator.hasNext()){
-			message = iterator.next();
-			if(this.deviceSourceId == message.getId() &&
-					message.getConvertedType() == IncomingMessageType.TEXT)
+	public String match(String messagePattern) {
+		Pattern compiledPattern = Pattern.compile(".*" + messagePattern.toLowerCase() + ".*");
+		String answer = null;
+		Iterator<String> iterator = this.queue.iterator();
+		while(iterator.hasNext()){
+			String curMessage = iterator.next();
+			//Logger.log(LogLevels.TRACE, this, curMessage);
+			ParsedIncomingMessage currentMessage = this.jsonParser.fromJson(curMessage, ParsedIncomingMessage.class);
+			if(currentMessage != null && 
+					this.deviceSourceId == currentMessage.getId() &&
+					currentMessage.getConvertedType() == IncomingMessageType.TEXT)
 			{
-				matcher = compiledPattern.matcher(message.getData().toLowerCase());
+				Matcher matcher = compiledPattern.matcher(currentMessage.getData().toLowerCase());
 				if(matcher.matches()){
-					answer = message;
+					answer = currentMessage.getData();
 					break;
 				}
 			}

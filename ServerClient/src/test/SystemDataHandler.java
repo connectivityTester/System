@@ -508,31 +508,23 @@ public class SystemDataHandler implements ActionDataHanlder{
 
 	private ActionResult analizeAnswers(List<AnswerPattern> answerPatterns, IncomingMessageType type){
 		ActionResult actionResult = new ActionResult(ActionResultTypes.OK, "All pattern were found");
-		Map<AnswerPattern, Future<ParsedIncomingMessage>> textAnswers = 
+		Map<AnswerPattern, Object> textAnswers = 
 				BufferManager.getInstance().findAnswersInBuffer(answerPatterns, type);
-		for(Entry<AnswerPattern, Future<ParsedIncomingMessage>> entry : textAnswers.entrySet()){
-			try {
-				if(entry.getValue().get() == null){
-					Logger.logToUser("Answer message for pattern \"" + 
-								entry.getKey().getPattern().toString() +
-								"\" from device source \"" + entry.getKey().getDeviceSourceId() +
-								"\" was not found", this, MessageLogTypes.ERROR);
-					if(actionResult.getResultType() == ActionResultTypes.OK){
-						actionResult = new ActionResult(ActionResultTypes.NOK, "Not all patterns were found");
-					}
+		for(Entry<AnswerPattern, Object> entry : textAnswers.entrySet()){
+			if(entry.getValue() == null){
+				Logger.logToUser("Answer message for pattern \"" + 
+							entry.getKey().getPattern().toString() +
+							"\" from device source \"" + entry.getKey().getDeviceSourceId() +
+							"\" was not found", this, MessageLogTypes.ERROR);
+				if(actionResult.getResultType() == ActionResultTypes.OK){
+					actionResult = new ActionResult(ActionResultTypes.NOK, "Not all patterns were found");
 				}
-				else{
-					try {
-						Logger.logToUser("Answer message for pattern \"" + 
-								entry.getKey().getPattern().toString() +
-								"\" from device source \"" + entry.getKey().getDeviceSourceId() +
-								"\" was found: " + entry.getValue().get().getData(), this, MessageLogTypes.INFO);
-					} catch (InterruptedException | ExecutionException e) {
-						e.printStackTrace();
-					}
-				}
-			} catch (InterruptedException | ExecutionException e) {
-				e.printStackTrace();
+			}
+			else{
+				Logger.logToUser("Answer message for pattern \"" + 
+						entry.getKey().getPattern().toString() +
+						"\" from device source \"" + entry.getKey().getDeviceSourceId() +
+						"\" was found: " + entry.getValue(), this, MessageLogTypes.INFO);
 			}
 		}
 		return actionResult;

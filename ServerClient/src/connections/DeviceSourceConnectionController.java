@@ -37,7 +37,7 @@ public class DeviceSourceConnectionController extends Thread{
 		while(true){
 			Socket socket = null;
 			try {
-				socket = serverSocket.accept();
+				socket = this.serverSocket.accept();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

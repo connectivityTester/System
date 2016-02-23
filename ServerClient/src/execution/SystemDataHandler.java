@@ -501,36 +501,29 @@ public class SystemDataHandler implements ActionDataHanlder{
 
 	private ActionResult analizeAnswers(List<AnswerPattern> answerPatterns, IncomingMessageType type){
 		ActionResult actionResult = new ActionResult(ActionResultTypes.OK, "All pattern were found");
-		Map<AnswerPattern, Future<ParsedIncomingMessage>> textAnswers = 
-				BufferManager.getInstance().findAnswersInBuffer(answerPatterns, type);
-		for(Entry<AnswerPattern, Future<ParsedIncomingMessage>> entry : textAnswers.entrySet()){
-			try {
-				if(entry.getValue().get() == null){
-					StringBuilder message = new StringBuilder("Answer message for pattern \"");
-					message.append(entry.getKey().getPattern().toString());
-					message.append("\" from device source \"");
-					message.append(entry.getKey().getDeviceSourceId());
-					message.append("\" was not found");
-					Logger.logToUser(message.toString(), this, MessageLogTypes.ERROR);
-					if(actionResult.getResultType() == ActionResultTypes.OK){
-						actionResult = new ActionResult(ActionResultTypes.NOK, "Not all patterns were found");
-					}
+		Map<AnswerPattern, Object> textAnswers = BufferManager.getInstance().findAnswersInBuffer(answerPatterns, type);
+		for(Entry<AnswerPattern, Object> entry : textAnswers.entrySet()){
+			if(entry.getValue() == null){
+				StringBuilder message = new StringBuilder("Answer message for pattern \"");
+				message.append(entry.getKey().getPattern().toString());
+				message.append("\" from device source \"");
+				message.append(entry.getKey().getDeviceSourceId());
+				message.append("\" was not found");
+				Logger.logToUser(message.toString(), this, MessageLogTypes.ERROR);
+				if(actionResult.getResultType() == ActionResultTypes.OK){
+					actionResult = new ActionResult(ActionResultTypes.NOK, "Not all patterns were found");
 				}
-				else{
-					try {
-						StringBuilder message = new StringBuilder("Answer message for pattern \"");
-						message.append(entry.getKey().getPattern().toString());
-						message.append("\" from device source \"");
-						message.append(entry.getKey().getDeviceSourceId());
-						message.append("\" was found: ");
-						message.append(entry.getValue().get().getData());
-						Logger.logToUser( message.toString(), this, MessageLogTypes.INFO);
-					} catch (InterruptedException | ExecutionException e) {
-						e.printStackTrace();
-					}
+			}
+			else{
+				StringBuilder message = new StringBuilder("Answer message for pattern \"");
+				message.append(entry.getKey().getPattern().toString());
+				message.append("\" from device source \"");
+				message.append(entry.getKey().getDeviceSourceId());
+				message.append("\" was found: ");
+				switch(type){
+					case TEXT:	message.append((String)entry.getValue());	break;
 				}
-			} catch (InterruptedException | ExecutionException e) {
-				e.printStackTrace();
+				Logger.logToUser( message.toString(), this, MessageLogTypes.INFO);
 			}
 		}
 		return actionResult;

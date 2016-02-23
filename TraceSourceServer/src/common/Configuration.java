@@ -12,16 +12,16 @@ public class Configuration {
 	private final static String configFilePath = "tsconfig.xml";
 	private static Configuration config;
 	
-	private String commandServerIPAddress;
-	private int commandServerPort;
-	private int deviceId;
+	private final String commandServerIPAddress;
+	private final int commandServerPort;
+	private final int deviceId;
 	
-	private String targetIPAddress;
-	private int targetComunicationPort;
-	private int targetComunicationProtocol;
-	private String cnlFilePath;
-	private String textLogFilePath;
-	private int defaultCallbackValue;
+	private final String targetIPAddress;
+	private final int targetComunicationPort;
+	private final int targetComunicationProtocol;
+	private final String cnlFilePath;
+	private final String textLogFilePath;
+	private final int defaultCallbackValue;
 	
 	Configuration(String targetIPAddress, int targetComunicationPort, int targetComunicationProtocol,
 					String cnlFilePath, String textLogFilePath,	int defaultCallbackValue,

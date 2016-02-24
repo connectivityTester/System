@@ -38,8 +38,7 @@ public class CommandExecutor {
 	
 	public CommandResult executeCommand(String command){
 		Log.i("CommandExecutor::", "Function EXECUTECOMMAND started");
-		Command newCommand = null;
-		newCommand = this.createCommand(command);
+		Command newCommand = this.createCommand(command);
 		iExecutor executor = this.defineExecutor(newCommand.getCommandType());
 		CommandResult result = executor.executeCommand(newCommand);
 		Log.i("CommandExecutor::", "Function executeCommand, finished with result::" + result.getType().toString() );
@@ -109,6 +108,7 @@ public class CommandExecutor {
 			case "pair_to_target"		: commandType = CommandTypes.PAIR_TO_TARGET;	break;
 			case "disconnect_device"	: commandType = CommandTypes.DISCONNECT_DEVICE; break;
 			case "unpair_device"		: commandType = CommandTypes.UNPAIR_DEVICE;		break;
+			case "unpair_all_devices"	: commandType = CommandTypes.UNPAIP_ALL_DEVICES;break;
 			case "activate_profile"		: commandType = CommandTypes.ACTIVATE_PROFILE;	break;
 			case "deactivate_profile"	: commandType = CommandTypes.DEACTIVATE_PROFILE;break;
 		}
@@ -136,6 +136,7 @@ public class CommandExecutor {
 			case CONNECT_TARGET		:	executor = this.bluetoothCommandExecutor;	break;
 			case DISCONNECT_DEVICE	:	executor = this.bluetoothCommandExecutor;	break;
 			case UNPAIR_DEVICE		:	executor = this.bluetoothCommandExecutor;	break;
+			case UNPAIP_ALL_DEVICES	: 	executor = this.bluetoothCommandExecutor;	break;
 			case ACTIVATE_PROFILE	:	executor = this.bluetoothCommandExecutor;	break;
 			case DEACTIVATE_PROFILE	:	executor = this.bluetoothCommandExecutor;	break;
 			case UNKNOWN_COMMAND	:

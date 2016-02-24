@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<test>
+	<variables>
+		<variable name="BT_DEVICE_NAME" value="equus95(123)"/>
+	</variables>
+	<actions>
+		<!-- Prepare HU and Phone for test-->
+		<!-- Delete all paired device on phone side -->
+		<action>
+			<command device="2">unpair_all_devices</command>
+		</action>
+		<action>
+			<command>answers</command>
+			<params>
+				<param device="2" value="Devices.*were.*unpaired" type="text"/>
+				<param name="timeout" value="2000"/>
+			</params>
+		</action>
+
+		<!-- Delete all paired device on HU side -->
+		<action>
+			<command device="3">execute_callback</command>
+			<type>impact</type>
+			<params>
+				<param name="process" value="ScpCtrl_HU"/>
+				<param name="callback_name" value="DIS2_SCP_BluetoothProj_Reset"/>
+			</params>
+		</action>
+		<action>
+			<command>answers</command>
+			<params>
+				<param device="3" value="BtPrj.*requestReset" type="text"/>
+				<param device="3" value="BtPrj.*responseReset.*Result=RESULT_OK" type="text"/>
+				<param name="timeout" value="9000"/>
+			</params>
+		</action>
+
+		<!-- Set local device name on HU -->
+		<action>
+			<command device="3">execute_callback</command>
+			<type>impact</type>
+			<params>
+				<param name="process" value="ScpCtrl_HU"/>
+				<param name="callback_name" value="DIS2_SCP_BluetoothProj_SetLocalBluetoothName"/>
+				<param name="callback_value" value="~BT_DEVICE_NAME~"/>
+			</params>
+		</action>
+		<action>
+			<command>answers</command>
+			<params>
+				<param device="3" value="BtPrj.*requestSetLocalBluetoothName" type="text"/>
+				<param device="3" value="BtPrj.*responseSetLocalBluetoothName" type="text"/>
+				<param name="timeout" value="4000"/>
+			</params>
+			<fail retry="0">skip</fail>
+		</action>
+
+		<!-- Activate discoverable mode on HU -->
+		<action>
+			<command device="3">execute_callback</command>
+			<type>impact</type>
+			<params>
+				<param name="process" value="ScpCtrl_HU"/>
+				<param name="callback_name" value="DIS2_SCP_BluetoothProj_ActivateDiscoverableMode"/>
+				<param name="callback_value" value="1"/>
+			</params>
+		</action>
+		<action>
+			<command>answers</command>
+			<params>
+				<param device="3" value="BtPrj.*requestActivateDiscoverableMode.*activate=True" type="text"/>
+				<param device="3" value="BtPrj.*responseActivateDiscoverableMode.*Result=RESULT_OK" type="text"/>
+				<param name="timeout" value="9000"/>
+			</params>
+			<fail retry="0">skip</fail>
+		</action>	
+
+		<!-- Search and pair to target from Phone -->	
+		<action>
+			<command device="2">pair_to_target</command>
+			<params>
+				<param device="2" name="device" value="~BT_DEVICE_NAME~" type="text"/>
+			</params>
+		</action>
+		<action>
+			<command>answers</command>
+			<params>
+				<param device="2" value="Bond.*created.*successful" type="text"/>
+				<param name="timeout" value="9000"/>
+			</params>
+		</action>
+
+		<!-- Accept confirmation on Phone side -->
+		<action>
+			<command device="2">confirm_connection</command>
+			<params>
+				<param device="2" name="confirm" value="true" type="text"/>
+			</params>
+		</action>
+		<action>
+			<command>answers</command>
+			<params>
+				<param device="2" value="Confirmation.*accepted" type="text"/>
+				<param device="3" value="BtPrj.*ConnDeviceCmd.*C_S" type="text"/>
+				<param device="3" value="BtPrj.*ConnDeviceCmd.*requestAcceptPasskey.*Accept=True" type="text"/>
+				<param device="3" value="BtPrj.*ConnDeviceCmd.*responsePasskeyResponse.*Result=RESULT_OK" type="text"/>
+				<param device="3" value="BtPrj.*ConnDeviceCmd.*C_F.*Res=S" type="text"/>
+				<param name="timeout" value="9000"/>
+			</params>
+		</action>
+	</actions>
+</test>

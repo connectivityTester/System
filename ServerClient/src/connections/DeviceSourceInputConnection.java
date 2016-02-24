@@ -3,7 +3,6 @@ package connections;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,12 +29,12 @@ public class DeviceSourceInputConnection implements Runnable{
 		}
 		this.dataInputStream = inputStream;		
 	}
-
+	
 	@Override
 	public void run() {
 		StringBuilder builder = new StringBuilder();
 		while(true){
-			byte []buffer = new byte[2_000_000];
+			byte []buffer = new byte [2_000_000];
 			List<String> messages = null; 
 			try {
 				int readBytes = this.dataInputStream.read(buffer);
@@ -62,7 +61,7 @@ public class DeviceSourceInputConnection implements Runnable{
 					Logger.logToUser(logMessage.toString(), this, MessageLogTypes.INFO);
 					this.deviceSourceConnectionController.removeDisconnectedConnection(this.deviceSource);
 					break;
-				}				
+				}			
 			} catch (IOException e) {
 				StringBuilder logMessage = new StringBuilder("Device source \"");
 				logMessage.append(this.deviceSource.getName());
@@ -73,7 +72,7 @@ public class DeviceSourceInputConnection implements Runnable{
 				this.deviceSourceConnectionController.removeDisconnectedConnection(this.deviceSource);
 				break;
 			}
-			if(messages.size() != 0){
+			if(messages!= null){
 				BufferManager.getInstance().addMessageToBuffer(messages);
 			}				
 		}		

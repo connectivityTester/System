@@ -19,6 +19,7 @@ public enum CommandTypes {
 	CONNECT_TARGET,// target is already paired, but connection is not active
 	DISCONNECT_DEVICE,
 	UNPAIR_DEVICE,
+	UNPAIP_ALL_DEVICES,
 	ACTIVATE_PROFILE,
 	DEACTIVATE_PROFILE,
 	//

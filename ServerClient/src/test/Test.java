@@ -3,6 +3,7 @@ package test;
 import java.util.Collections;
 import java.util.List;
 
+import buffers.BufferManager;
 import common.DeviceSource;
 import types.ActionResultTypes;
 import types.FailReaction;
@@ -30,16 +31,36 @@ public class Test {
 			ActionResult result = dataHanlder.handleActionData(this.testVariables, this.testActions.get(actionIndex));
 			Logger.log(LogLevels.TRACE, this, "Method executeTest, action result is " + result.getResultType());
 			this.testActions.get(actionIndex).setActionResult(result);
-			if(result.getResultType() != ActionResultTypes.OK){
-				if (this.testActions.get(actionIndex).getFailReaction() == FailReaction.STOP) {
-					break;
-				}else if(this.testActions.get(actionIndex).getFailReaction() == FailReaction.SKIP){
-					Logger.logToUser( "Action result was skiped!", this, MessageLogTypes.SKIP);
+			if(result.getResultType() == ActionResultTypes.NOK){
+				Logger.logToUser( "Action result is NOK", this, MessageLogTypes.HEADER);
+				if(this.testActions.get(actionIndex).getReTry()>0){
+					Logger.logToUser( "Action execution will be repeated " + this.testActions.get(actionIndex).getReTry() + " times" , this, MessageLogTypes.HEADER);
+					for(int i = 0; i < this.testActions.get(actionIndex).getReTry(); ++i){
+						Logger.logToUser( "Iteration ¹" + (i+1), this, MessageLogTypes.HEADER);
+						result = dataHanlder.handleActionData(this.testVariables, this.testActions.get(actionIndex));
+						if(result.getResultType() == ActionResultTypes.OK){
+							break;
+						}
+					}
+					if(result.getResultType() == ActionResultTypes.OK){
+						Logger.logToUser( "Action result is OK", this, MessageLogTypes.HEADER);
+						this.testActions.get(actionIndex).setActionResult(result);
+						continue;
+					}
+				}
+				this.testActions.get(actionIndex).setActionResult(result);
+				if(result.getResultType() == ActionResultTypes.NOK){
+					if(this.testActions.get(actionIndex).getFailReaction() == FailReaction.SKIP){
+						Logger.logToUser( "Action result was skiped!", this, MessageLogTypes.SKIP);
+					}
+					else{
+						break;
+					}
 				}	
 			}
 			Logger.logToUser( "------------------------------", this, MessageLogTypes.HEADER);
 		}
-		
+		BufferManager.getInstance().clearBuffers();
 		Logger.logToUser( "----- Test results -----", this, MessageLogTypes.HEADER);
 		
 		this.showTestResults();

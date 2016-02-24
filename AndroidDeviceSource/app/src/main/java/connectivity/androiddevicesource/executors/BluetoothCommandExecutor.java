@@ -65,7 +65,7 @@ public class BluetoothCommandExecutor implements iExecutor {
         CommandResult result = null;
         switch (command.getCommandType()) {
             case PAIR_TO_TARGET:
-                result = this.pairToTarget(command.getParameterValue("target_name"));
+                result = this.pairToTarget(command.getParameterValue("device"));
                 break;
             case CONFIRM_CONNECTION:
                 result = this.confirmConnection(command.getParameterValue("confirm"));
@@ -88,6 +88,9 @@ public class BluetoothCommandExecutor implements iExecutor {
             case UNPAIR_DEVICE:
                 result = this.unpairDevice(command.getParameterValue("device"));
                 break;
+            case UNPAIP_ALL_DEVICES:
+                result = this.unpairAllPairedDevices();
+                break;
             case ACTIVATE_PROFILE:
                 result = this.activateProfile(command.getParameterValue("profile"),command.getParameterValue("device"));
                 break;
@@ -106,10 +109,12 @@ public class BluetoothCommandExecutor implements iExecutor {
         return result;
     }
 
+
+
     //tested and work,
     // but can throw exception like "Can not connect socket to target!!!",
     // for current impl, it is correct and connection is made.
-    public CommandResult connectTarget(String targetName) {
+    private CommandResult connectTarget(String targetName) {
         Log.i("BluetoothCommandExec::", "Function connectTarget started");
         Log.i("BluetoothCommandExec::", "Function connectTarget, target to connect: " + targetName);
 
@@ -151,7 +156,7 @@ public class BluetoothCommandExecutor implements iExecutor {
         return result;
     }
     //tested and work
-    public CommandResult disconnectTarget(String deviceName) {
+    private CommandResult disconnectTarget(String deviceName) {
         Log.i("BluetoothCommandExec::", "Function disconnectDevice started");
         CommandResult result = new CommandResult(CommandResultTypes.OK, null);
         BluetoothDevice activeDeviceConnection = this.getActiveConnection();
@@ -182,7 +187,7 @@ public class BluetoothCommandExecutor implements iExecutor {
         return result;
     }
     //tested and work
-    public CommandResult pairToTarget(String targetName) {
+    private CommandResult pairToTarget(String targetName) {
         Log.i("BluetoothCommandExec::", "Function pairToTarget started");
         CommandResult result = this.searchDevice(targetName);
         if (result.getType() == CommandResultTypes.OK ) {
@@ -194,6 +199,7 @@ public class BluetoothCommandExecutor implements iExecutor {
                 }
                 else {
                     Log.i("BluetoothCommandExec::", "Function pairToTarget, bond was successful!!!");
+                    result = new CommandResult(CommandResultTypes.OK, "Bond was created successful");
                 }
             }
         }
@@ -222,10 +228,12 @@ public class BluetoothCommandExecutor implements iExecutor {
                 case "true" :
                     this.foundDevice.setPairingConfirmation(true);
                     this.pairingRequestReceiver.setIsRequestReceived(false);
+                    result = new CommandResult(CommandResultTypes.OK, "Confirmation was accepted");
                     break;
                 case "false":
                     this.foundDevice.setPairingConfirmation(false);
                     this.pairingRequestReceiver.setIsRequestReceived(false);
+                    result = new CommandResult(CommandResultTypes.OK, "Confirmation was rejected");
                     break;
                 default     :
                     this.foundDevice.setPairingConfirmation(false);
@@ -314,14 +322,38 @@ public class BluetoothCommandExecutor implements iExecutor {
         this.searchSemaphore.release();
         if ( this.foundDevice == null ) {
             Log.i("BluetoothCommandExec::", "Function searchDevice, device is not in range!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            result = new CommandResult(CommandResultTypes.NOK, "device is not in range");
+            result = new CommandResult(CommandResultTypes.NOK, "Device is not in range");
             result = this.searchDevice(deviceName);
+        }
+        else{
+            result = new CommandResult(CommandResultTypes.NOK, "Device " + this.foundDevice.getName() + " was found");
         }
         Log.i("BluetoothCommandExec::", "Function searchDevice, finished with result::" + result.getType().toString());
         if (result.getType() != CommandResultTypes.OK) {
             Log.i("BluetoothCommandExec::", "Function searchDevice, Reason::" + result.getErrorReason());
         }
         this.activity.unregisterReceiver(this.searchDeviceReceiver);
+        return result;
+    }
+
+    private CommandResult unpairAllPairedDevices(){
+        Log.i("BluetoothCommandExec::", "Function unpairAllPairedDevices started");
+
+        CommandResult result = new CommandResult(CommandResultTypes.OK, "Devices were unpaired");
+        for (BluetoothDevice bondDevice : this.bluetoothAdapter.getBondedDevices()) {
+            try {
+                Method method = bondDevice.getClass().getMethod("removeBond", (Class[]) null);
+                method.invoke(bondDevice, (Object[]) null);
+                break;
+            } catch (Exception e) {
+                Log.i("BluetoothCommandExec::", "problem with unpairing device::" + e.getLocalizedMessage());
+            }
+        }
+
+        Log.i("BluetoothCommandExec::", "Function unpairAllPairedDevices, finished with result::" + result.getType().toString());
+        if (result.getType() != CommandResultTypes.OK) {
+            Log.i("BluetoothCommandExec::", "Function unpairAllPairedDevices, Reason::" + result.getErrorReason());
+        }
         return result;
     }
     //tested and work

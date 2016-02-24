@@ -3,13 +3,8 @@ package test;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-
 import buffers.AnswerPattern;
 import buffers.BufferManager;
-import buffers.IncomingMessageReceiver;
-import buffers.ParsedIncomingMessage;
 import common.SystemConstants;
 import exceptions.TestExecutionExeption;
 import types.ActionResultTypes;
@@ -89,38 +84,15 @@ public class SystemDataHandler implements ActionDataHanlder{
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
-		IncomingMessageReceiver.getInstance().allowAdditionToBuffer(false);
-		Logger.log(LogLevels.TRACE, systemDataHandler, "Addition to buffer was stoped");
 		Logger.logToUser("Searching for answers....", systemDataHandler, MessageLogTypes.INFO);
 		if(textPatterns != null){
-			ActionResult currentResult = this.analizeAnswers(textPatterns, IncomingMessageType.TEXT);
-			if(actionResult.getResultType() == ActionResultTypes.OK &&
-					currentResult.getResultType() == ActionResultTypes.NOK)
+			actionResult = this.analizeAnswers(textPatterns, IncomingMessageType.TEXT);
+			if(actionResult.getResultType() == ActionResultTypes.OK)
 			{
-				actionResult = currentResult;
-			}
-		}
-		if(picturePatterns != null){
-			ActionResult currentResult = this.analizeAnswers(picturePatterns, IncomingMessageType.PICTURE);
-			if(actionResult.getResultType() == ActionResultTypes.OK &&
-					currentResult.getResultType() == ActionResultTypes.NOK)
-			{
-				actionResult = currentResult;
-			}
-		}
-		if(audioPatterns != null){
-			ActionResult currentResult = this.analizeAnswers(audioPatterns, IncomingMessageType.AUDIO);
-			if(actionResult.getResultType() == ActionResultTypes.OK &&
-					currentResult.getResultType() == ActionResultTypes.NOK)
-			{
-				actionResult = currentResult;
+				BufferManager.getInstance().clearBuffers();
 			}
 		}
 		Logger.logToUser("Search was stoped.", systemDataHandler, MessageLogTypes.INFO);
-		BufferManager.getInstance().clearBuffers();
-		Logger.log(LogLevels.TRACE, systemDataHandler, "Buffers were cleared");
-		IncomingMessageReceiver.getInstance().allowAdditionToBuffer(true);
-		Logger.log(LogLevels.TRACE, systemDataHandler, "Addition to buffers was started");
 		return actionResult;
 	}
 

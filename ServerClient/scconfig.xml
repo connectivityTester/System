@@ -22,16 +22,16 @@
 		</device_source>
 		-->
 		<device_source>
-			<name>Meizu_M2_Note</name>
+			<name>Galaxy Note 4</name>
 			<id autostart="false">2</id>
 			<!-- Parameters below are optional -->
-			<address>192.168.1.8</address>
+			<address>192.168.0.106</address>
 		</device_source>
 		<device_source>
 			<name>TraceServer</name>
 			<id autostart="true">3</id>
 			<!-- Parameters below are optional -->
-			<address>172.30.138.25</address>
+			<address>192.168.0.105</address>
 			<start_up_parameters>
 				<parameter>C:\Program Files (x86)\Java\jre1.8.0_60\bin\java.exe -jar TraceServer.jar</parameter>
 			</start_up_parameters>

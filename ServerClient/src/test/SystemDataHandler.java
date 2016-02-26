@@ -87,10 +87,9 @@ public class SystemDataHandler implements ActionDataHanlder{
 		Logger.logToUser("Searching for answers....", systemDataHandler, MessageLogTypes.INFO);
 		if(textPatterns != null){
 			actionResult = this.analizeAnswers(textPatterns, IncomingMessageType.TEXT);
-			if(actionResult.getResultType() == ActionResultTypes.OK)
-			{
-				BufferManager.getInstance().clearBuffers();
-			}
+		}
+		if(actionResult.getResultType() == ActionResultTypes.OK){
+			BufferManager.getInstance().clearBuffers();
 		}
 		Logger.logToUser("Search was stoped.", systemDataHandler, MessageLogTypes.INFO);
 		return actionResult;

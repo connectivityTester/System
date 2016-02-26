@@ -35,9 +35,14 @@ public class ConnenctionController {
 			case EXTERNAL_COMMAND:
 				StringBuilder stringBuilder = new StringBuilder("Command \"");
 				stringBuilder.append(action.getCommand().getCommandName());
-				stringBuilder.append("\" with parameters: ");
-				String parameters = action.getCommandParametes().toString();
-				stringBuilder.append(parameters.substring(1, parameters.length()-1));
+				if(action.getCommandParametes() != null){
+					stringBuilder.append("\" with parameters: ");
+					String parameters = action.getCommandParametes().toString();
+					stringBuilder.append(parameters.substring(1, parameters.length()-1));
+				}
+				else{
+					stringBuilder.append("\" without parameters");
+				}
 				Logger.logToUser(stringBuilder.toString(), connenctionController, MessageLogTypes.INFO);
 				DeviceSource devSource = action.getCommand().getDeviceSource();
 				String testDataString = action.packActionToString(devSource, dataPackerType, testVariables);

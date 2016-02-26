@@ -2,6 +2,7 @@ package test;
 
 import java.util.LinkedList;
 import java.util.List;
+
 import com.google.gson.Gson;
 
 import buffers.AnswerPattern;
@@ -12,6 +13,8 @@ import types.CommandTypes;
 import types.DataPackerTypes;
 import types.FailReaction;
 import types.IncomingMessageType;
+import types.MessageLogTypes;
+import utils.Logger;
 import utils.Utils;
 import exceptions.TestContextException;
 
@@ -109,16 +112,24 @@ public class Action {
 	public CommandTypes getCommandType() {	return commandType;	}
 	
 	public String packActionToString(DeviceSource devSource, DataPackerTypes dataPackerType, List<Variable> testVariables){
-		List<DeviceSourceParameter> deviceSourceParameters = new LinkedList<>();
-		for(Parameter parameter : this.commandParametes){
-			if(!parameter.isVariable()){
-				deviceSourceParameters.add(new DeviceSourceParameter(parameter.getName(), parameter.getValue()));
+		DeviceSourceMessage deviceSourceMessage = null;
+		if(this.commandParametes != null){
+			List<DeviceSourceParameter> deviceSourceParameters = new LinkedList<>();
+			for(Parameter parameter : this.commandParametes){
+				if(!parameter.isVariable()){
+					deviceSourceParameters.add(new DeviceSourceParameter(parameter.getName(), parameter.getValue()));
+				}
+				else{
+					deviceSourceParameters.add(new DeviceSourceParameter(parameter.getName(), Utils.prepareSingleParameterValue(parameter, testVariables)));
+				}
 			}
-			else{
-				deviceSourceParameters.add(new DeviceSourceParameter(parameter.getName(), Utils.prepareSingleParameterValue(parameter, testVariables)));
-			}
+			deviceSourceMessage = new DeviceSourceMessage(this.command.getCommandName(), this.command.getDeviceSource().getId(), deviceSourceParameters);
 		}
-		DeviceSourceMessage deviceSourceMessage = new DeviceSourceMessage(this.command.getCommandName(), this.command.getDeviceSource().getId(), deviceSourceParameters);
-		return new Gson().toJson(deviceSourceMessage, DeviceSourceMessage.class);
+		else{
+			deviceSourceMessage = new DeviceSourceMessage(this.command.getCommandName(), this.command.getDeviceSource().getId(), null);
+		}
+		String commandString = new Gson().toJson(deviceSourceMessage, DeviceSourceMessage.class);
+		Logger.logToUser("Command \"" + commandString + "\" will be sent", this, MessageLogTypes.INFO);
+		return commandString;
 	}
 }

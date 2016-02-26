@@ -1,5 +1,5 @@
 <root>
-	<targetComunicationIPAddress value="172.30.138.95"/>
+	<targetComunicationIPAddress value="192.168.0.102"/>
 	<targetComunicationPort value="851"/>
 	<targetComunicationProtocol value="0"/>
 	<defaultCNLFilePath value=".\TraceServerLogs\_"/>
@@ -7,6 +7,6 @@
 	<defaultSystemLogPath value=".\TraceServerLogs\System.logs"/>
 	<defaultCallbackValue value="0"/>
 	<deviceId value="3"/>
-	<commandServerIPAddress value="172.30.138.25"/>
+	<commandServerIPAddress value="192.168.0.105"/>
 	<commandServerPort value="1268"/>
 </root>

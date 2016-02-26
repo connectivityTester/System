@@ -13,7 +13,7 @@
 			<command>answers</command>
 			<params>
 				<param device="2" value="Devices.*were.*unpaired" type="text"/>
-				<param name="timeout" value="2000"/>
+				<param name="timeout" value="1000"/>
 			</params>
 		</action>
 
@@ -31,7 +31,7 @@
 			<params>
 				<param device="3" value="BtPrj.*requestReset" type="text"/>
 				<param device="3" value="BtPrj.*responseReset.*Result=RESULT_OK" type="text"/>
-				<param name="timeout" value="9000"/>
+				<param name="timeout" value="5000"/>
 			</params>
 		</action>
 
@@ -70,12 +70,12 @@
 			<params>
 				<param device="3" value="BtPrj.*requestActivateDiscoverableMode.*activate=True" type="text"/>
 				<param device="3" value="BtPrj.*responseActivateDiscoverableMode.*Result=RESULT_OK" type="text"/>
-				<param name="timeout" value="9000"/>
+				<param name="timeout" value="2000"/>
 			</params>
 			<fail retry="0">skip</fail>
 		</action>	
 
-		<!-- Search and pair to target from Phone -->	
+		<!--Search and pair to target from Phone -->	
 		<action>
 			<command device="2">pair_to_target</command>
 			<params>
@@ -86,7 +86,7 @@
 			<command>answers</command>
 			<params>
 				<param device="2" value="Bond.*created.*successful" type="text"/>
-				<param name="timeout" value="9000"/>
+				<param name="timeout" value="14000"/>
 			</params>
 		</action>
 
@@ -102,8 +102,6 @@
 			<params>
 				<param device="2" value="Confirmation.*accepted" type="text"/>
 				<param device="3" value="BtPrj.*ConnDeviceCmd.*C_S" type="text"/>
-				<param device="3" value="BtPrj.*ConnDeviceCmd.*requestAcceptPasskey.*Accept=True" type="text"/>
-				<param device="3" value="BtPrj.*ConnDeviceCmd.*responsePasskeyResponse.*Result=RESULT_OK" type="text"/>
 				<param device="3" value="BtPrj.*ConnDeviceCmd.*C_F.*Res=S" type="text"/>
 				<param name="timeout" value="9000"/>
 			</params>

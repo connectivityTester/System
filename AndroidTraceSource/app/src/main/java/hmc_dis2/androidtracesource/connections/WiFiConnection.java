@@ -41,12 +41,7 @@ public class WiFiConnection implements Runnable {
 				Log.i("WiFiConnection:: ", "Received data is: " + receivedData);
 				CommandResult result = CommandExecutor.getInstance(this.activity).executeCommand(receivedData);
 				Log.i("WiFiConnection:: ", "Answer to write: " + result.getJSONString());
-				StringBuilder builder = new StringBuilder(result.getJSONString());
-//				for(int i = 0; i < 99999; ++i)
-//				{
-//					builder.append(result.getJSONString());
-//				}
-				this.output.writeBytes(builder.toString());
+				this.output.writeBytes(result.getJSONString());
 				this.output.flush();
 				Log.i("WiFiConnection:: ", "answer is written");
 				Log.i("WiFiConnection:: ", "waiting for new data....");

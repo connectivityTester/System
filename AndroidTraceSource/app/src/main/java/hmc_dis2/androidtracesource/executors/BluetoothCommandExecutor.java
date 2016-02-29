@@ -230,21 +230,22 @@ public class BluetoothCommandExecutor implements iExecutor {
             switch (confirm){
                 case "true" :
                     this.foundDevice.setPairingConfirmation(true);
-                    this.pairingRequestReceiver.setIsRequestReceived(false);
                     result = new CommandResult(CommandResultTypes.OK, "Confirmation was accepted");
                     break;
                 case "false":
                     this.foundDevice.setPairingConfirmation(false);
-                    this.pairingRequestReceiver.setIsRequestReceived(false);
                     result = new CommandResult(CommandResultTypes.OK, "Confirmation was rejected");
                     break;
                 default     :
                     this.foundDevice.setPairingConfirmation(false);
-                    this.pairingRequestReceiver.setIsRequestReceived(false);
                     result = new CommandResult(CommandResultTypes.NOK, "Unknown parameter was received (parameter: " + confirm + ")");
                     break;
             }
         }
+        else{
+            result = new CommandResult(CommandResultTypes.NOK, "Device was not found");
+        }
+        this.pairingRequestReceiver.setIsRequestReceived(false);
         this.activity.unregisterReceiver(this.pairingRequestReceiver);
         Log.i("BluetoothCommandExec::", "Function confirmConnection, finished with result::" + result.getType().toString());
         if (result.getType() != CommandResultTypes.OK) {

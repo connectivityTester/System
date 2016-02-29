@@ -58,8 +58,6 @@ public class SystemDataHandler implements ActionDataHanlder{
 	private ActionResult searhAnswers(List<Variable> testVariables, Action action) {
 		ActionResult actionResult = new ActionResult(ActionResultTypes.OK, "All patterns were found");
 		List<AnswerPattern> textPatterns = action.getAnswerPatternsByType(IncomingMessageType.TEXT);
-		List<AnswerPattern> picturePatterns = action.getAnswerPatternsByType(IncomingMessageType.PICTURE);
-		List<AnswerPattern> audioPatterns = action.getAnswerPatternsByType(IncomingMessageType.AUDIO);
 		int timeout = SystemConstants.defaultTimeout;
 		String stringTimeout = action.getParamValue("timeout");
 		if(stringTimeout != null){

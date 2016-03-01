@@ -16,8 +16,9 @@ public class SearchDeviceReceiver extends BroadcastReceiver {
 
     private Semaphore semaphore;
     private BluetoothAdapter bluetoothAdapter;
-    private String deviceToSearch = null;
+    private String deviceNameToSearch = null;
     private BluetoothCommandExecutor executor;
+    private String deviceAddressToSearch = null;
 
     public SearchDeviceReceiver(Semaphore semaphore, BluetoothCommandExecutor executor){
         this.semaphore = semaphore;
@@ -25,9 +26,21 @@ public class SearchDeviceReceiver extends BroadcastReceiver {
         this.executor = executor;
     }
 
-    public void setDeviceToSearch(String name){
-        this.deviceToSearch = name;
-        Log.i("SearchDeviceReceiver::", "setDeviceToSearch, device \"" + this.deviceToSearch + "\" will be searching" );
+    public void setDeviceToSearchByName(String name){
+        this.deviceNameToSearch = name;
+        this.deviceAddressToSearch = null;
+        Log.i("SearchDeviceReceiver::", "setDeviceToSearchByName, device \"" + this.deviceNameToSearch + "\" will be searching" );
+        try {
+            this.semaphore.acquire();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setDeviceToSearchByAddress(String address){
+        this.deviceNameToSearch = null;
+        this.deviceAddressToSearch = address;
+        Log.i("SearchDeviceReceiver::", "setDeviceToSearch, device \"" + this.deviceAddressToSearch + "\" will be searching" );
         try {
             this.semaphore.acquire();
         } catch (InterruptedException e) {
@@ -43,9 +56,14 @@ public class SearchDeviceReceiver extends BroadcastReceiver {
                 Log.i("SearchDeviceReceiver::", "searchDeviceReceiver was received action: " + BluetoothDevice.ACTION_FOUND.toString());
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 Log.i("SearchDeviceReceiver::", "searchDeviceReceiver, found device name: " + device.getName());
-                Log.i("SearchDeviceReceiver::", "searchDeviceReceiver, device to search: " + this.deviceToSearch);
+                Log.i("SearchDeviceReceiver::", "searchDeviceReceiver, device to search: " + this.deviceNameToSearch);
 
-                if(device.getName()!= null && this.deviceToSearch.contentEquals(device.getName())){
+                if(device.getName()!= null && this.deviceNameToSearch != null && this.deviceNameToSearch.contentEquals(device.getName())){
+                    this.executor.setFoundDevice(device);
+                    this.bluetoothAdapter.cancelDiscovery();
+                    this.semaphore.release();
+                }
+                else if(this.deviceAddressToSearch != null && this.deviceAddressToSearch.contentEquals(device.getAddress())){
                     this.executor.setFoundDevice(device);
                     this.bluetoothAdapter.cancelDiscovery();
                     this.semaphore.release();

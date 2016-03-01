@@ -94,7 +94,7 @@ public class CommandExecutor {
 		CommandTypes commandType = CommandTypes.UNKNOWN_COMMAND;
 		switch(type){
 //			case "MAKE_CALL"		: commandType = CommandTypes.MAKE_CALL; 			break;
-//			case "ACCEPT_CALL"		: commandType = CommandTypes.ACCEPT_CALL;		break;
+//			case "ACCEPT_CALL"		: commandType = CommandTypes.ACCEPT_CALL;		`break;
 //			case "END_CALL"			: commandType = CommandTypes.END_CALL;			break;
 //			case "MAKE_CONFERENCE"	: commandType = CommandTypes.MAKE_CONFERENCE;	break;
 //			case "PUT_ON_HOLD"		: commandType = CommandTypes.PUT_ON_HOLD;		break;
@@ -105,7 +105,8 @@ public class CommandExecutor {
 			case "bt_on"				: commandType = CommandTypes.BT_ON;				break;
 			case "bt_off"				: commandType = CommandTypes.BT_OFF;			break;
 			case "search_device"		: commandType = CommandTypes.SEARCH_DEVICE; 	break;
-			case "pair_to_target"		: commandType = CommandTypes.PAIR_TO_TARGET;	break;
+			case "pair_to_target"		: commandType = CommandTypes.PAIR_BY_NAME;		break;
+			case "pair_by_address"		: commandType = CommandTypes.PAIR_BY_ADDRESS;	break;
 			case "disconnect_device"	: commandType = CommandTypes.DISCONNECT_DEVICE; break;
 			case "unpair_device"		: commandType = CommandTypes.UNPAIR_DEVICE;		break;
 			case "unpair_all_devices"	: commandType = CommandTypes.UNPAIP_ALL_DEVICES;break;
@@ -127,7 +128,8 @@ public class CommandExecutor {
 //			case PUT_ON_HOLD		:	executor = this.phoneCommandExecutor; 		break;
 //			case REJECT_CALL		: 	executor = this.phoneCommandExecutor;		break;
 //			case SWAP_CALLS			:	executor = this.phoneCommandExecutor;		break;
-			case PAIR_TO_TARGET		: 	executor = this.bluetoothCommandExecutor; 	break;
+            case PAIR_BY_NAME		: 	executor = this.bluetoothCommandExecutor; 	break;
+            case PAIR_BY_ADDRESS    : 	executor = this.bluetoothCommandExecutor; 	break;
 			case CONFIRM_CONNECTION	:	executor = this.bluetoothCommandExecutor;	break;
 			case SET_PIN			: 	executor = this.bluetoothCommandExecutor;	break;
 			case BT_ON				: 	executor = this.bluetoothCommandExecutor; 	break;

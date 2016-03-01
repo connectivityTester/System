@@ -66,8 +66,11 @@ public class BluetoothCommandExecutor implements iExecutor {
         CommandResult result = null;
         Log.i("BluetoothCommandExec::", "Function EXECUTECOMMAND, command: " + command.toString());
         switch (command.getCommandType()) {
-            case PAIR_TO_TARGET:
-                result = this.pairToTarget(command.getParameterValue("device"));
+            case PAIR_BY_NAME:
+                result = this.pairToTargetByName(command.getParameterValue("device"));
+                break;
+            case PAIR_BY_ADDRESS:
+                result = this.pairToTargetByAddress(command.getParameterValue("device"));
                 break;
             case CONFIRM_CONNECTION:
                 result = this.confirmConnection(command.getParameterValue("confirm"));
@@ -79,7 +82,7 @@ public class BluetoothCommandExecutor implements iExecutor {
                 result = this.turnOffBluetooth();
                 break;
             case SEARCH_DEVICE:
-                result = this.searchDevice(command.getParameterValue("device"));
+                result = this.searchDeviceByName(command.getParameterValue("device"));
                 break;
             case CONNECT_TARGET:
                 result = this.connectTarget(command.getParameterValue("device"));
@@ -110,6 +113,7 @@ public class BluetoothCommandExecutor implements iExecutor {
         result.setDeviceSourceId(command.getDeviceSourceId());
         return result;
     }
+
 
 
 
@@ -189,9 +193,9 @@ public class BluetoothCommandExecutor implements iExecutor {
         return result;
     }
     //tested and work
-    private CommandResult pairToTarget(String targetName) {
+    private CommandResult pairToTargetByName(String targetName) {
         Log.i("BluetoothCommandExec::", "Function pairToTarget started");
-        CommandResult result = this.searchDevice(targetName);
+        CommandResult result = this.searchDeviceByName(targetName);
         if (result.getType() == CommandResultTypes.OK ) {
             if(this.foundDevice != null) {
                 this.pairingRequestReceiver.setIsRequestReceived(false);
@@ -212,6 +216,32 @@ public class BluetoothCommandExecutor implements iExecutor {
         }
         return result;
     }
+
+    private CommandResult pairToTargetByAddress(String targetBTAddress) {
+        Log.i("BluetoothCommandExec::", "Function pairToTarget started");
+        CommandResult result = this.searchDeviceByAddress(targetBTAddress);
+        if (result.getType() == CommandResultTypes.OK ) {
+            if(this.foundDevice != null) {
+                this.pairingRequestReceiver.setIsRequestReceived(false);
+                this.activity.registerReceiver(this.pairingRequestReceiver, new IntentFilter(BluetoothDevice.ACTION_PAIRING_REQUEST));
+                if (!foundDevice.createBond()) {
+                    Log.i("BluetoothCommandExec::", "Function pairToTarget, bond was not successful!");
+                    result = new CommandResult(CommandResultTypes.NOK, "Bond was not successful");
+                }
+                else {
+                    Log.i("BluetoothCommandExec::", "Function pairToTarget, bond was successful!!!");
+                    result = new CommandResult(CommandResultTypes.OK, "Bond was created successful");
+                }
+            }
+        }
+        Log.i("BluetoothCommandExec::", "Function pairToTarget, finished with result::" + result.getType().toString());
+        if (result.getType() != CommandResultTypes.OK) {
+            Log.i("BluetoothCommandExec::", "Function pairToTarget, Reason::" + result.getErrorReason());
+        }
+        return result;
+    }
+
+
     //tested and work
     private CommandResult confirmConnection(String confirm){
         Log.i("BluetoothCommandExec::", "Function confirmConnection was started");
@@ -281,38 +311,38 @@ public class BluetoothCommandExecutor implements iExecutor {
         return result;
     }
     //tested and work
-    private CommandResult searchDevice(String deviceName) {
+    private CommandResult searchDeviceByAddress(String address) {
         this.turnOnBluetooth();
-        Log.i("BluetoothCommandExec::", "Function searchDevice started");
-        Log.i("BluetoothCommandExec::", "Function searchDevice, device to search: " + deviceName);
+        Log.i("BluetoothCommandExec::", "Function searchDeviceByAddress started");
+        Log.i("BluetoothCommandExec::", "Function searchDeviceByAddress, device to search: " + address);
         this.activity.registerReceiver(this.searchDeviceReceiver, new IntentFilter(BluetoothDevice.ACTION_FOUND));
         this.activity.registerReceiver(this.searchDeviceReceiver, new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_STARTED));
         this.activity.registerReceiver(this.searchDeviceReceiver, new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED));
 
-        this.searchDeviceReceiver.setDeviceToSearch(deviceName);
+        this.searchDeviceReceiver.setDeviceToSearchByAddress(address);
         this.bluetoothAdapter.cancelDiscovery();
         CommandResult result = new CommandResult(CommandResultTypes.OK, null);
         if (!this.bluetoothAdapter.startDiscovery()) {
-            Log.i("BluetoothCommandExec::", "Function searchDevice, discovery was not started");
+            Log.i("BluetoothCommandExec::", "Function searchDeviceByName, discovery was not started");
             if (!this.bluetoothAdapter.isEnabled()) {
-                Log.i("BluetoothCommandExec::", "Function searchDevice, trying to turn on bluetooth...");
+                Log.i("BluetoothCommandExec::", "Function searchDeviceByName, trying to turn on bluetooth...");
                 if (this.bluetoothAdapter.enable()) {
-                    Log.i("BluetoothCommandExec::", "Function searchDevice, bluetooth was turned on");
-                    Log.i("BluetoothCommandExec::", "Function searchDevice, starting discovery again...");
+                    Log.i("BluetoothCommandExec::", "Function searchDeviceByName, bluetooth was turned on");
+                    Log.i("BluetoothCommandExec::", "Function searchDeviceByName, starting discovery again...");
                     if (this.bluetoothAdapter.startDiscovery()) {
-                        Log.i("BluetoothCommandExec::", "Function searchDevice, discovery was started successfully");
+                        Log.i("BluetoothCommandExec::", "Function searchDeviceByName, discovery was started successfully");
                     } else {
-                        Log.i("BluetoothCommandExec::", "Function searchDevice, discovery was not started successfully");
+                        Log.i("BluetoothCommandExec::", "Function searchDeviceByName, discovery was not started successfully");
                         result = new CommandResult(CommandResultTypes.NOK, "can not start discovery");
                     }
                 }
             } else {
-                Log.i("BluetoothCommandExec::", "Function searchDevice, discovery was not enable bluetooth");
+                Log.i("BluetoothCommandExec::", "Function searchDeviceByName, discovery was not enable bluetooth");
                 result = new CommandResult(CommandResultTypes.NOK, "can not enable bluetooth");
             }
         }
         if (result.getType() == CommandResultTypes.OK) {
-            Log.i("BluetoothCommandExec::", "Function searchDevice, waiting for device...");
+            Log.i("BluetoothCommandExec::", "Function searchDeviceByName, waiting for device...");
             try {
                 this.searchSemaphore.acquire();
             } catch (InterruptedException e) {
@@ -321,16 +351,71 @@ public class BluetoothCommandExecutor implements iExecutor {
         }
         this.searchSemaphore.release();
         if ( this.foundDevice == null ) {
-            Log.i("BluetoothCommandExec::", "Function searchDevice, device is not in range!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Log.i("BluetoothCommandExec::", "Function searchDeviceByName, device is not in range!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             result = new CommandResult(CommandResultTypes.NOK, "Device is not in range");
-            result = this.searchDevice(deviceName);
+            result = this.searchDeviceByAddress(address);
         }
         else{
             result = new CommandResult(CommandResultTypes.OK, "Device " + this.foundDevice.getName() + " was found");
         }
-        Log.i("BluetoothCommandExec::", "Function searchDevice, finished with result::" + result.getType().toString());
+        Log.i("BluetoothCommandExec::", "Function searchDeviceByName, finished with result::" + result.getType().toString());
         if (result.getType() != CommandResultTypes.OK) {
-            Log.i("BluetoothCommandExec::", "Function searchDevice, Reason::" + result.getErrorReason());
+            Log.i("BluetoothCommandExec::", "Function searchDeviceByName, Reason::" + result.getErrorReason());
+        }
+        this.activity.unregisterReceiver(this.searchDeviceReceiver);
+        return result;
+    }
+    //tested and work
+    private CommandResult searchDeviceByName(String deviceName) {
+        this.turnOnBluetooth();
+        Log.i("BluetoothCommandExec::", "Function searchDeviceByName started");
+        Log.i("BluetoothCommandExec::", "Function searchDeviceByName, device to search: " + deviceName);
+        this.activity.registerReceiver(this.searchDeviceReceiver, new IntentFilter(BluetoothDevice.ACTION_FOUND));
+        this.activity.registerReceiver(this.searchDeviceReceiver, new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_STARTED));
+        this.activity.registerReceiver(this.searchDeviceReceiver, new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED));
+
+        this.searchDeviceReceiver.setDeviceToSearchByName(deviceName);
+        this.bluetoothAdapter.cancelDiscovery();
+        CommandResult result = new CommandResult(CommandResultTypes.OK, null);
+        if (!this.bluetoothAdapter.startDiscovery()) {
+            Log.i("BluetoothCommandExec::", "Function searchDeviceByName, discovery was not started");
+            if (!this.bluetoothAdapter.isEnabled()) {
+                Log.i("BluetoothCommandExec::", "Function searchDeviceByName, trying to turn on bluetooth...");
+                if (this.bluetoothAdapter.enable()) {
+                    Log.i("BluetoothCommandExec::", "Function searchDeviceByName, bluetooth was turned on");
+                    Log.i("BluetoothCommandExec::", "Function searchDeviceByName, starting discovery again...");
+                    if (this.bluetoothAdapter.startDiscovery()) {
+                        Log.i("BluetoothCommandExec::", "Function searchDeviceByName, discovery was started successfully");
+                    } else {
+                        Log.i("BluetoothCommandExec::", "Function searchDeviceByName, discovery was not started successfully");
+                        result = new CommandResult(CommandResultTypes.NOK, "can not start discovery");
+                    }
+                }
+            } else {
+                Log.i("BluetoothCommandExec::", "Function searchDeviceByName, discovery was not enable bluetooth");
+                result = new CommandResult(CommandResultTypes.NOK, "can not enable bluetooth");
+            }
+        }
+        if (result.getType() == CommandResultTypes.OK) {
+            Log.i("BluetoothCommandExec::", "Function searchDeviceByName, waiting for device...");
+            try {
+                this.searchSemaphore.acquire();
+            } catch (InterruptedException e) {
+                Log.i("BluetoothCommandExec: ", "Problems with searchSemaphore: " + e.getLocalizedMessage());
+            }
+        }
+        this.searchSemaphore.release();
+        if ( this.foundDevice == null ) {
+            Log.i("BluetoothCommandExec::", "Function searchDeviceByName, device is not in range!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            result = new CommandResult(CommandResultTypes.NOK, "Device is not in range");
+            result = this.searchDeviceByName(deviceName);
+        }
+        else{
+            result = new CommandResult(CommandResultTypes.OK, "Device " + this.foundDevice.getName() + " was found");
+        }
+        Log.i("BluetoothCommandExec::", "Function searchDeviceByName, finished with result::" + result.getType().toString());
+        if (result.getType() != CommandResultTypes.OK) {
+            Log.i("BluetoothCommandExec::", "Function searchDeviceByName, Reason::" + result.getErrorReason());
         }
         this.activity.unregisterReceiver(this.searchDeviceReceiver);
         return result;

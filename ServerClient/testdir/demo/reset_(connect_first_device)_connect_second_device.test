@@ -4,6 +4,7 @@
 		<variable name="BT_DEVICE_NAME" value="equus95(1234)"/>
 		<variable name="BT_DEVICE_ADDRESS1" value="18:3A:2D:4F:DB:EE"/> <!-- GALAXY NOTE 4 -->
 		<variable name="BT_DEVICE_ADDRESS2" value="68:3E:34:47:5D:C6"/> <!-- MEIZU M2 NOTE -->
+		<variable name="TARGET_BT_ADDRESS" value="A8:54:B2:D9:98:3B"/> <!-- Target bluetooth mac address -->
 	</variables>
 	<actions>
 		<!-- Prepare HU and Phone for test-->
@@ -79,9 +80,9 @@
 
 		<!--Search and pair to target from Phone -->	
 		<action>
-			<command device="2">pair_to_target</command>
+			<command device="2">pair_by_address</command>
 			<params>
-				<param device="2" name="device" value="~BT_DEVICE_NAME~" type="text"/>
+				<param device="2" name="device" value="~TARGET_BT_ADDRESS~" type="text"/>
 			</params>
 		</action>
 		<action>
@@ -152,9 +153,9 @@
 
 		<!--Search and pair to target from Phone2 -->	
 		<action>
-			<command device="4">pair_to_target</command>
+			<command device="4">pair_by_address</command>
 			<params>
-				<param device="4" name="device" value="~BT_DEVICE_NAME~" type="text"/>
+				<param device="4" name="device" value="~TARGET_BT_ADDRESS~" type="text"/>
 			</params>
 		</action>
 		<action>

@@ -10,7 +10,8 @@ public enum CommandTypes {
 	SWAP_CALLS,
 	MAKE_CONFERENCE,
 	//bluetooth
-	PAIR_TO_TARGET,// target was not pair before
+	PAIR_BY_NAME,// connect to target by name(which not pair before)
+	PAIR_BY_ADDRESS,// connect to target by bluetooth mac address(which not pair before)
 	CONFIRM_CONNECTION,
 	SET_PIN,
 	BT_ON,

@@ -40,11 +40,11 @@ public class Command {
 	public String getParameterValue(String parameterName){
 		Log.i("Command::", "Function getParameterValue, name: " + parameterName + " ---- " + this.parameters.size());
 		for(Parameter parameter : this.parameters){
-			Log.i("Command::", "Function getParameterValue, parameter: " + parameter);
-			Log.i("Command::", "Function getParameterValue, parameter.getName(): " + parameter.getName());
-			Log.i("Command::", "Function getParameterValue, parameterName: " + parameterName);
+//			Log.i("Command::", "Function getParameterValue, parameter: " + parameter);
+//			Log.i("Command::", "Function getParameterValue, parameter.getName(): " + parameter.getName());
+//			Log.i("Command::", "Function getParameterValue, parameterName: " + parameterName);
 			if(parameter.getName().equals(parameterName)){
-				Log.i("Command::", "Function getParameterValue, parameter was found");
+//				Log.i("Command::", "Function getParameterValue, parameter was found");
 				return parameter.getValue();
 			}
 		}

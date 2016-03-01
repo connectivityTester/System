@@ -492,9 +492,10 @@ public class BluetoothCommandExecutor implements iExecutor {
                                 Log.i("BluetoothCommandExec::", "Function activateProfile, HFP profile is already active!");
                             } else {
                                 if (!this.bluetoothProfileManager.activateProfile(profileType, activeDeviceConnection)) {
-                                    Log.i("BluetoothCommandExec::", "Function activateProfile, HFP profile was not activated!!!");
+                                    Log.i("BluetoothCommandExec::", "Function activateProfile, HFP profile was not activated");
                                     result = new CommandResult(CommandResultTypes.NOK, "HFP profile was not activated");
                                 } else {
+                                    result = new CommandResult(CommandResultTypes.NOK, "HFP profile was activated");
                                     Log.i("BluetoothCommandExec::", "Function activateProfile, HFP profile was activated successfully!");
                                 }
                             }
@@ -508,13 +509,14 @@ public class BluetoothCommandExecutor implements iExecutor {
                             Log.i("BluetoothCommandExec::", "Function activateProfile, active connection with: " + activeDeviceConnection.getName());
                             if (this.bluetoothProfileManager.isProfileActive(profileType, activeDeviceConnection)) {
                                 result = new CommandResult(CommandResultTypes.NOK, "A2DP Profile is already active");
-                                Log.i("BluetoothCommandExec::", "Function activateProfile, A2DP profile is already active!");
+                                Log.i("BluetoothCommandExec::", "Function activateProfile, A2DP profile is already active");
                             } else {
                                 if (!this.bluetoothProfileManager.activateProfile(profileType, activeDeviceConnection)) {
-                                    Log.i("BluetoothCommandExec::", "Function activateProfile, A2DP profile was not activated!!!");
+                                    Log.i("BluetoothCommandExec::", "Function activateProfile, A2DP profile was not activated");
                                     result = new CommandResult(CommandResultTypes.NOK, "A2DP profile was not activated");
                                 } else {
-                                    Log.i("BluetoothCommandExec::", "Function activateProfile, A2DP profile was activated successfully!");
+                                    result = new CommandResult(CommandResultTypes.OK, "A2DP profile was activated");
+                                    Log.i("BluetoothCommandExec::", "Function activateProfile, A2DP profile was activated");
                                 }
                             }
                         } else {
@@ -553,8 +555,8 @@ public class BluetoothCommandExecutor implements iExecutor {
                                 result = new CommandResult(CommandResultTypes.NOK, "HFP profile has already been deactivated");
                             } else {
                                 if (this.bluetoothProfileManager.deactivateProfile(profileType, activeDeviceConnection)) {
-                                    result = new CommandResult(CommandResultTypes.OK, null);
-                                    Log.i("BluetoothCommandExec::", "Function deactiveProfile, HFP profile was activated!!");
+                                    result = new CommandResult(CommandResultTypes.OK, "HFP profile was deactivated");
+                                    Log.i("BluetoothCommandExec::", "Function deactiveProfile, HFP profile was deactivated.");
                                 } else {
                                     result = new CommandResult(CommandResultTypes.NOK, "HFP profile was not activated");
                                     Log.i("BluetoothCommandExec::", "Function deactiveProfile, HFP profile was not activated!!");
@@ -572,11 +574,11 @@ public class BluetoothCommandExecutor implements iExecutor {
                                 result = new CommandResult(CommandResultTypes.NOK, "A2DP profile has already been deactivated");
                             } else {
                                 if (this.bluetoothProfileManager.deactivateProfile(profileType, activeDeviceConnection)) {
-                                    result = new CommandResult(CommandResultTypes.OK, null);
-                                    Log.i("BluetoothCommandExec::", "Function deactiveProfile, A2DP profile was activated!!");
+                                    result = new CommandResult(CommandResultTypes.OK, "A2DP profile was deactivated");
+                                    Log.i("BluetoothCommandExec::", "Function deactiveProfile, A2DP profile was deactivated");
                                 } else {
-                                    result = new CommandResult(CommandResultTypes.NOK, "A2DP profile was not activated");
-                                    Log.i("BluetoothCommandExec::", "Function deactiveProfile, A2DP profile was not activated!!");
+                                    result = new CommandResult(CommandResultTypes.NOK, "A2DP profile was not deactivated");
+                                    Log.i("BluetoothCommandExec::", "Function deactiveProfile, A2DP profile was not deactivated");
                                 }
                             }
                         } else {
@@ -591,7 +593,7 @@ public class BluetoothCommandExecutor implements iExecutor {
             }
         } else {
             result = new CommandResult(CommandResultTypes.NOK, "Phone does not have active connection");
-            Log.i("BluetoothCommandExec::", "Function deactiveProfile, phone does not have active connection!!");
+            Log.i("BluetoothCommandExec::", "Function deactiveProfile, phone does not have active connection");
         }
         Log.i("BluetoothCommandExec::", "Function deactiveProfile, finished with result::" + result.getType().toString());
         if (result.getType() != CommandResultTypes.OK) {

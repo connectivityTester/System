@@ -38,26 +38,6 @@
 			</params>
 		</action>
 
-		<!-- Set local device name on HU -->
-		<action>
-			<command device="3">execute_callback</command>
-			<type>impact</type>
-			<params>
-				<param name="process" value="ScpCtrl_HU"/>
-				<param name="callback_name" value="DIS2_SCP_BluetoothProj_SetLocalBluetoothName"/>
-				<param name="callback_value" value="~BT_DEVICE_NAME~"/>
-			</params>
-		</action>
-		<action>
-			<command>answers</command>
-			<params>
-				<param device="3" value="BtPrj.*requestSetLocalBluetoothName" type="text"/>
-				<param device="3" value="BtPrj.*responseSetLocalBluetoothName" type="text"/>
-				<param name="timeout" value="4000"/>
-			</params>
-			<fail retry="0">skip</fail>
-		</action>
-
 		<!-- Activate discoverable mode on HU -->
 		<action>
 			<command device="3">execute_callback</command>
@@ -233,6 +213,75 @@
 				<param name="timeout" value="8000"/>
 			</params>
 			<fail retry="1">skip</fail>
+		</action>
+
+		<!-- Deactivate HFP profile on second phone -->
+		<action>
+			<command device="4">deactivate_profile</command>
+			<params>
+				<param device="4" name="profile" value="HFP" type="text"/>
+			</params>
+		</action>
+		<action>
+			<command>answers</command>
+			<params>
+				<param device="3" value="BtPrj.*hasServicesConnectionStatusChanged.*ST_TELEPHONY_HFP.*S_CONNECTED.*CS_NOT_CONNECTED" type="text"/>
+				<param device="3" value="BtPrj.*informationDeviceStatusChanged.*ST_TELEPHONY_HFP.*CS_NOT_CONNECTED" type="text"/>
+				<param name="timeout" value="6000"/>
+			</params>
+		</action>
+
+		<!-- Activate HFP profile on second phone -->
+		<action>
+			<command device="4">activate_profile</command>
+			<params>
+				<param device="4" name="profile" value="HFP" type="text"/>
+			</params>
+		</action>
+		<action>
+			<command>answers</command>
+			<params>
+				<param device="3" value="BtPrjC.*informationIncomingServiceRequest.*BtServiceType=ST_TELEPHONY_HFP" type="text"/>
+				<param device="3" value="BtPrjC.*ConnServiceCmd.*C_S" type="text"/>
+				<param device="3" value="BtPrjC.*ConnServiceCmd.*requestConnectionOfService.*ServiceType=ST_TELEPHONY_HFP" type="text"/>
+				<param device="3" value="BtPrjC.*hasServicesConnectionStatusChanged.*Service ST_TELEPHONY_HFP.*CS_NOT_CONNECTED.*CS_CONNECTED" type="text"/>
+				<param device="3" value="BtPrjC.*informationDeviceStatusChanged.*btServiceType=ST_TELEPHONY_HFP.*btServiceActive=CS_CONNECTED" type="text"/>
+				<param device="3" value="BtPrjC.*ConnServiceCmd.*responseConnectService.*BtServiceType=ST_TELEPHONY_HFP.*Result=RESULT_OK" type="text"/>
+				<param device="3" value="BtPrjC.*ConnServiceCmd.*C_F.*Res=S" type="text"/>
+				<param name="timeout" value="6000"/>
+			</params>
+		</action>
+
+		<!-- Deactivate A2DP profile on second phone -->
+		<action>
+			<command device="4">deactivate_profile</command>
+			<params>
+				<param device="4" name="profile" value="A2DP" type="text"/>
+			</params>
+		</action>
+		<action>
+			<command>answers</command>
+			<params>
+				<param device="3" value="BtPrjC.*informationDeviceStatusChanged.*btServiceType=ST_AVRCP_TARGET.*btServiceActive=CS_NOT_CONNECTED" type="text"/>
+				<param device="3" value="BtPrjC.*informationDeviceStatusChanged.*btServiceType=ST_AUDIO_SINK.*btServiceActive=CS_NOT_CONNECTED" type="text"/>
+				<param name="timeout" value="6000"/>
+			</params>
+		</action>
+
+
+		<!-- Activate A2DP profile on second phone -->
+		<action>
+			<command device="4">activate_profile</command>
+			<params>
+				<param device="4" name="profile" value="A2DP" type="text"/>
+			</params>
+		</action>
+		<action>
+			<command>answers</command>
+			<params>
+				<param device="4" value="A2DP.*was.*activated" type="text"/>
+				<param name="timeout" value="6000"/>
+			</params>
 		</action>
 
 	</actions>

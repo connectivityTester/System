@@ -16,7 +16,7 @@
 			<command>answers</command>
 			<params>
 				<param device="2" value="Devices.*were.*unpaired" type="text"/>
-				<param name="timeout" value="1000"/>
+				<param name="timeout" value="2000"/>
 			</params>
 		</action>
 
@@ -69,7 +69,8 @@
 			<command>answers</command>
 			<params>
 				<param device="2" value="Bond.*created.*successful" type="text"/>
-				<param name="timeout" value="14000"/>
+				<param device="3" value="BtPrjC.*IfImpl.*informationPasskeyRequired" type="text"/>
+				<param name="timeout" value="30000"/>
 			</params>
 		</action>
 
@@ -93,24 +94,12 @@
 		<action>
 			<command>sleep</command>
 			<params>
-				<param name="timeout" value="3000"/>
+				<param name="timeout" value="10000"/>
 			</params>
 		</action>
 
 
 		<!-- Connect second device -->
-		<!-- Delete all paired device on phone2 side -->
-		<action>
-			<command device="4">unpair_all_devices</command>
-		</action>
-		<action>
-			<command>answers</command>
-			<params>
-				<param device="4" value="Devices.*were.*unpaired" type="text"/>
-				<param name="timeout" value="1000"/>
-			</params>
-		</action>
-		
 		<!-- Activate discoverable mode on HU -->
 		<action>
 			<command device="3">execute_callback</command>
@@ -131,7 +120,21 @@
 			<fail retry="1">skip</fail>
 		</action>	
 
-		<!--Search and pair to target from Phone2 -->	
+
+		<!-- Delete all paired device on phone2 side -->
+		<action>
+			<command device="4">unpair_all_devices</command>
+		</action>
+		<action>
+			<command>answers</command>
+			<params>
+				<param device="4" value="Devices.*were.*unpaired" type="text"/>
+				<param name="timeout" value="1000"/>
+			</params>
+		</action>
+		
+
+		<!-- Search and pair to target from Phone2 -->	
 		<action>
 			<command device="4">pair_by_address</command>
 			<params>
@@ -142,7 +145,8 @@
 			<command>answers</command>
 			<params>
 				<param device="4" value="Bond.*created.*successful" type="text"/>
-				<param name="timeout" value="14000"/>
+				<param device="3" value="BtPrjC.*IfImpl.*informationPasskeyRequired" type="text"/>
+				<param name="timeout" value="30000"/>
 			</params>
 		</action>
 
@@ -163,6 +167,13 @@
 			</params>
 		</action>
 
+		<action>
+			<command>sleep</command>
+			<params>
+				<param name="timeout" value="10000"/>
+			</params>
+		</action>
+
 		<!-- Connect to first device -->
 		<action>
 			<command device="3">execute_callback</command>
@@ -180,7 +191,7 @@
 				<param device="3" value="BtPrjC.*ConnDeviceCmd.*C_S" type="text"/>
 				<param device="3" value="BtPrjC.*ConnDeviceCmd.*C_F.*Res=S" type="text"/>
 				<param device="3" value="BtPrjC.*responseConnectDevice.*Result=RESULT_OK.*ErrorReason=ERROR_NONE" type="text"/>
-				<param name="timeout" value="8000"/>
+				<param name="timeout" value="10000"/>
 			</params>
 			<fail retry="1">skip</fail>
 		</action>
@@ -188,7 +199,7 @@
 		<action>
 			<command>sleep</command>
 			<params>
-				<param name="timeout" value="3000"/>
+				<param name="timeout" value="10000"/>
 			</params>
 		</action>
 
@@ -210,9 +221,16 @@
 				<param device="3" value="BtPrjC.*ConnDeviceCmd.*C_S" type="text"/>
 				<param device="3" value="BtPrjC.*ConnDeviceCmd.*C_F.*Res=S" type="text"/>
 				<param device="3" value="BtPrjC.*responseConnectDevice.*Result=RESULT_OK.*ErrorReason=ERROR_NONE" type="text"/>
-				<param name="timeout" value="8000"/>
+				<param name="timeout" value="10000"/>
 			</params>
 			<fail retry="1">skip</fail>
+		</action>
+
+		<action>
+			<command>sleep</command>
+			<params>
+				<param name="timeout" value="10000"/>
+			</params>
 		</action>
 
 		<!-- Deactivate HFP profile on second phone -->
@@ -228,6 +246,13 @@
 				<param device="3" value="BtPrj.*hasServicesConnectionStatusChanged.*ST_TELEPHONY_HFP.*S_CONNECTED.*CS_NOT_CONNECTED" type="text"/>
 				<param device="3" value="BtPrj.*informationDeviceStatusChanged.*ST_TELEPHONY_HFP.*CS_NOT_CONNECTED" type="text"/>
 				<param name="timeout" value="6000"/>
+			</params>
+		</action>
+
+		<action>
+			<command>sleep</command>
+			<params>
+				<param name="timeout" value="10000"/>
 			</params>
 		</action>
 
@@ -250,6 +275,14 @@
 				<param device="3" value="BtPrjC.*ConnServiceCmd.*C_F.*Res=S" type="text"/>
 				<param name="timeout" value="6000"/>
 			</params>
+			<fail retry="1">stop</fail>
+		</action>
+
+		<action>
+			<command>sleep</command>
+			<params>
+				<param name="timeout" value="10000"/>
+			</params>
 		</action>
 
 		<!-- Deactivate A2DP profile on second phone -->
@@ -268,6 +301,13 @@
 			</params>
 		</action>
 
+		<action>
+			<command>sleep</command>
+			<params>
+				<param name="timeout" value="10000"/>
+			</params>
+		</action>
+
 
 		<!-- Activate A2DP profile on second phone -->
 		<action>
@@ -282,6 +322,7 @@
 				<param device="4" value="A2DP.*was.*activated" type="text"/>
 				<param name="timeout" value="6000"/>
 			</params>
+			<fail retry="1">stop</fail>
 		</action>
 
 	</actions>

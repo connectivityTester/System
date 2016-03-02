@@ -2,14 +2,18 @@ package test;
 
 import reports.ExcelReport;
 import reports.Report;
+
 import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import javax.swing.JOptionPane;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
+
+import buffers.BufferManager;
 import common.SystemConfig;
 import common.ConfigXMLReader;
 import types.LogLevels;
@@ -81,7 +85,10 @@ public class TestExecutor implements Runnable{
 	
 	@Override
 	public void run() {
-		this.executeTests();		
+		BufferManager.getInstance().setIsAllowAddition(true);
+		this.executeTests();	
+		BufferManager.getInstance().setIsAllowAddition(false);
+		BufferManager.getInstance().clearBuffers();
 	}
 
 	private void executeTests() {

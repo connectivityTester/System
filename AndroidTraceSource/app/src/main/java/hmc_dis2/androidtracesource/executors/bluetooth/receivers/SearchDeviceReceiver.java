@@ -9,7 +9,7 @@ import android.util.Log;
 
 import java.util.concurrent.Semaphore;
 
-import hmc_dis2.androidtracesource.executors.bluetooth.BluetoothCommandExecutor;
+import hmc_dis2.androidtracesource.executors.BluetoothCommandExecutor;
 
 
 public class SearchDeviceReceiver extends BroadcastReceiver {

@@ -75,16 +75,16 @@ public class SystemDataHandler implements ActionDataHanlder{
 			Logger.logToUser("Default timeout (" + SystemConstants.defaultTimeout +
 					" miliseconds will be used)", this, MessageLogTypes.HEADER);
 		}
-		try {
-			Logger.logToUser("Start waiting... (" + timeout/1000 + " seconds)", systemDataHandler, MessageLogTypes.INFO);
-			Thread.sleep(timeout);
-			Logger.logToUser("Finish waiting...", systemDataHandler, MessageLogTypes.INFO);
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
-		Logger.logToUser("Searching for answers....", systemDataHandler, MessageLogTypes.INFO);
+//		try {
+//			Logger.logToUser("Start waiting... (" + timeout/1000 + " seconds)", systemDataHandler, MessageLogTypes.INFO);
+//			Thread.sleep(timeout);
+//			Logger.logToUser("Finish waiting...", systemDataHandler, MessageLogTypes.INFO);
+//		} catch (InterruptedException e1) {
+//			e1.printStackTrace();
+//		}
+		Logger.logToUser("Searching for answers....(" + timeout/1000 + " seconds)", systemDataHandler, MessageLogTypes.INFO);
 		if(textPatterns != null){
-			actionResult = this.analizeAnswers(textPatterns, IncomingMessageType.TEXT);
+			actionResult = this.analizeAnswers(textPatterns, IncomingMessageType.TEXT, timeout);
 		}
 		if(actionResult.getResultType() == ActionResultTypes.OK){
 			BufferManager.getInstance().clearBuffers();
@@ -475,10 +475,10 @@ public class SystemDataHandler implements ActionDataHanlder{
 		return result;
 	}
 
-	private ActionResult analizeAnswers(List<AnswerPattern> answerPatterns, IncomingMessageType type){
+	private ActionResult analizeAnswers(List<AnswerPattern> answerPatterns, IncomingMessageType type, int timeout){
 		ActionResult actionResult = new ActionResult(ActionResultTypes.OK, "All pattern were found");
 		Map<AnswerPattern, Object> textAnswers = 
-				BufferManager.getInstance().findAnswersInBuffer(answerPatterns, type);
+				BufferManager.getInstance().findAnswersInBuffer(answerPatterns, type, timeout);
 		for(Entry<AnswerPattern, Object> entry : textAnswers.entrySet()){
 			if(entry.getValue() == null){
 				Logger.logToUser("Answer message for pattern \"" + 
@@ -495,6 +495,8 @@ public class SystemDataHandler implements ActionDataHanlder{
 						"\" from device source \"" + entry.getKey().getDeviceSourceId() +
 						"\" was found: " + entry.getValue(), this, MessageLogTypes.INFO);
 			}
+			Logger.logToUser("Spent time: " + entry.getKey().getSpentTime()
+					+ " " + entry.getKey().getTimeUnit(), this, MessageLogTypes.INFO);
 		}
 		return actionResult;
 	}

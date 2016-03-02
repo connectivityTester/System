@@ -12,7 +12,6 @@ import java.util.List;
 import hmc_dis2.androidtracesource.commands.Command;
 import hmc_dis2.androidtracesource.commands.CommandResult;
 import hmc_dis2.androidtracesource.commands.Parameter;
-import hmc_dis2.androidtracesource.executors.bluetooth.BluetoothCommandExecutor;
 import hmc_dis2.androidtracesource.types.CommandResultTypes;
 import hmc_dis2.androidtracesource.types.CommandTypes;
 

@@ -1,7 +1,11 @@
 package buffers;
 
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.TimeUnit;
+
 import types.IncomingMessageType;
 import types.LogLevels;
 import utils.Logger;
@@ -26,11 +30,15 @@ class Buffer{
 	
 	void clearBuffer(){	this.queue.clear();	}
 
-	public Object findPattern(AnswerPattern pattern, IncomingMessageType type) {
+	public Object findPattern(AnswerPattern pattern, IncomingMessageType type, int timeout) {
 		MessageMatcher messageMatcher = null;
 		switch (type) {
 			case TEXT:	messageMatcher = new TextMessageMatcherTask(pattern.getDeviceSourceId(), this.queue);	break;
 		}
-		return messageMatcher.match(pattern.getPattern());
+		LocalTime startTime = LocalTime.now();
+		Object foundAnswer = messageMatcher.match(pattern.getPattern(), timeout);
+		pattern.setTimeUnit(TimeUnit.MILLISECONDS);
+		pattern.setSpentTime(Duration.between(startTime, LocalTime.now()).getNano()/1_000_000);
+		return foundAnswer;
 	}
 }

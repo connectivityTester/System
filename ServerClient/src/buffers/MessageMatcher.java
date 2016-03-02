@@ -11,5 +11,5 @@ public abstract class MessageMatcher {
 		this.deviceSourceId = deviceSourceDeviceId;
 	}
 
-	public abstract Object match(String messagePattern);	
+	public abstract Object match(String messagePattern, int timeout);	
 }

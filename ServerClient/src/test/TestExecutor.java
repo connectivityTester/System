@@ -83,6 +83,7 @@ public class TestExecutor implements Runnable{
 		return tests;
 	}
 	
+	
 	@Override
 	public void run() {
 		BufferManager.getInstance().setIsAllowAddition(true);

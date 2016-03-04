@@ -23,13 +23,19 @@
 		-->
 		<device_source>
 			<name>Maizu M2 Note</name>
-			<id autostart="false">4</id>
+			<id autostart="false">22</id>
 			<!-- Parameters below are optional -->
 			<address>192.168.0.101</address>
 		</device_source>
 		<device_source>
-			<name>Galaxy Note 4</name>
+			<name>Sony Z2</name>
 			<id autostart="false">2</id>
+			<!-- Parameters below are optional -->
+			<address>192.168.0.100</address>
+		</device_source>
+		<device_source>
+			<name>Galaxy Note 4</name>
+			<id autostart="false">4</id>
 			<!-- Parameters below are optional -->
 			<address>192.168.0.103</address>
 		</device_source>

@@ -63,8 +63,8 @@ public class MainActivity extends AppCompatActivity {
                             new ConnectionConfig(
                                     serverAddressField.getText().toString(),
                                     Integer.parseInt(serverPortField.getText().toString()));
-                    Writer writer = new Writer();
-                    writer.writeConnectionConfig(newConnectionConfig);
+//                    Writer writer = new Writer();
+//                    writer.writeConnectionConfig(newConnectionConfig);
                     boolean result = wiFiConnectionManager.startServerConnection(newConnectionConfig);
                     Log.i("MainActivity::", "Function onCreate, server connection was started with result: " + result);
                     updateConnectionStatus(result);

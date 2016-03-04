@@ -9,7 +9,6 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothProfile;
 import android.bluetooth.BluetoothSocket;
-import android.os.SystemClock;
 import android.util.Log;
 import android.bluetooth.BluetoothDevice;
 import android.content.IntentFilter;
@@ -113,9 +112,6 @@ public class BluetoothCommandExecutor implements iExecutor {
         return result;
     }
 
-
-
-
     //tested and work,
     // but can throw exception like "Can not connect socket to target!!!",
     // for current impl, it is correct and connection is made.
@@ -193,55 +189,56 @@ public class BluetoothCommandExecutor implements iExecutor {
     }
     //tested and work
     private CommandResult pairToTargetByName(String targetName) {
-        Log.i("BluetoothCommandExec::", "Function pairToTarget started");
+        Log.i("BluetoothCommandExec::", "Function pairToTargetByName started");
         CommandResult result = this.searchDeviceByName(targetName);
         if (result.getType() == CommandResultTypes.OK ) {
             if(this.foundDevice != null) {
                 this.pairingRequestReceiver.setIsRequestReceived(false);
                 this.activity.registerReceiver(this.pairingRequestReceiver, new IntentFilter(BluetoothDevice.ACTION_PAIRING_REQUEST));
                 if (!foundDevice.createBond()) {
-                    Log.i("BluetoothCommandExec::", "Function pairToTarget, bond was not successful!");
+                    Log.i("BluetoothCommandExec::", "Function pairToTargetByName, bond was not successful!");
                     result = new CommandResult(CommandResultTypes.NOK, "Bond was not successful");
                 }
                 else {
-                    Log.i("BluetoothCommandExec::", "Function pairToTarget, bond was successful!!!");
+                    Log.i("BluetoothCommandExec::", "Function pairToTargetByName, bond was successful!!!");
                     result = new CommandResult(CommandResultTypes.OK, "Bond was created successful");
                 }
             }
         }
-        Log.i("BluetoothCommandExec::", "Function pairToTarget, finished with result::" + result.getType().toString());
+        Log.i("BluetoothCommandExec::", "Function pairToTargetByName, finished with result::" + result.getType().toString());
         if (result.getType() != CommandResultTypes.OK) {
-            Log.i("BluetoothCommandExec::", "Function pairToTarget, Reason::" + result.getErrorReason());
+            Log.i("BluetoothCommandExec::", "Function pairToTargetByName, Reason::" + result.getErrorReason());
         }
         return result;
     }
 
     private CommandResult pairToTargetByAddress(String targetBTAddress) {
-        Log.i("BluetoothCommandExec::", "Function pairToTarget started");
+        Log.i("BluetoothCommandExec::", "Function pairToTargetByAddress started");
         CommandResult result = this.searchDeviceByAddress(targetBTAddress, true);
-        Log.i("BluetoothCommandExec::", "Function pairToTarget, searchDeviceByAddress was finished with result::" + result.getType().toString());
+        Log.i("BluetoothCommandExec::", "Function pairToTargetByAddress, searchDeviceByAddress was finished with result::" + result.getType().toString());
         if (result.getType() == CommandResultTypes.OK ) {
             if(this.foundDevice != null) {
                 this.pairingRequestReceiver.setIsRequestReceived(false);
                 this.activity.registerReceiver(this.pairingRequestReceiver, new IntentFilter(BluetoothDevice.ACTION_PAIRING_REQUEST));
                 if (!foundDevice.createBond()) {
-                    Log.i("BluetoothCommandExec::", "Function pairToTarget, bond was not successful!");
+                    Log.i("BluetoothCommandExec::", "Function pairToTargetByAddress, bond was not successful!");
                     result = new CommandResult(CommandResultTypes.NOK, "Bond was not successful");
                 }
                 else {
-                    Log.i("BluetoothCommandExec::", "Function pairToTarget, bond was successful!!!");
+                    Log.i("BluetoothCommandExec::", "Function pairToTargetByAddress, bond was successful!!!");
                     result = new CommandResult(CommandResultTypes.OK, "Bond was created successful");
                 }
             }
+            else{
+                Log.i("BluetoothCommandExec::", "Function pairToTargetByAddress,Device is NULL!!!!!!!!");
+            }
         }
-        Log.i("BluetoothCommandExec::", "Function pairToTarget, finished with result::" + result.getType().toString());
+        Log.i("BluetoothCommandExec::", "Function pairToTargetByAddress, finished with result::" + result.getType().toString());
         if (result.getType() != CommandResultTypes.OK) {
-            Log.i("BluetoothCommandExec::", "Function pairToTarget, Reason::" + result.getErrorReason());
+            Log.i("BluetoothCommandExec::", "Function pairToTargetByAddress, Reason::" + result.getErrorReason());
         }
         return result;
     }
-
-
     //tested and work
     private CommandResult confirmConnection(String confirm){
         Log.i("BluetoothCommandExec::", "Function confirmConnection was started");
@@ -625,7 +622,11 @@ public class BluetoothCommandExecutor implements iExecutor {
     }
 
     public void setFoundDevice(BluetoothDevice device){
+        Log.i("BluetoothCommandExec::", "Function setFoundDevice, funaction was called");
         this.foundDevice = device;
+        if(foundDevice != null) {
+            Log.i("BluetoothCommandExec::", "Function setFoundDevice, " + foundDevice.getAddress());
+        }
     }
 
     private BluetoothDevice getActiveConnection(){

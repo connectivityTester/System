@@ -8,18 +8,6 @@
 	</variables>
 	<actions>
 		<!-- Prepare HU and Phone for test-->
-		<!-- Delete all paired device on phone side -->
-		<action>
-			<command device="2">unpair_all_devices</command>
-		</action>
-		<action>
-			<command>answers</command>
-			<params>
-				<param device="2" value="Devices.*were.*unpaired" type="text"/>
-				<param name="timeout" value="2000"/>
-			</params>
-		</action>
-
 		<!-- Delete all paired device on HU side -->
 		<action>
 			<command device="3">execute_callback</command>
@@ -37,6 +25,20 @@
 				<param name="timeout" value="5000"/>
 			</params>
 		</action>
+
+
+		<!-- Delete all paired device on phone side -->
+		<action>
+			<command device="2">unpair_all_devices</command>
+		</action>
+		<action>
+			<command>answers</command>
+			<params>
+				<param device="2" value="Devices.*were.*unpaired" type="text"/>
+				<param name="timeout" value="2000"/>
+			</params>
+		</action>
+
 
 		<!-- Activate discoverable mode on HU -->
 		<action>
@@ -94,7 +96,7 @@
 		<action>
 			<command>sleep</command>
 			<params>
-				<param name="timeout" value="10000"/>
+				<param name="timeout" value="15000"/>
 			</params>
 		</action>
 
@@ -170,7 +172,7 @@
 		<action>
 			<command>sleep</command>
 			<params>
-				<param name="timeout" value="10000"/>
+				<param name="timeout" value="15000"/>
 			</params>
 		</action>
 
@@ -199,37 +201,7 @@
 		<action>
 			<command>sleep</command>
 			<params>
-				<param name="timeout" value="10000"/>
-			</params>
-		</action>
-
-
-		<!-- Connect to second device -->
-		<action>
-			<command device="3">execute_callback</command>
-			<type>impact</type>
-			<params>
-				<param name="process" value="ScpCtrl_HU"/>
-				<param name="callback_name" value="DIS2_SCP_BluetoothProj_ConnectDevice"/>
-				<param name="callback_value" value="~BT_DEVICE_ADDRESS2~"/>
-			</params>
-		</action>
-		<action>
-			<command>answers</command>
-			<params>
-				<param device="3" value="BtPrjC.*requestConnectDevice" type="text"/>
-				<param device="3" value="BtPrjC.*ConnDeviceCmd.*C_S" type="text"/>
-				<param device="3" value="BtPrjC.*ConnDeviceCmd.*C_F.*Res=S" type="text"/>
-				<param device="3" value="BtPrjC.*responseConnectDevice.*Result=RESULT_OK.*ErrorReason=ERROR_NONE" type="text"/>
-				<param name="timeout" value="10000"/>
-			</params>
-			<fail retry="1">skip</fail>
-		</action>
-
-		<action>
-			<command>sleep</command>
-			<params>
-				<param name="timeout" value="10000"/>
+				<param name="timeout" value="15000"/>
 			</params>
 		</action>
 
@@ -247,6 +219,7 @@
 				<param device="3" value="BtPrj.*informationDeviceStatusChanged.*ST_TELEPHONY_HFP.*CS_NOT_CONNECTED" type="text"/>
 				<param name="timeout" value="6000"/>
 			</params>
+			<fail retry="1">skip</fail>
 		</action>
 
 		<action>
@@ -275,7 +248,7 @@
 				<param device="3" value="BtPrjC.*ConnServiceCmd.*C_F.*Res=S" type="text"/>
 				<param name="timeout" value="6000"/>
 			</params>
-			<fail retry="1">stop</fail>
+			<fail retry="1">skip</fail>
 		</action>
 
 		<action>
@@ -299,6 +272,7 @@
 				<param device="3" value="BtPrjC.*informationDeviceStatusChanged.*btServiceType=ST_AUDIO_SINK.*btServiceActive=CS_NOT_CONNECTED" type="text"/>
 				<param name="timeout" value="6000"/>
 			</params>
+			<fail retry="1">skip</fail>
 		</action>
 
 		<action>
@@ -322,7 +296,7 @@
 				<param device="4" value="A2DP.*was.*activated" type="text"/>
 				<param name="timeout" value="6000"/>
 			</params>
-			<fail retry="1">stop</fail>
+			<fail retry="1">skip</fail>
 		</action>
 
 	</actions>

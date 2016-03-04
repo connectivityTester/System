@@ -55,26 +55,31 @@ public class SearchDeviceReceiver extends BroadcastReceiver {
             case BluetoothDevice.ACTION_FOUND 				:
                 Log.i("SearchDeviceReceiver::", "searchDeviceReceiver was received action: " + BluetoothDevice.ACTION_FOUND.toString());
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                Log.i("SearchDeviceReceiver::", "searchDeviceReceiver, found device name: " + device.getName());
-                Log.i("SearchDeviceReceiver::", "searchDeviceReceiver, device to search: " + this.deviceNameToSearch);
-
-                if(device.getName()!= null && this.deviceNameToSearch != null && this.deviceNameToSearch.contentEquals(device.getName())){
+                Log.i("SearchDeviceReceiver::", "searchDeviceReceiver, found device name: " + device.getAddress());
+                Log.i("SearchDeviceReceiver::", "searchDeviceReceiver, device to search: " + this.deviceAddressToSearch);
+                if(device.getAddress().equals(this.deviceAddressToSearch)){
                     this.executor.setFoundDevice(device);
                     this.bluetoothAdapter.cancelDiscovery();
                     this.semaphore.release();
                 }
-                else if(this.deviceAddressToSearch != null && this.deviceAddressToSearch.contentEquals(device.getAddress())){
-                    this.executor.setFoundDevice(device);
-                    this.bluetoothAdapter.cancelDiscovery();
-                    this.semaphore.release();
-                }
+//                if(device.getName()!= null && this.deviceNameToSearch != null && this.deviceNameToSearch.contentEquals(device.getName())){
+//                    this.executor.setFoundDevice(device);
+//                    this.bluetoothAdapter.cancelDiscovery();
+//                    this.semaphore.release();
+//                }
+//                else if(this.deviceAddressToSearch != null && this.deviceAddressToSearch.contentEquals(device.getAddress())){
+//                    this.executor.setFoundDevice(device);
+//                    this.bluetoothAdapter.cancelDiscovery();
+//                    this.semaphore.release();
+//                }
                 break;
             case BluetoothAdapter.ACTION_DISCOVERY_STARTED	:
                 Log.i("SearchDeviceReceiver::", "searchDeviceReceiver was received action: " + BluetoothAdapter.ACTION_DISCOVERY_STARTED);
-                break;
-            case BluetoothAdapter.ACTION_DISCOVERY_FINISHED	:
-                Log.i("SearchDeviceReceiver::", "searchDeviceReceiver was received action: " + BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
                 this.executor.setFoundDevice(null);
+                break;
+            case BluetoothAdapter.ACTION_DISCOVERY_FINISHED:
+                Log.i("SearchDeviceReceiver::", "searchDeviceReceiver was received action: " + BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+
                 this.semaphore.release();
                 break;
         }

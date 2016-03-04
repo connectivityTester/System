@@ -10,16 +10,15 @@ public class BufferManager {
 	private final static BufferManager bufferManager = new BufferManager();
 	private boolean allowAddition = false;
 	
-	public static BufferManager getInstance() {	
-		return bufferManager;						
+	public static BufferManager getInstance() 		{	return bufferManager;						}	
+	public void clearBuffers()						{	this.incomingMessagesBuffer.clearBuffer();	}
+	public void setIsAllowAddition(boolean isAllow)	{	this.allowAddition = isAllow;				}
 	
-	}	
 	public void addMessageToBuffer(List<String> messages)	{
 		if(this.allowAddition){
 			this.incomingMessagesBuffer.addToBuffer(messages);	
 		}
-	}
-	public void clearBuffers()						{	this.incomingMessagesBuffer.clearBuffer();			}
+	}	
 	
 	public Map<AnswerPattern, Object> findAnswersInBuffer(List<AnswerPattern> patterns, IncomingMessageType messageType, int timeout){
 		Map<AnswerPattern, Object> foundAnswers = new HashMap<AnswerPattern, Object>(patterns.size());
@@ -27,10 +26,5 @@ public class BufferManager {
 			foundAnswers.put(pattern, this.incomingMessagesBuffer.findPattern(pattern, messageType, timeout));
 		});
 		return foundAnswers;
-	}
-	
-	public void setIsAllowAddition(boolean isAllow){
-		this.allowAddition = isAllow;
-	}
-	
+	}	
 }

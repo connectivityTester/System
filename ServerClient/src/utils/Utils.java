@@ -4,10 +4,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import test.Parameter;
-import test.Variable;
 
-public class Utils {
+import test.actions.Parameter;
+import test.actions.Variable;
+
+public interface Utils {
 	
 	public static boolean setValueToVariable(List<Variable> variables, String patternstring, String inputString){
 		String [] splitParts = patternstring.split("#");

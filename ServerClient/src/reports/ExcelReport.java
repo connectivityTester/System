@@ -17,8 +17,9 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.apache.poi.hssf.usermodel.HSSFRow;
-import test.Action;
+
 import test.Test;
+import test.actions.Action;
 import types.ActionResultTypes;
 import types.FailReaction;
 import types.LogLevels;

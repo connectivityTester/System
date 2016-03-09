@@ -6,8 +6,7 @@ import java.awt.Toolkit;
 
 
 public interface SystemConstants {
-	
-	int maxThreadCount = Runtime.getRuntime().availableProcessors()*3;
+
 	int systemDeviceSourceId = -1;
 	int defaultTimeout = 4000; // 4000ms
 	String fileConfigPath = "scconfig.xml";
@@ -16,6 +15,8 @@ public interface SystemConstants {
 	
 	final static Toolkit toolkit = Toolkit.getDefaultToolkit(); 
 	final static String userDir = System.getProperty("user.dir");
+	final static String configShemaPath = "/shemas/configuration_shema.xsd";
+	final static String testShemaPath = "/shemas/test_shema.xsd";
 	
 	static Image getAddImage()		{	return toolkit.createImage( userDir + "/images/add.png");	}		
 	static Image getDeleteImage()	{	return toolkit.createImage( userDir + "/images/delete.png");}

@@ -33,7 +33,9 @@ public class Logger {
 	public static void log(LogLevels logLevel, Object className, String message){
 		StringBuilder messageLog = new StringBuilder(logLevel.toString());
 		messageLog.append(": ");
-		messageLog.append(className.getClass().getName());
+		if(className !=null){
+			messageLog.append(className.getClass().getName());
+		}
 		messageLog.append(": ");
 		messageLog.append(message);
 		if(currentLogLevels.contains(logLevel))	
@@ -101,7 +103,7 @@ public class Logger {
 	}
 
 	public static void logFromDeviceSource(String logMessage) {
-		System.out.print(dateFormat.format(new Date()));
+		//System.out.print(dateFormat.format(new Date()));
 		System.out.println(logMessage);
 		try {
 			logToFile(logMessage);

@@ -5,13 +5,20 @@ import java.util.List;
 
 import buffers.BufferManager;
 import common.DeviceSource;
+import test.actions.Action;
+import test.actions.ActionResult;
+import test.actions.Variable;
+import test.datahandlers.ActionDataHanlder;
+import test.datahandlers.ExternalDeviceDataHandler;
+import test.datahandlers.SystemDataHandler;
 import types.ActionResultTypes;
 import types.FailReaction;
 import types.LogLevels;
 import types.MessageLogTypes;
 import utils.Logger;
+import xml.Context;
 
-public class Test {
+public class Test implements Context{
 
 	private String testName;	
 	private List<Action> testActions;

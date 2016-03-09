@@ -3,13 +3,13 @@ package starters;
 import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArrayList;
 import common.DeviceSource;
-import common.SystemConfig;
 import gui.WorkSpace;
 import types.DeviceSourceStatus;
 import types.LogLevels;
 import types.MessageLogTypes;
 import types.SourceTypes;
 import utils.Logger;
+import xml.SystemConfig;
 
 public class DeviceSourceRunManager {
 

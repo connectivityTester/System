@@ -14,18 +14,21 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 import buffers.BufferManager;
-import common.SystemConfig;
-import common.ConfigXMLReader;
+import common.SystemConstants;
 import types.LogLevels;
 import types.MessageLogTypes;
 import types.ReportTypes;
 import utils.Logger;
+import xml.AbstractReader;
+import xml.SystemConfig;
+import xml.TestReader;
 
 public class TestExecutor implements Runnable{
 	
 	private final static SimpleDateFormat format = new SimpleDateFormat("yyMMdd_HHmmss");
 	private final List<Test> testToExecute;
 	private final boolean doReport;
+	private final AbstractReader reader = new TestReader(SystemConstants.testShemaPath);;
 	
 	public TestExecutor(TreePath [] paths, boolean withReport){
 		this.testToExecute = this.loadTestList(paths);
@@ -43,7 +46,7 @@ public class TestExecutor implements Runnable{
 				}
 				Test test = null;
 				try {
-					test = ConfigXMLReader.readTest(absolutePath);
+					test = (Test) this.reader.createContext(absolutePath);
 				} catch (Exception e) {
 					e.printStackTrace();
 					JOptionPane.showMessageDialog(
@@ -66,7 +69,7 @@ public class TestExecutor implements Runnable{
 					String pathToTest = this.getAbsoluteTestFilePath(child);
 					Test test = null;
 					try {
-						test = ConfigXMLReader.readTest(pathToTest);
+						test = (Test) this.reader.createContext(pathToTest);
 					} catch (Exception e) {
 						JOptionPane.showMessageDialog(
 								null, 

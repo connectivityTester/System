@@ -11,7 +11,6 @@
 		<!-- Delete all paired device on HU side -->
 		<action>
 			<command device="3">execute_callback</command>
-			<type>impact</type>
 			<params>
 				<param name="process" value="ScpCtrl_HU"/>
 				<param name="callback_name" value="DIS2_SCP_BluetoothProj_Reset"/>
@@ -43,7 +42,6 @@
 		<!-- Activate discoverable mode on HU -->
 		<action>
 			<command device="3">execute_callback</command>
-			<type>impact</type>
 			<params>
 				<param name="process" value="ScpCtrl_HU"/>
 				<param name="callback_name" value="DIS2_SCP_BluetoothProj_ActivateDiscoverableMode"/>
@@ -105,7 +103,6 @@
 		<!-- Activate discoverable mode on HU -->
 		<action>
 			<command device="3">execute_callback</command>
-			<type>impact</type>
 			<params>
 				<param name="process" value="ScpCtrl_HU"/>
 				<param name="callback_name" value="DIS2_SCP_BluetoothProj_ActivateDiscoverableMode"/>
@@ -179,7 +176,6 @@
 		<!-- Connect to first device -->
 		<action>
 			<command device="3">execute_callback</command>
-			<type>impact</type>
 			<params>
 				<param name="process" value="ScpCtrl_HU"/>
 				<param name="callback_name" value="DIS2_SCP_BluetoothProj_ConnectDevice"/>

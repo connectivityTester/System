@@ -3,10 +3,11 @@ package connections;
 import java.util.List;
 
 import common.DeviceSource;
+import connections.devicesources.DeviceSourceConnectionController;
 import gui.WorkSpace;
-import test.Action;
-import test.ActionResult;
-import test.Variable;
+import test.actions.Action;
+import test.actions.ActionResult;
+import test.actions.Variable;
 import types.ActionResultTypes;
 import types.DataPackerTypes;
 import types.LogLevels;
@@ -55,16 +56,14 @@ public class ConnenctionController {
 					Logger.logToUser(stringBuilder.toString(), connenctionController, MessageLogTypes.ERROR);
 				}	
 				else{
-					stringBuilder.append("\nwas sent to ");
+					stringBuilder.append("\nwas sent to ");   
 					stringBuilder.append(action.getCommand().getDeviceSource().getName());
 					stringBuilder.append(" successufully");
 					Logger.logToUser(stringBuilder.toString(), connenctionController, MessageLogTypes.INFO);
 				}
 				break;
-			case UNKNOWN_COMMAND:
-				Logger.log(LogLevels.ERROR, connenctionController, "Method handleTestData, connection controller received unknown command");
-				break;
 			case SYSTEM_COMMAND:
+				result = new ActionResult(ActionResultTypes.OK, null);
 				Logger.log(LogLevels.ERROR, connenctionController, "Method handleTestData, connection controller received system command");
 				break;
 		}

@@ -14,6 +14,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
 import common.DeviceSource;
+import gui.constructor.listeners.ConstructorPanel;
+import gui.runner.DeviceSourcePanel;
+import gui.runner.LogPanel;
+import gui.runner.TestDirectoryTree;
 import types.DeviceSourceStatus;
 import types.GuiModes;
 import types.MessageLogTypes;

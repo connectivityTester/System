@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
 import test.Test;
+import types.LogLevels;
+import utils.Logger;
 
 public abstract class Report {
 	
@@ -12,7 +14,7 @@ public abstract class Report {
 	static{
 		reportFilesDirectory = new File(System.getProperty("user.dir")+"/Reports");
 		if(!reportFilesDirectory.exists()){
-			System.out.println(reportFilesDirectory.mkdir());
+			Logger.log(LogLevels.TRACE, "", "Report directory was create with result: " + reportFilesDirectory.mkdir());
 		}
 	}
 	

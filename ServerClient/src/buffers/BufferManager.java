@@ -2,6 +2,9 @@ package buffers;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import buffers.matchers.AnswerPattern;
+import exceptions.UnknownMessageTypeException;
 import types.IncomingMessageType;
 
 public class BufferManager {
@@ -20,11 +23,11 @@ public class BufferManager {
 		}
 	}	
 	
-	public Map<AnswerPattern, Object> findAnswersInBuffer(List<AnswerPattern> patterns, IncomingMessageType messageType, int timeout){
+	public Map<AnswerPattern, Object> findAnswersInBuffer(List<AnswerPattern> patterns, IncomingMessageType messageType, int timeout) throws UnknownMessageTypeException{
 		Map<AnswerPattern, Object> foundAnswers = new HashMap<AnswerPattern, Object>(patterns.size());
-		patterns.forEach((pattern) -> {
+		for(AnswerPattern pattern : patterns){
 			foundAnswers.put(pattern, this.incomingMessagesBuffer.findPattern(pattern, messageType, timeout));
-		});
+		}
 		return foundAnswers;
 	}	
 }

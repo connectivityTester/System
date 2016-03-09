@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test>
+	<variables>
+		<variable name="BT_DEVICE_NAME" value="equus95(1234)"/>
+		<variable name="BT_DEVICE_ADDRESS1" value="18:3A:2D:4F:DB:EE"/> 
+		<variable name="BT_DEVICE_ADDRESS2" value="68:3E:34:47:5D:C6"/> 
+		<variable name="TARGET_BT_ADDRESS" value="A8:54:B2:D9:98:3B"/>
+	</variables>
+	<actions>
+		<action>
+			<command device="3">execute_callback</command>			
+			<params>
+				<param name="process" value="ScpCtrl_HU"/>
+				<param name="callback_name" value="DIS2_SCP_BluetoothProj_Reset"/>
+			</params>
+		</action>
+		<action>
+			<command>answers</command>
+			<params>
+				<param device="3" value="BtPrj.*requestReset" type="text"/>
+				<param device="3" value="BtPrj.*responseReset.*Result=RESULT_OK" type="text"/>
+				<param name="timeout" value="5000"/>
+			</params>
+		</action>
+		<action>
+			<command device="2">unpair_all_devices</command>
+		</action>
+		<action>
+			<command>answers</command>
+			<params>
+				<param device="2" value="Devices.*were.*unpaired" type="text"/>
+				<param name="timeout" value="2000"/>
+			</params>
+		</action>
+		<action>
+			<command device="3">execute_callback</command>			
+			<params>
+				<param name="process" value="ScpCtrl_HU"/>
+				<param name="callback_name" value="DIS2_SCP_BluetoothProj_ActivateDiscoverableMode"/>
+				<param name="callback_value" value="1"/>
+			</params>
+		</action>
+		<action>
+			<command>answers</command>
+			<params>
+				<param device="3" value="BtPrj.*requestActivateDiscoverableMode.*activate=True" type="text"/>
+				<param device="3" value="BtPrj.*responseActivateDiscoverableMode.*Result=RESULT_OK" type="text"/>
+				<param name="timeout" value="2000"/>
+			</params>
+			<fail retry="0">skip</fail>
+		</action>	
+		<action>
+			<command device="2">pair_by_address</command>
+			<params>
+				<param device="2" name="device" value="~TARGET_BT_ADDRESS~" type="text"/>
+			</params>
+		</action>
+		<action>
+			<command>answers</command>
+			<params>
+				<param device="2" value="Bond.*created.*successful" type="text"/>
+				<param device="3" value="BtPrjC.*IfImpl.*informationPasskeyRequired" type="text"/>
+				<param name="timeout" value="30000"/>
+			</params>
+		</action>
+		<action>
+			<command device="2">confirm_connection</command>
+			<params>
+				<param device="2" name="confirm" value="true" type="text"/>
+			</params>
+		</action>
+		<action>
+			<command>answers</command>
+			<params>
+				<param device="2" value="Confirmation.*accepted" type="text"/>
+				<param device="3" value="BtPrj.*ConnDeviceCmd.*C_S" type="text"/>
+				<param device="3" value="BtPrj.*ConnDeviceCmd.*C_F.*Res=S" type="text"/>
+				<param name="timeout" value="9000"/>
+			</params>
+		</action>
+
+		<action>
+			<command>sleep</command>
+			<params>
+				<param name="timeout" value="15000"/>
+			</params>
+		</action>
+		<action>
+			<command device="3">execute_callback</command>			
+			<params>
+				<param name="process" value="ScpCtrl_HU"/>
+				<param name="callback_name" value="DIS2_SCP_BluetoothProj_ActivateDiscoverableMode"/>
+				<param name="callback_value" value="1"/>
+			</params>
+		</action>
+		<action>
+			<command>answers</command>
+			<params>
+				<param device="3" value="BtPrj.*requestActivateDiscoverableMode.*activate=True" type="text"/>
+				<param device="3" value="BtPrj.*responseActivateDiscoverableMode.*Result=RESULT_OK" type="text"/>
+				<param name="timeout" value="6000"/>
+			</params>
+			<fail retry="1">skip</fail>
+		</action>	
+		<action>
+			<command device="4">unpair_all_devices</command>
+		</action>
+		<action>
+			<command>answers</command>
+			<params>
+				<param device="4" value="Devices.*were.*unpaired" type="text"/>
+				<param name="timeout" value="1000"/>
+			</params>
+		</action>
+		<action>
+			<command device="4">pair_by_address</command>
+			<params>
+				<param device="4" name="device" value="~TARGET_BT_ADDRESS~" type="text"/>
+			</params>
+		</action>
+		<action>
+			<command>answers</command>
+			<params>
+				<param device="4" value="Bond.*created.*successful" type="text"/>
+				<param device="3" value="BtPrjC.*IfImpl.*informationPasskeyRequired" type="text"/>
+				<param name="timeout" value="30000"/>
+			</params>
+		</action>
+		<action>
+			<command device="4">confirm_connection</command>
+			<params>
+				<param device="4" name="confirm" value="true" type="text"/>
+			</params>
+		</action>
+		<action>
+			<command>answers</command>
+			<params>
+				<param device="4" value="Confirmation.*accepted" type="text"/>
+				<param device="3" value="BtPrj.*ConnDeviceCmd.*C_S" type="text"/>
+				<param device="3" value="BtPrj.*ConnDeviceCmd.*C_F.*Res=S" type="text"/>
+				<param name="timeout" value="9000"/>
+			</params>
+		</action>
+		<action>
+			<command>sleep</command>
+			<params>
+				<param name="timeout" value="15000"/>
+			</params>
+		</action>
+		<action>
+			<command device="3">execute_callback</command>			
+			<params>
+				<param name="process" value="ScpCtrl_HU"/>
+				<param name="callback_name" value="DIS2_SCP_BluetoothProj_ConnectDevice"/>
+				<param name="callback_value" value="~BT_DEVICE_ADDRESS1~"/>
+			</params>
+		</action>
+		<action>
+			<command>answers</command>
+			<params>
+				<param device="3" value="BtPrjC.*requestConnectDevice" type="text"/>
+				<param device="3" value="BtPrjC.*ConnDeviceCmd.*C_S" type="text"/>
+				<param device="3" value="BtPrjC.*ConnDeviceCmd.*C_F.*Res=S" type="text"/>
+				<param device="3" value="BtPrjC.*responseConnectDevice.*Result=RESULT_OK.*ErrorReason=ERROR_NONE" type="text"/>
+				<param name="timeout" value="10000"/>
+			</params>
+			<fail retry="1">skip</fail>
+		</action>
+		<action>
+			<command>sleep</command>
+			<params>
+				<param name="timeout" value="15000"/>
+			</params>
+		</action>
+		<action>
+			<command device="4">deactivate_profile</command>
+			<params>
+				<param device="4" name="profile" value="HFP" type="text"/>
+			</params>
+		</action>
+		<action>
+			<command>answers</command>
+			<params>
+				<param device="3" value="BtPrj.*hasServicesConnectionStatusChanged.*ST_TELEPHONY_HFP.*S_CONNECTED.*CS_NOT_CONNECTED" type="text"/>
+				<param device="3" value="BtPrj.*informationDeviceStatusChanged.*ST_TELEPHONY_HFP.*CS_NOT_CONNECTED" type="text"/>
+				<param name="timeout" value="6000"/>
+			</params>
+			<fail retry="1">skip</fail>
+		</action>
+		<action>
+			<command>sleep</command>
+			<params>
+				<param name="timeout" value="10000"/>
+			</params>
+		</action>
+		<action>
+			<command device="4">activate_profile</command>
+			<params>
+				<param device="4" name="profile" value="HFP" type="text"/>
+			</params>
+		</action>
+		<action>
+			<command>answers</command>
+			<params>
+				<param device="3" value="BtPrjC.*informationIncomingServiceRequest.*BtServiceType=ST_TELEPHONY_HFP" type="text"/>
+				<param device="3" value="BtPrjC.*ConnServiceCmd.*C_S" type="text"/>
+				<param device="3" value="BtPrjC.*ConnServiceCmd.*requestConnectionOfService.*ServiceType=ST_TELEPHONY_HFP" type="text"/>
+				<param device="3" value="BtPrjC.*hasServicesConnectionStatusChanged.*Service ST_TELEPHONY_HFP.*CS_NOT_CONNECTED.*CS_CONNECTED" type="text"/>
+				<param device="3" value="BtPrjC.*informationDeviceStatusChanged.*btServiceType=ST_TELEPHONY_HFP.*btServiceActive=CS_CONNECTED" type="text"/>
+				<param device="3" value="BtPrjC.*ConnServiceCmd.*responseConnectService.*BtServiceType=ST_TELEPHONY_HFP.*Result=RESULT_OK" type="text"/>
+				<param device="3" value="BtPrjC.*ConnServiceCmd.*C_F.*Res=S" type="text"/>
+				<param name="timeout" value="6000"/>
+			</params>
+			<fail retry="1">skip</fail>
+		</action>
+
+		<action>
+			<command>sleep</command>
+			<params>
+				<param name="timeout" value="10000"/>
+			</params>
+		</action>
+		<action>
+			<command device="4">deactivate_profile</command>
+			<params>
+				<param device="4" name="profile" value="A2DP" type="text"/>
+			</params>
+		</action>
+		<action>
+			<command>answers</command>
+			<params>
+				<param device="3" value="BtPrjC.*informationDeviceStatusChanged.*btServiceType=ST_AVRCP_TARGET.*btServiceActive=CS_NOT_CONNECTED" type="text"/>
+				<param device="3" value="BtPrjC.*informationDeviceStatusChanged.*btServiceType=ST_AUDIO_SINK.*btServiceActive=CS_NOT_CONNECTED" type="text"/>
+				<param name="timeout" value="6000"/>
+			</params>
+			<fail retry="1">skip</fail>
+		</action>
+		<action>
+			<command>sleep</command>
+			<params>
+				<param name="timeout" value="10000"/>
+			</params>
+		</action>
+		<action>
+			<command device="4">activate_profile</command>
+			<params>
+				<param device="4" name="profile" value="A2DP" type="text"/>
+			</params>
+		</action>
+		<action>
+			<command>answers</command>
+			<params>
+				<param device="4" value="A2DP.*was.*activated" type="text"/>
+				<param name="timeout" value="6000"/>
+			</params>
+			<fail retry="1">skip</fail>
+		</action>
+		<action>
+			<command>if</command>
+			<params>
+				<param name="operand1" value="~LOOP_COUNTER~"/>
+				<param name="operator" value="!="/>
+				<param name="operand2" value="1"/>
+			</params>
+			<then>
+				<action>
+					<command>sleep</command>
+					<params>
+						<param name="timeout" value="1000"/>
+					</params>
+				</action>
+			</then>
+			<else>
+				<action>
+					<command>sleep</command>
+					<params>
+						<param name="timeout" value="1000"/>
+					</params>
+				</action>
+			</else>
+		</action>
+		<action>
+			<command>loop</command>
+			<params>
+				<param name="operand1" value="~LOOP_COUNTER~"/>
+				<param name="operator" value="=="/>
+				<param name="operand2" value="10"/>
+			</params>
+			<loop_body>
+				<action>
+					<command>sleep</command>
+					<params>
+						<param name="timeout" value="1000"/>
+					</params>
+				</action>
+				<action>
+					<command>arithmetic_operation</command>
+					<params>
+						<param name="operand1" value="~LOOP_COUNTER~"/>
+						<param name="operator" value="+"/>
+						<param name="operand2" value="1"/>
+					</params>
+				</action>
+			</loop_body>
+		</action>
+	</actions>
+</test>

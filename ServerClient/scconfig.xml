@@ -2,53 +2,29 @@
 	<testRootDirectory value=".\testdir"/>
 	<messagePort>1268</messagePort>
 	<device_sources>
-		<!--
-		<device_source>
-			<name>Process №1</name>
-			<id autostart="true">1</id>
-			<address>192.168.0.102</address>
-			<port>2569</port>
-			<start_up_parameters>
-				<parameter>C:\Program Files (x86)\AIMP3\aimp3.exe</parameter>
-				<parameter>C:\123.mp3</parameter>
-				<parameter>C:\123.mp3</parameter>
-				<parameter>C:\123.mp3</parameter>
-				<parameter>C:\123.mp3</parameter>
-				<parameter>C:\123.mp3</parameter>
-			</start_up_parameters>
-			<kill_parameters>
-				<parameter>taskkill /F /IM aimp3.exe</parameter>
-			</kill_parameters>
-		</device_source>
-		-->
 		<device_source>
 			<name>Maizu M2 Note</name>
 			<id autostart="false">22</id>
-			<!-- Parameters below are optional -->
 			<address>192.168.0.101</address>
 		</device_source>
 		<device_source>
 			<name>Sony Z2</name>
 			<id autostart="false">2</id>
-			<!-- Parameters below are optional -->
 			<address>192.168.0.100</address>
 		</device_source>
 		<device_source>
 			<name>Galaxy Note 4</name>
 			<id autostart="false">4</id>
-			<!-- Parameters below are optional -->
 			<address>192.168.0.103</address>
 		</device_source>
 		<device_source>
 			<name>Galaxy S4</name>
 			<id autostart="false">10</id>
-			<!-- Parameters below are optional -->
 			<address>192.168.0.100</address>
 		</device_source>
 		<device_source>
 			<name>TraceServer</name>
 			<id autostart="true">3</id>
-			<!-- Parameters below are optional -->
 			<address>192.168.0.105</address>
 			<start_up_parameters>
 				<parameter>C:\Program Files (x86)\Java\jre1.8.0_60\bin\java.exe -jar TraceServer.jar</parameter>

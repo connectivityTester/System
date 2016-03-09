@@ -8,7 +8,6 @@ public class DeviceSourceProcess {
 	private final DeviceSource deviceSource;
 	
 	public DeviceSourceProcess(Process process, DeviceSource deviceSource) {
-		super();
 		this.process = process;
 		this.deviceSource = deviceSource;
 	}

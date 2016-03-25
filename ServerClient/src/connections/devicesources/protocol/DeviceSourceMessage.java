@@ -1,6 +1,7 @@
 package connections.devicesources.protocol;
 
 import java.util.List;
+import java.util.Objects;
 
 public class DeviceSourceMessage {
 	
@@ -8,7 +9,10 @@ public class DeviceSourceMessage {
 	private int id;
 	private List<DeviceSourceParameter> parameters;
 	
-	public DeviceSourceMessage(String commandName, int id, List<DeviceSourceParameter> parameters) {
+	public DeviceSourceMessage(final String commandName, final int id, final List<DeviceSourceParameter> parameters) {
+		Objects.requireNonNull(commandName);
+		Objects.requireNonNull(parameters);
+		
 		this.commandName = commandName;
 		this.id = id;
 		this.parameters = parameters;
@@ -18,7 +22,7 @@ public class DeviceSourceMessage {
 	public int getId() 									{	return id;						}
 	public List<DeviceSourceParameter> getParameters() 	{	return parameters;				}
 	
-	public void setCommandName(String commandName) 					{	this.commandName = commandName;	}
-	public void setId(int id) 										{	this.id = id;					}
-	public void setParameters(List<DeviceSourceParameter> params) 	{	this.parameters = params;		}
+	public void setCommandName(final String commandName) 				{	this.commandName = commandName;	}
+	public void setId(final int id) 									{	this.id = id;					}
+	public void setParameters(final List<DeviceSourceParameter> params) {	this.parameters = params;		}
 }	

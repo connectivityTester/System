@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -31,7 +32,10 @@ public class DeviceSourcePanel extends JPanel{
 		}
 	}
 	
-	public void updateDeviceStatus(DeviceSource deviceSource, DeviceSourceStatus status){
+	public void updateDeviceStatus(final DeviceSource deviceSource, final DeviceSourceStatus status){
+		Objects.requireNonNull(deviceSource);
+		Objects.requireNonNull(status);
+		
 		for(DeviceSourceView deviceSourceView : this.deviceSourceViews){
 			if(deviceSourceView.getDeviceSource().getId() == deviceSource.getId()){
 				deviceSourceView.updateDeviceStatus(status);

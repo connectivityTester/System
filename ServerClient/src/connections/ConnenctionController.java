@@ -1,6 +1,7 @@
 package connections;
 
 import java.util.List;
+import java.util.Objects;
 
 import common.DeviceSource;
 import connections.devicesources.DeviceSourceConnectionController;
@@ -23,47 +24,52 @@ public class ConnenctionController {
 		return connenctionController;
 	}
 	
-	public void startAllConnections(WorkSpace workSpace){
+	public void startAllConnections(final WorkSpace workSpace){
+		Objects.requireNonNull(workSpace);
+		
 		if(this.deviceSourceConnectionController == null){
 			this.deviceSourceConnectionController = new DeviceSourceConnectionController(workSpace);
 			this.deviceSourceConnectionController.start();
 		}
 	}
 	
-	public ActionResult handleTestData(Action action, List<Variable> testVariables, DataPackerTypes dataPackerType){
+	public ActionResult handleTestData(final Action action, final List<Variable> testVariables, final DataPackerTypes dataPackerType){
+		Objects.requireNonNull(action);
+		Objects.requireNonNull(dataPackerType);
+		
 		ActionResult result = new ActionResult(ActionResultTypes.OK, null);
 		switch(action.getCommandType()){
 			case EXTERNAL_COMMAND:
-				StringBuilder stringBuilder = new StringBuilder("Command \"");
-				stringBuilder.append(action.getCommand().getCommandName());
+				final StringBuilder logMessage = new StringBuilder("Command \"");
+				logMessage.append(action.getCommand().getCommandName());
 				if(action.getCommandParametes() != null){
-					stringBuilder.append("\" with parameters: ");
+					logMessage.append("\" with parameters: ");
 					String parameters = action.getCommandParametes().toString();
-					stringBuilder.append(parameters.substring(1, parameters.length()-1));
+					logMessage.append(parameters.substring(1, parameters.length()-1));
 				}
 				else{
-					stringBuilder.append("\" without parameters");
+					logMessage.append("\" without parameters");
 				}
-				Logger.logToUser(stringBuilder.toString(), connenctionController, MessageLogTypes.INFO);
-				DeviceSource devSource = action.getCommand().getDeviceSource();
-				String testDataString = action.packActionToString(devSource, dataPackerType, testVariables);
-				boolean res = this.deviceSourceConnectionController.sendTestDataToDeviceSource(devSource, testDataString);
-				if(!res){
+				Logger.logToUser(logMessage.toString(), connenctionController, MessageLogTypes.INFO);
+				final DeviceSource devSource = action.getCommand().getDeviceSource();
+				final String testDataString = action.packActionToString(devSource, dataPackerType, testVariables);
+				final boolean sendResult = this.deviceSourceConnectionController.sendTestDataToDeviceSource(devSource, testDataString);
+				if(!sendResult){
 					result = new ActionResult(ActionResultTypes.NOK, "Action data was not successfully sent to device source");
-					stringBuilder.append("\nwas sent to ");
-					stringBuilder.append(action.getCommand().getDeviceSource().getName());
-					stringBuilder.append(" not successufully");
-					Logger.logToUser(stringBuilder.toString(), connenctionController, MessageLogTypes.ERROR);
+					logMessage.append("\nwas sent to ");
+					logMessage.append(action.getCommand().getDeviceSource().getName());
+					logMessage.append(" not successufully");
+					Logger.logToUser(logMessage.toString(), connenctionController, MessageLogTypes.ERROR);
 				}	
 				else{
-					stringBuilder.append("\nwas sent to ");   
-					stringBuilder.append(action.getCommand().getDeviceSource().getName());
-					stringBuilder.append(" successufully");
-					Logger.logToUser(stringBuilder.toString(), connenctionController, MessageLogTypes.INFO);
+					logMessage.append("\nwas sent to ");   
+					logMessage.append(action.getCommand().getDeviceSource().getName());
+					logMessage.append(" successufully");
+					Logger.logToUser(logMessage.toString(), connenctionController, MessageLogTypes.INFO);
 				}
 				break;
 			case SYSTEM_COMMAND:
-				result = new ActionResult(ActionResultTypes.OK, null);
+				result = new ActionResult(ActionResultTypes.NOK, null);
 				Logger.log(LogLevels.ERROR, connenctionController, "Method handleTestData, connection controller received system command");
 				break;
 		}

@@ -1,13 +1,17 @@
 package gui.runner;
 
 import java.util.Comparator;
+import java.util.Objects;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
 public class TreeNodeComporator implements Comparator<DefaultMutableTreeNode>{
 
-	@Override 
-	  public int compare(DefaultMutableTreeNode a, DefaultMutableTreeNode b) {
+		@Override 
+	  public int compare(final DefaultMutableTreeNode a, final DefaultMutableTreeNode b) {
+		Objects.requireNonNull(a);
+		Objects.requireNonNull(b);
+		
 	    //Sort the parent and child nodes separately:
 	    if (a.isLeaf() && !b.isLeaf()) {
 	      return 1;

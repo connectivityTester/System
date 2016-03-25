@@ -3,6 +3,7 @@ package buffers;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
 
@@ -20,12 +21,14 @@ class Buffer{
 	private final int bufferCapacity; 
 	private final MessageMatcherFactory messageMatcherFactory = new MessageMatcherFactory(this);
 	
-	Buffer(int bufferCapacity){
+	Buffer(final int bufferCapacity){
 		this.queue = new ConcurrentLinkedQueue<>();
 		this.bufferCapacity = bufferCapacity;
 	}
 	
-	void addToBuffer(List<String> messages){
+	void addToBuffer(final List<String> messages){
+		Objects.requireNonNull(messages);
+		
 		if(this.bufferCapacity <= this.queue.size()){
 			Logger.log(LogLevels.TRACE, this, "Method addToBuffer, buffer is full, oldest message will be deleted");
 			this.queue.poll();
@@ -33,26 +36,32 @@ class Buffer{
 		messages.parallelStream().forEach((message) -> this.queue.offer(message));
 	}
 	
-	void clearBuffer(){	this.queue.clear();	}
+	void clearBuffer(){	queue.clear();	}
 
-	public Object findPattern(AnswerPattern pattern, IncomingMessageType type, int timeout) throws UnknownMessageTypeException {
-		MessageMatcher messageMatcher = this.messageMatcherFactory.createMessageMatcher(pattern, timeout, type);
+	public Object findPattern(final AnswerPattern pattern, final IncomingMessageType type, final int timeout) throws UnknownMessageTypeException {
+		Objects.requireNonNull(pattern);
+		
+		if(type == IncomingMessageType.UNKNOWN_TYPE){
+			throw new UnknownMessageTypeException("Unknown message type: " + type.toString());
+		}
+		final MessageMatcher messageMatcher = this.messageMatcherFactory.createMessageMatcher(pattern, timeout, type);
 		LocalTime startTime = LocalTime.now();
-		Object foundAnswer = messageMatcher.match();
+		final Object foundAnswer = messageMatcher.match();
 		pattern.setSpentTime(Duration.between(startTime, LocalTime.now()).getNano()/1_000_000, TimeUnit.MILLISECONDS);
 		return foundAnswer;
 	}
 	
-	class MessageMatcherFactory {
+	private class MessageMatcherFactory {
 		
 		private final Buffer buffer;
 
-		MessageMatcherFactory(Buffer buffer){
+		MessageMatcherFactory(final Buffer buffer){
 			this.buffer = buffer;
 		}
 		
-		public MessageMatcher createMessageMatcher(AnswerPattern answerPattern, 
-													int timeout, IncomingMessageType type) throws UnknownMessageTypeException
+		public MessageMatcher createMessageMatcher(final AnswerPattern answerPattern, 
+													final int timeout, final IncomingMessageType type) 
+																	throws UnknownMessageTypeException
 		{
 			MessageMatcher messageMatcher = null;
 			switch (type) {

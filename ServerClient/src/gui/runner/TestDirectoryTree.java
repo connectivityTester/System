@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Objects;
 
 import io.FileItem;
 import io.FileSystemManager;
@@ -34,7 +35,9 @@ public class TestDirectoryTree extends JPanel{
 	private final FileSystemManager fileSystemManager;
 	private final Comparator<DefaultMutableTreeNode> treeNodeComporator;
 
-	public TestDirectoryTree(FileSystemManager fileSystemManager){
+	public TestDirectoryTree(final FileSystemManager fileSystemManager){
+		Objects.requireNonNull(fileSystemManager);
+		
 		this.fileSystemManager = fileSystemManager;
 		this.treeNodeComporator = (firstLeaf,secondLeaf) ->{
 			if (firstLeaf.isLeaf() && !secondLeaf.isLeaf()) {
@@ -69,7 +72,10 @@ public class TestDirectoryTree extends JPanel{
 		this.model.reload();
 	}
 	
-	private DefaultMutableTreeNode updateTree(String rootDir, FileSystemManager fileSystemManager){
+	private DefaultMutableTreeNode updateTree(final String rootDir, final FileSystemManager fileSystemManager){
+		Objects.requireNonNull(rootDir);
+		Objects.requireNonNull(fileSystemManager);
+		
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root directory");
 		List<FileItem> fileItems = fileSystemManager.getStructure(rootDir).getSubFolders();
 		for(FileItem fileItem : fileItems){
@@ -79,15 +85,16 @@ public class TestDirectoryTree extends JPanel{
 		return root;
 	}
 	
-	private void addNode(DefaultMutableTreeNode current, FileItem fileItem){
+	private void addNode(final DefaultMutableTreeNode current, final FileItem fileItem){
+		Objects.requireNonNull(current);
+		Objects.requireNonNull(fileItem);
+		
 		if(!fileItem.isFolder()){
 			current.add(new DefaultMutableTreeNode(fileItem.getPath()));
 		}
 		else{
 			DefaultMutableTreeNode newSubFolder = new DefaultMutableTreeNode(fileItem.getPath());
-			for(FileItem subfile: fileItem.getSubFolders()){
-				this.addNode(newSubFolder, subfile);
-			}
+			fileItem.getSubFolders().forEach(subFolder -> this.addNode(newSubFolder, subFolder));
 			current.add(newSubFolder);
 		}
 		
@@ -118,18 +125,22 @@ public class TestDirectoryTree extends JPanel{
 		});
 	}
 
-	private void sortTree(DefaultMutableTreeNode root) {
-	  @SuppressWarnings("unchecked")
-	  Enumeration<DefaultMutableTreeNode> e = root.depthFirstEnumeration();
-	  while (e.hasMoreElements()) {
-	    DefaultMutableTreeNode node = e.nextElement();
-	    if (!node.isLeaf()) {
-	      sort(node);
+	private void sortTree(final DefaultMutableTreeNode root) {
+		Objects.requireNonNull(root);
+  
+	    @SuppressWarnings("unchecked")
+		Enumeration<DefaultMutableTreeNode> e = root.depthFirstEnumeration();
+	    while (e.hasMoreElements()) {
+	        DefaultMutableTreeNode node = e.nextElement();
+	        if (!node.isLeaf()) {
+	            sort(node);
+	        }
 	    }
-	  }
 	}
 	
-	private void sort(DefaultMutableTreeNode parent) {
+	private void sort(final DefaultMutableTreeNode parent) {
+		Objects.requireNonNull(parent);
+		
 		int n = parent.getChildCount();
 		  for (int i = 0; i < n - 1; i++) {
 		    int min = i;

@@ -3,10 +3,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import buffers.BufferManager;
 import common.DeviceSource;
-import types.LogLevels;
 import types.MessageLogTypes;
 import utils.Logger;
 
@@ -16,7 +16,13 @@ public class DeviceSourceInputConnection implements Runnable{
 	private final DeviceSource deviceSource;
 	private final DeviceSourceConnectionController deviceSourceConnectionController;
 	
-	public DeviceSourceInputConnection(DeviceSource devSource, InputStream inStream , DeviceSourceConnectionController controller) {
+	public DeviceSourceInputConnection(final DeviceSource devSource, final InputStream inStream , 
+										final DeviceSourceConnectionController controller) 
+	{
+		Objects.requireNonNull(devSource);
+		Objects.requireNonNull(inStream);
+		Objects.requireNonNull(controller);
+		
 		this.deviceSourceConnectionController = controller;
 		this.deviceSource = devSource;
 		this.inputStream = inStream;	
@@ -32,7 +38,7 @@ public class DeviceSourceInputConnection implements Runnable{
 				int readBytes = this.inputStream.read(buffer);
 				if(readBytes > 0 ){
 					String receivedData = new String(buffer, 0, readBytes);
-					Logger.log(LogLevels.INFO, this, "Received data: " + receivedData);
+					//Logger.log(LogLevels.INFO, this, "Received data: " + receivedData);
 					builder.append(receivedData);	
 					String [] parts =  builder.toString().split("\n");
 					if(parts[parts.length-1].endsWith("}")){
@@ -43,17 +49,7 @@ public class DeviceSourceInputConnection implements Runnable{
 						messages = Arrays.asList(parts).subList(0, parts.length-2);
 						builder = new StringBuilder(parts[parts.length-1]);
 					}
-				}
-				else{
-					StringBuilder logMessage = new StringBuilder("Device source \"");
-					logMessage.append(this.deviceSource.getName());
-					logMessage.append("\" with address ");
-					logMessage.append(this.deviceSource.getAddress());
-					logMessage.append(" was disconnected");
-					Logger.logToUser(logMessage.toString(), this, MessageLogTypes.INFO);
-					this.deviceSourceConnectionController.removeDisconnectedConnection(this.deviceSource);
-					break;
-				}			
+				}		
 			} catch (IOException e) {
 				StringBuilder logMessage = new StringBuilder("Device source \"");
 				logMessage.append(this.deviceSource.getName());

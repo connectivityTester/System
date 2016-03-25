@@ -2,9 +2,8 @@ package buffers.matchers;
 
 import java.time.Duration;
 import java.time.LocalTime;
-import java.util.Iterator;
+import java.util.Objects;
 import java.util.Queue;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.google.gson.Gson;
@@ -16,36 +15,58 @@ import utils.Logger;
 public class TextMessageMatcherTask extends MessageMatcher {
 
 	private final Gson jsonParser = new Gson();
+	private final String patternString;
 	
-	public TextMessageMatcherTask (String pattern, int deviceSourceId, Queue<String> queue, int timeout) {
+	public TextMessageMatcherTask (final String pattern, final int deviceSourceId,
+									final Queue<String> queue, final int timeout) 
+	{
 		super(pattern, deviceSourceId, queue, timeout);
+		
+		Objects.requireNonNull(pattern);
+		
+		this.messageType = IncomingMessageType.TEXT;
+		this.patternString = ".*" + this.pattern.toLowerCase() + ".*";
 	}
 
 	@Override
 	public String match() {
-		Pattern compiledPattern = Pattern.compile(".*" + this.pattern.toLowerCase() + ".*");
 		String answer = null;
-		LocalTime startTime = LocalTime.now();
+		final LocalTime startTime = LocalTime.now();
 		long diffMiliSeconds = 0;
 		TRACE_FOUND_LABEL:{
 			do {
-				Iterator<String> iterator = this.queue.iterator();
-				while(iterator.hasNext()){
-					String curMessage = iterator.next();
+				for(final String message : this.queue){
 					//Logger.log(LogLevels.TRACE, this, curMessage);
-					ParsedIncomingMessage currentMessage = this.jsonParser.fromJson(curMessage, ParsedIncomingMessage.class);
+					final ParsedIncomingMessage currentMessage = this.jsonParser.fromJson(message, ParsedIncomingMessage.class);
 					if(currentMessage != null && 
 							this.deviceSourceId == currentMessage.getId() &&
-							currentMessage.getConvertedType() == IncomingMessageType.TEXT)
+							currentMessage.equalsType(this.messageType))
 					{
-						Matcher matcher = compiledPattern.matcher(currentMessage.getData().toLowerCase());
-						if(matcher.matches()){
+						String messageData = currentMessage.getData().toLowerCase();
+						if(Pattern.matches(this.patternString, messageData)){
 							answer = currentMessage.getData();
-							//Logger.log(LogLevels.TRACE, this, "Trace was found");
+							Logger.log(LogLevels.TRACE, this, "Trace was found");
 							break TRACE_FOUND_LABEL;
 						}
 					}
 				}
+//				Iterator<String> iterator = this.queue.iterator();
+//				while(iterator.hasNext()){
+//					String curMessage = iterator.next();
+//					//Logger.log(LogLevels.TRACE, this, curMessage);
+//					ParsedIncomingMessage currentMessage = this.jsonParser.fromJson(curMessage, ParsedIncomingMessage.class);
+//					if(currentMessage != null && 
+//							this.deviceSourceId == currentMessage.getId() &&
+//							currentMessage.getConvertedType() == IncomingMessageType.TEXT)
+//					{
+//						Matcher matcher = compiledPattern.matcher(currentMessage.getData().toLowerCase());
+//						if(matcher.matches()){
+//							answer = currentMessage.getData();
+//							//Logger.log(LogLevels.TRACE, this, "Trace was found");
+//							break TRACE_FOUND_LABEL;
+//						}
+//					}
+//				}
 				diffMiliSeconds = Duration.between(startTime, LocalTime.now()).getSeconds()*1000;
 				if(diffMiliSeconds > this.timeout){
 					Logger.log(LogLevels.TRACE, this, "Search timed out");
@@ -53,11 +74,8 @@ public class TextMessageMatcherTask extends MessageMatcher {
 				}
 				else{
 					try {
-					///	Logger.log(LogLevels.TRACE, this, "Waiting....");
 						Thread.sleep(10);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
+					} catch (InterruptedException e) {}
 				}
 			}
 			while(true); 

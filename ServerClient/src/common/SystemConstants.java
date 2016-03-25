@@ -5,24 +5,25 @@ import java.awt.Image;
 import java.awt.Toolkit;
 
 
-public interface SystemConstants {
+public class SystemConstants {
 
-	int systemDeviceSourceId = -1;
-	int defaultTimeout = 4000; // 4000ms
-	String fileConfigPath = "scconfig.xml";
-	Font font = new Font("Arial", Font.PLAIN, 15); 
-	Font logFont = new Font ("Arial", Font.PLAIN, 10);
+	public static int systemDeviceSourceId = -1;
+	public static int defaultTimeout = 4000; // 4000ms
+	public static String fileConfigPath = "scconfig.xml";
+	public static Font font = new Font("Arial", Font.PLAIN, 15); 
+	public static Font logFont = new Font ("Arial", Font.PLAIN, 10);
 	
-	final static Toolkit toolkit = Toolkit.getDefaultToolkit(); 
-	final static String userDir = System.getProperty("user.dir");
-	final static String configShemaPath = "/shemas/configuration_shema.xsd";
-	final static String testShemaPath = "/shemas/test_shema.xsd";
+	public final static String userDir = System.getProperty("user.dir");
+	public final static String configShemaPath = "/shemas/configuration_shema.xsd";
+	public final static String testShemaPath = "/shemas/test_shema.xsd";
 	
-	static Image getAddImage()		{	return toolkit.createImage( userDir + "/images/add.png");	}		
-	static Image getDeleteImage()	{	return toolkit.createImage( userDir + "/images/delete.png");}
-	static Image getUpImage()		{	return toolkit.createImage( userDir + "/images/up.png");	}
-	static Image getDownImage()		{	return toolkit.createImage( userDir + "/images/down.png");	}
-	static Image getSaveImage()		{	return toolkit.createImage( userDir + "/images/save.png");	}
-	static Image getRunImage()		{	return toolkit.createImage( userDir + "/images/run.png");	}
-	static Image getClearImage()	{	return toolkit.createImage( userDir + "/images/clear.png");	}
+	private final static Toolkit toolkit = Toolkit.getDefaultToolkit(); 
+
+	public static Image getAddImage()		{	return toolkit.createImage( userDir + "/images/add.png");	}		
+	public static Image getDeleteImage()	{	return toolkit.createImage( userDir + "/images/delete.png");}
+	public static Image getUpImage()		{	return toolkit.createImage( userDir + "/images/up.png");	}
+	public static Image getDownImage()		{	return toolkit.createImage( userDir + "/images/down.png");	}
+	public static Image getSaveImage()		{	return toolkit.createImage( userDir + "/images/save.png");	}
+	public static Image getRunImage()		{	return toolkit.createImage( userDir + "/images/run.png");	}
+	public static Image getClearImage()		{	return toolkit.createImage( userDir + "/images/clear.png");	}
 }

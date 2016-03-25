@@ -3,6 +3,7 @@ package gui;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Objects;
 
 import io.FileSystemManager;
 import starters.DeviceSourceRunManager;
@@ -33,8 +34,11 @@ public class WorkSpace extends JFrame{
 
 	private JSplitPane splitPane;
 	
-	public WorkSpace(FileSystemManager fileSystemManager){
+	public WorkSpace(final FileSystemManager fileSystemManager){
 		super("Connectivity testing tool");
+		
+		Objects.requireNonNull(fileSystemManager);
+		
 		this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
 		this.deviceSourcePanel = new DeviceSourcePanel();
 		this.testDirectoryTree = new TestDirectoryTree(fileSystemManager);
@@ -70,13 +74,18 @@ public class WorkSpace extends JFrame{
 		this.add(this.deviceSourcePanel);
 	}
 
-	public void showLog(String messageLog, MessageLogTypes messageType){
+	public void showLog(final String messageLog, final MessageLogTypes messageType){
+		Objects.requireNonNull(messageLog);
+		Objects.requireNonNull(messageType);
+		
 		if(this.currentMode == GuiModes.EXECUTION_MODE){
 			((LogPanel)this.workPanel).addLog(messageLog, messageType);
 		}
 	}
 
-	public void setMode(GuiModes newMode) {
+	public void setMode(final GuiModes newMode) {
+		Objects.requireNonNull(newMode);
+		
 		this.currentMode = newMode;
 		switch(newMode){
 			case CONSTRUCTOR_MODE:	
@@ -91,7 +100,10 @@ public class WorkSpace extends JFrame{
 		this.splitPane.setRightComponent(this.workPanel);
 	}
 
-	public void updateDeviceStatus(DeviceSource deviceSource, DeviceSourceStatus status) {
+	public void updateDeviceStatus(final DeviceSource deviceSource, final DeviceSourceStatus status) {
+		Objects.requireNonNull(deviceSource);
+		Objects.requireNonNull(status);
+		
 		this.deviceSourcePanel.updateDeviceStatus(deviceSource, status);
 	}
 }

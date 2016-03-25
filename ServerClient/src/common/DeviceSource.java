@@ -1,6 +1,8 @@
 package common;
 
 import java.util.List;
+import java.util.Objects;
+
 import types.SourceTypes;
 
 public class DeviceSource {
@@ -12,9 +14,12 @@ public class DeviceSource {
 	private final List<String> startUpParameters;	
 	private final List<String> shutdownParameters;
 	
-	public DeviceSource(String name, int id, boolean autoStartUp, 
-			String address, List<String> startUpParameters, List<String> shutdownParameters) 
+	public DeviceSource(final String name, final int id, final boolean autoStartUp, 
+			final String address, final List<String> startUpParameters, final List<String> shutdownParameters) 
 	{
+		Objects.requireNonNull(name);
+		Objects.requireNonNull(address);
+		
 		this.name = name;
 		this.id = id;
 		if(this.id >= 0 ){
@@ -30,14 +35,13 @@ public class DeviceSource {
 	}
 	
 	public List<String> getShutdownParameters() {	return shutdownParameters;	}
-	public SourceTypes getSourceType() {	return sourceType;	}	
-	public String getName() {		return name;	}
-	public int getId() {		return id;	}
-	public boolean isAutoStartUp() {		return autoStartUp;	}
-	public String getAddress() {		return address;	}
-	public List<String> getStartUpParameters() {
-		return startUpParameters;
-	}
+	public List<String> getStartUpParameters()  {	return startUpParameters;	}
+	public boolean isAutoStartUp() 				{	return autoStartUp;			}
+	public SourceTypes getSourceType() 			{	return sourceType;			}	
+	public String getAddress() 					{	return address;				}
+	public String getName() 					{	return name;				}
+	public int getId() 							{	return id;					}
+	
 	@Override
 	public String toString() {
 		StringBuilder result = new StringBuilder("\nDeviceSource [name=" + name + ", id=" + id + ", autoStartUp=" + autoStartUp + ", address=" + address

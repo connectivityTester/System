@@ -1,5 +1,7 @@
 package buffers.matchers;
 
+import java.util.Objects;
+
 import types.IncomingMessageType;
 
 public class ParsedIncomingMessage 
@@ -17,6 +19,12 @@ public class ParsedIncomingMessage
 	
 	public IncomingMessageType getConvertedType() {
 		return IncomingMessageType.defineIncomingMessageType(this.type);
+	}
+	
+	public boolean equalsType(final IncomingMessageType type){
+		Objects.requireNonNull(type);
+		
+		return type == IncomingMessageType.defineIncomingMessageType(this.type);
 	}
 
 	@Override

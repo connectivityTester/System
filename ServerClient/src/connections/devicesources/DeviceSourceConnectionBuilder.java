@@ -2,6 +2,8 @@ package connections.devicesources;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Objects;
+import java.util.Optional;
 
 import common.DeviceSource;
 import types.LogLevels;
@@ -13,39 +15,35 @@ public class DeviceSourceConnectionBuilder {
 	
 	private final DeviceSourceConnectionController deviceSourceConnectionController;
 	
-	public DeviceSourceConnectionBuilder(DeviceSourceConnectionController controller) {
+	public DeviceSourceConnectionBuilder(final DeviceSourceConnectionController controller) {
 		this.deviceSourceConnectionController = controller;
 	}
 	
-	public DeviceSourceConnection createDeviceSourceConnection(Socket clietnSocket){
-		DeviceSource incDeviceSource = null;
-		Logger.log(LogLevels.INFO, this, "Method run, incoming device source ip address: " + clietnSocket.getInetAddress().getHostAddress());
-		for(DeviceSource deviceSource : SystemConfig.getInstance().getDeviceSources()){
-			if(deviceSource.getAddress() != null &&
-					deviceSource.getAddress().equals(clietnSocket.getInetAddress().getHostAddress()))
-			{	
-				
-				incDeviceSource = deviceSource;
-				break;
-			}
-		}
+	public DeviceSourceConnection createDeviceSourceConnection(final Socket clientSocket){
+		Objects.requireNonNull(clientSocket);
+		
+		Logger.log(LogLevels.INFO, this, "Method run, incoming device source ip address: " + clientSocket.getInetAddress().getHostAddress());
+		Optional<DeviceSource> incDeviceSource = SystemConfig.getInstance().getDeviceSources().stream()
+				.filter(deviceAddress -> deviceAddress!= null && 
+						deviceAddress.equals(clientSocket.getInetAddress().getHostAddress()))
+				.findFirst();
 		DeviceSourceConnection newDevSourceConnection = null;
-		if(incDeviceSource != null){
-			Logger.logToUser("Incoming socket connection from \"" + incDeviceSource.getName() 
-						+ "\"(with IP address " + clietnSocket.getLocalAddress().toString().substring(1) 
+		if(incDeviceSource.isPresent()){
+			Logger.logToUser("Incoming socket connection from \"" + incDeviceSource.get().getName() 
+						+ "\"(with IP address " + clientSocket.getLocalAddress().toString().substring(1) 
 						+ ")...", this, MessageLogTypes.INFO);
-			Logger.logToUser("System is tring to connect with " + incDeviceSource.getName() +  "...", this, MessageLogTypes.INFO);
+			Logger.logToUser("System is tring to connect with " + incDeviceSource.get().getName() +  "...", this, MessageLogTypes.INFO);
 			
 			try {
-				newDevSourceConnection = new DeviceSourceConnection(clietnSocket, incDeviceSource, this.deviceSourceConnectionController);
+				newDevSourceConnection = new DeviceSourceConnection(clientSocket, incDeviceSource.get(), this.deviceSourceConnectionController);
 				StringBuilder logMessage = new StringBuilder("Device source \"");
-				logMessage.append(incDeviceSource.getName());
+				logMessage.append(incDeviceSource.get().getName());
 				logMessage.append("\" with IP address ");
-				logMessage.append(incDeviceSource.getAddress());
+				logMessage.append(incDeviceSource.get().getAddress());
 				logMessage.append(" was connected successfully");
 				Logger.logToUser(logMessage.toString(), this, MessageLogTypes.INFO);
 			} catch (IOException e) {
-				Logger.logToUser("System could not make connection with " + incDeviceSource.getName(), this, MessageLogTypes.ERROR);
+				Logger.logToUser("System could not make connection with " + incDeviceSource.get().getName(), this, MessageLogTypes.ERROR);
 				Logger.logToUser("Please analyze system log", this, MessageLogTypes.ERROR);
 			}
 		}

@@ -1,6 +1,8 @@
 package gui.runner;
 
 import java.awt.Color;
+import java.util.Objects;
+
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -14,6 +16,7 @@ import javax.swing.text.DefaultCaret;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+
 import common.SystemConstants;
 import types.MessageLogTypes;
 
@@ -66,7 +69,10 @@ public class LogPanel extends JPanel{
 		StyleConstants.setBold(this.skip, true);
 	}
 
-	public void addLog(String message,MessageLogTypes type){
+	public void addLog(final String message, final MessageLogTypes type){
+		Objects.requireNonNull(message);
+		Objects.requireNonNull(type);
+		
 		try {
 			switch(type){
 				case INFO 	: 	doc.insertString( doc.getLength(), message + "\n\r", this.info );	break;

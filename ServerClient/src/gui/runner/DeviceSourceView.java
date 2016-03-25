@@ -2,6 +2,7 @@ package gui.runner;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.Objects;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -20,7 +21,9 @@ public class DeviceSourceView extends JPanel{
 	private final JLabel statusLabel;
 	private JLabel addressLabel;
 	
-	public DeviceSourceView(DeviceSource deviceSource) {
+	public DeviceSourceView(final DeviceSource deviceSource) {
+		Objects.requireNonNull(deviceSource);
+		
 		this.deviceSource = deviceSource;
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setAlignmentX(CENTER_ALIGNMENT);
@@ -44,7 +47,9 @@ public class DeviceSourceView extends JPanel{
 		return this.deviceSource;
 	}
 	
-	public void updateDeviceStatus(DeviceSourceStatus status){
+	public void updateDeviceStatus(final DeviceSourceStatus status){
+		Objects.requireNonNull(status);
+		
 		switch(status){
 			case CONNECTED: 
 				this.statusLabel.setText("Connected");

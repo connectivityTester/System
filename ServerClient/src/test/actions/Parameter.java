@@ -8,13 +8,15 @@ import xml.SystemConfig;
 
 public class Parameter implements Comparable<Parameter>{
 	
-	private String name;
-	private String value;
-	private boolean isVariable;
-	private DeviceSource deviceSource;
-	private IncomingMessageType messageType;
+	private final String name;
+	private final String value;
+	private final  boolean isVariable;
+	private final DeviceSource deviceSource;
+	private final IncomingMessageType messageType;
 	
-	public Parameter(String name, String device, IncomingMessageType type, String value) {
+	public Parameter(final String name, final String device, final IncomingMessageType type, final String value) {
+		utils.Utils.requireNonNull(name, type, value);
+		
 		this.name = name;
 		this.isVariable = this.checkIsVariable(value);
 		if(this.isVariable){
@@ -27,21 +29,19 @@ public class Parameter implements Comparable<Parameter>{
 		this.deviceSource = this.defineDeviceSource(device);
 	}
 	
-	private DeviceSource defineDeviceSource(String device) {
-		DeviceSource result = SystemConfig.getInstance().getSystemDeviceSource();
-		if(device != null){
-			int deviceSourceId = Integer.parseInt(device);
-			for(DeviceSource deviceSource : SystemConfig.getInstance().getDeviceSources()){
-				if(deviceSource.getId() == deviceSourceId){
-					result = deviceSource;
-					break;
-				}
-			}
+	private DeviceSource defineDeviceSource(final String deviceId) {
+		if(deviceId == null){
+			return SystemConfig.getInstance().getSystemDeviceSource();
 		}
-		return result;
+		return SystemConfig.getInstance().getDeviceSources().stream()
+				.filter(device -> device.equalsId(Integer.parseInt(deviceId)))
+				.findFirst()
+				.orElse(SystemConfig.getInstance().getSystemDeviceSource());
 	}
 
-	private boolean checkIsVariable(String value){
+	private boolean checkIsVariable(final String value){
+		utils.Utils.requireNonNull(value);
+		
 		if(
 			value.indexOf('~') == 0
 			&&
@@ -61,7 +61,7 @@ public class Parameter implements Comparable<Parameter>{
 	
 	public AnswerPattern getAnswerPattern(){
 		AnswerPattern answerPattern = null;
-		if(this.deviceSource.getId() != SystemConstants.systemDeviceSourceId){
+		if(!deviceSource.equalsId(SystemConstants.systemDeviceSourceId)){
 			answerPattern = new AnswerPattern(this.deviceSource.getId(), this.value); 
 		}
 		return answerPattern;
@@ -73,7 +73,9 @@ public class Parameter implements Comparable<Parameter>{
 	}
 
 	@Override
-	public int compareTo(Parameter otherParameter) {
+	public int compareTo(final Parameter otherParameter) {
+		utils.Utils.requireNonNull(otherParameter);
+		
 		return this.name.compareTo(otherParameter.getName());
 	}
 	

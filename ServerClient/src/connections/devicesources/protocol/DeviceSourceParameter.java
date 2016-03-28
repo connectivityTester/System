@@ -1,6 +1,6 @@
 package connections.devicesources.protocol;
 
-import java.util.Objects;
+import utils.Utils;
 
 public class DeviceSourceParameter {
 	
@@ -8,8 +8,7 @@ public class DeviceSourceParameter {
 	private String value;
 	
 	public DeviceSourceParameter(final String name, final String value) {
-		Objects.requireNonNull(name);
-		Objects.requireNonNull(value);
+		Utils.requireNonNull(name, value);
 		
 		this.name = name;
 		this.value = value;

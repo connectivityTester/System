@@ -30,7 +30,9 @@ public class Logger {
 		}
 	}
 	
-	public static void log(LogLevels logLevel, Object className, String message){
+	public static void log(final LogLevels logLevel, final Object className, final String message){
+		utils.Utils.requireNonNull(logLevel, className, message);
+		
 		StringBuilder messageLog = new StringBuilder(logLevel.toString());
 		messageLog.append(": ");
 		if(className !=null){
@@ -50,7 +52,9 @@ public class Logger {
 		}
 	}
 	
-	public static void logToUser(String messageLog, Object className, MessageLogTypes messageType){
+	public static void logToUser(final String messageLog, final Object className, final MessageLogTypes messageType){
+		utils.Utils.requireNonNull(messageLog, className, messageType);
+		
 		if(mWorkSpace != null){
 			mWorkSpace.showLog(messageLog, messageType);
 		}
@@ -68,10 +72,10 @@ public class Logger {
 		System.out.println(log.toString());
 	}
 	
-	public static void setWorkSpace (WorkSpace workSpace)		{	mWorkSpace = workSpace;			}
-	public static void setLogLevel(List<LogLevels> newlogLevel) {	currentLogLevels = newlogLevel;	}
+	public static void setWorkSpace (final WorkSpace workSpace)		{	mWorkSpace = workSpace;			}
+	public static void setLogLevel(final List<LogLevels> newlogLevel) {	currentLogLevels = newlogLevel;	}
 	
-	private static void logToFile(String logMessage) throws IOException{
+	private static void logToFile(final String logMessage) throws IOException{
 		if(logFileWriter == null || maxLogFileLines < currentLogFileLinesCounter){
 			if(logFileWriter != null){
 				logFileWriter.flush();
@@ -102,7 +106,7 @@ public class Logger {
 		logFileWriter.close();
 	}
 
-	public static void logFromDeviceSource(String logMessage) {
+	public static void logFromDeviceSource(final String logMessage) {
 		//System.out.print(dateFormat.format(new Date()));
 		System.out.println(logMessage);
 		try {

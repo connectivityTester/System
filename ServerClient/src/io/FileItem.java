@@ -3,7 +3,7 @@ package io;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
+import utils.Utils;
 
 public class FileItem implements Comparable<FileItem>{
 	
@@ -12,7 +12,7 @@ public class FileItem implements Comparable<FileItem>{
 	private final List<FileItem> subFolders= new ArrayList<FileItem>();
 	
 	public FileItem(final String path, final boolean isFolder){
-		Objects.requireNonNull(path);
+		Utils.requireNonNull(path);
 		
 		this.path = path.substring(path.lastIndexOf("\\")+1,  path.length());
 		this.isFolder = isFolder;
@@ -25,7 +25,7 @@ public class FileItem implements Comparable<FileItem>{
 	public boolean isFolder() 						{	return this.isFolder;				}
 	
 	public void addToSubFolders(final FileItem folder){
-		Objects.requireNonNull(folder);
+		Utils.requireNonNull(folder);
 		
 		this.subFolders.add(folder);
 		Collections.sort(this.subFolders);

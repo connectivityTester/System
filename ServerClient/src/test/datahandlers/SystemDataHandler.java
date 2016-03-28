@@ -24,17 +24,14 @@ import utils.Utils;
 
 public class SystemDataHandler implements ActionDataHanlder{
 	
-	private static SystemDataHandler systemDataHandler;
+	private static SystemDataHandler systemDataHandler = new SystemDataHandler();
 	
-	public static SystemDataHandler getInstance(){
-		if(systemDataHandler == null){
-			systemDataHandler = new SystemDataHandler();
-		}
-		return systemDataHandler;
-	}
+	public static SystemDataHandler getInstance()	{	return systemDataHandler;	}
 
 	@Override
-	public ActionResult handleActionData(List<Variable> testVariables, Action action) {
+	public ActionResult handleActionData(final List<Variable> testVariables, final Action action) {
+		utils.Utils.requireNonNull(testVariables, action);
+		
 		ActionResult result = null;
 		switch(SystemCommandType.defineCommandType(action.getCommand().getCommandName())){
 			case SLEEP: 
@@ -62,6 +59,8 @@ public class SystemDataHandler implements ActionDataHanlder{
 	}
 
 	private ActionResult searhAnswers(List<Variable> testVariables, Action action) {
+		utils.Utils.requireNonNull(testVariables, action);
+		
 		ActionResult actionResult = new ActionResult(ActionResultTypes.OK, "All patterns were found");
 		List<AnswerPattern> textPatterns = action.getAnswerPatternsByType(IncomingMessageType.TEXT);
 		int timeout = SystemConstants.defaultTimeout;
@@ -92,7 +91,8 @@ public class SystemDataHandler implements ActionDataHanlder{
 		return actionResult;
 	}
 
-	private ActionResult executeArithmeticOperationAction(List<Variable> testVariables, Action action) {
+	private ActionResult executeArithmeticOperationAction(final List<Variable> testVariables, final Action action) {
+		utils.Utils.requireNonNull(testVariables, action);
 		Logger.logToUser( action.getCommand().getCommandName()+" action started", this, MessageLogTypes.INFO);		
 		String 	operator = Utils.getSingleParameterByName(action.getCommandParametes(), "operator").getValue();
 		Double firstOperandDouble = this.parseDoubleFromString(Utils.getVariableByName(Utils.getSingleParameterByName(action.getCommandParametes(), "operand1").getValue(),testVariables).getValue());
@@ -184,13 +184,15 @@ public class SystemDataHandler implements ActionDataHanlder{
 					return new ActionResult(ActionResultTypes.USER_ERROR, "One of operands is string and other - number. Unknown operator \"" + operator + "\"");
 			}
 		}
-		ActionResult result =  new ActionResult(ActionResultTypes.OK, null);		
+		final ActionResult result =  new ActionResult(ActionResultTypes.OK, null);		
 		Logger.log(LogLevels.INFO, this, action.getCommand().getCommandName()+" was finished with result: "+result.getResultType());
 		Logger.logToUser( action.getCommand().getCommandName()+" action finished", this, MessageLogTypes.INFO);
 		return result;
 	}
 
-	private ActionResult executeLoopAction(List<Variable> testVariables, Action action) {
+	private ActionResult executeLoopAction(final List<Variable> testVariables, final Action action) {
+		utils.Utils.requireNonNull(testVariables, action);
+		
 		Logger.logToUser( action.getCommand().getCommandName()+" action started", this, MessageLogTypes.INFO);		
 		ActionResult result = new ActionResult(ActionResultTypes.OK, null);
 		try {
@@ -206,7 +208,9 @@ public class SystemDataHandler implements ActionDataHanlder{
 		return result;
 	}
 
-	private ActionResult executeIfAction(List<Variable> testVariables, Action action) {
+	private ActionResult executeIfAction(final List<Variable> testVariables, final Action action) {
+		utils.Utils.requireNonNull(testVariables, action);
+		
 		Logger.logToUser( action.getCommand().getCommandName()+" action started", this, MessageLogTypes.INFO);		
 		ActionResult result = new ActionResult(ActionResultTypes.OK, null);
 		try {
@@ -224,7 +228,8 @@ public class SystemDataHandler implements ActionDataHanlder{
 		return result;
 	}
 
-	private ActionResult executeSleepAction(Parameter time, List<Variable> testVariables) {
+	private ActionResult executeSleepAction(final Parameter time, final List<Variable> testVariables) {
+		utils.Utils.requireNonNull(time, testVariables);
 		int timeout = 0;
 		ActionResult result =  new ActionResult(ActionResultTypes.OK, null);
 		try{
@@ -260,7 +265,9 @@ public class SystemDataHandler implements ActionDataHanlder{
 		return result;
 	}
 
-	private void executeActionsBlock(List<Action> testActions, List<Variable> testVariables) {
+	private void executeActionsBlock(final List<Action> testActions, final List<Variable> testVariables) {
+		utils.Utils.requireNonNull(testVariables);
+		
 		if(testActions != null){
 			for(Action action : testActions){
 				Logger.log(LogLevels.TRACE, this, "action command: " + action.getCommand().getCommandName() + "   " +action.getParamValue("timeout"));
@@ -270,7 +277,9 @@ public class SystemDataHandler implements ActionDataHanlder{
 		}
 	}
 	
-	private ActionDataHanlder defineDataHandler(SourceTypes sourceType) {
+	private ActionDataHanlder defineDataHandler(final SourceTypes sourceType) {
+		utils.Utils.requireNonNull(sourceType);
+		
 		ActionDataHanlder result = null;
 		switch(sourceType){
 			case EXTERNAL_SOURCE:
@@ -283,8 +292,10 @@ public class SystemDataHandler implements ActionDataHanlder{
 		return result;
 	}
 
-	private boolean executeCondition(List<Variable> testVariables, Action action) throws TestExecutionExeption{
-		boolean loopResult = false; // used for "loop" action and has not meaning for "if" action		
+	private boolean executeCondition(final List<Variable> testVariables, final Action action) throws TestExecutionExeption{
+		utils.Utils.requireNonNull(testVariables, action);
+		
+		boolean loopResult = false; // used for "loop" action and does not have meaning for "if" action		
 		String 	operator = Utils.getSingleParameterByName(action.getCommandParametes(), "operator").getValue();
 		Double firstOperandDouble = this.parseDoubleFromString(Utils.getVariableByName(Utils.getSingleParameterByName(action.getCommandParametes(), "operand1").getValue(),testVariables).getValue());
 		String  firstOperandStr = Utils.getVariableByName(Utils.getSingleParameterByName(action.getCommandParametes(), "operand1").getValue(),testVariables).getValue();
@@ -465,7 +476,9 @@ public class SystemDataHandler implements ActionDataHanlder{
 		return loopResult;
 	}
 	
-	private Double parseDoubleFromString (String value){
+	private Double parseDoubleFromString (final String value){
+		utils.Utils.requireNonNull(value);
+		
 		Double result = null;
 		try {
 			result =  Double.parseDouble(value);
@@ -474,7 +487,9 @@ public class SystemDataHandler implements ActionDataHanlder{
 		return result;
 	}
 
-	private ActionResult analizeAnswers(List<AnswerPattern> answerPatterns, IncomingMessageType type, int timeout){
+	private ActionResult analizeAnswers(final List<AnswerPattern> answerPatterns, final IncomingMessageType type, int timeout){
+		utils.Utils.requireNonNull(answerPatterns, type);
+		
 		ActionResult actionResult = new ActionResult(ActionResultTypes.OK, "All pattern were found");
 		Map<AnswerPattern, Object> textAnswers = null;
 		try {

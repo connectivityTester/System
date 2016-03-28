@@ -1,7 +1,10 @@
 package xml;
 
+import java.util.Collections;
 import java.util.List;
+
 import javax.swing.JOptionPane;
+
 import common.DeviceSource;
 import common.SystemConstants;
 import types.LogLevels;
@@ -17,7 +20,8 @@ public class SystemConfig implements Context{
 	private static SystemConfig systemConfig;
 	private static final AbstractReader reader = new ConfigurationReader(SystemConstants.configShemaPath);
 	
-	SystemConfig(String testRootDirectory, int messagePort, List<DeviceSource> deviceSources) {
+	SystemConfig(final String testRootDirectory, final int messagePort, final List<DeviceSource> deviceSources) {
+		utils.Utils.requireNonNull(testRootDirectory, messagePort, deviceSources);
 		this.testRootDirectory = testRootDirectory;
 		this.messagePort = messagePort;
 		this.deviceSources = deviceSources;
@@ -28,7 +32,7 @@ public class SystemConfig implements Context{
 	public static SystemConfig getInstance()	{	
 		if(systemConfig == null){
 			try {
-				systemConfig = (SystemConfig) reader.createContext(SystemConstants.fileConfigPath);
+				systemConfig = (SystemConfig) reader.getContext(SystemConstants.fileConfigPath);
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(
 						null, 

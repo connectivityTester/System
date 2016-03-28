@@ -4,9 +4,11 @@ import types.ActionResultTypes;
 
 public class ActionResult {
 	private ActionResultTypes resultType = ActionResultTypes.NOT_EXECUTED;
-	private String reason;
+	private final String reason;
 	
-	public ActionResult (ActionResultTypes actionResult, String reason){
+	public ActionResult (final ActionResultTypes actionResult, final String reason){
+		utils.Utils.requireNonNull(actionResult);
+		
 		this.resultType = actionResult;
 		this.reason = reason;
 	}

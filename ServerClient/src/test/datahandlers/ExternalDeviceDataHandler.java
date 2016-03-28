@@ -19,7 +19,7 @@ public class ExternalDeviceDataHandler implements ActionDataHanlder{
 	}
 	
 	@Override
-	public ActionResult handleActionData(List<Variable> testVariables, Action action) {
+	public ActionResult handleActionData(final List<Variable> testVariables, final Action action) {
 		return ConnenctionController.getInstatnce().handleTestData(action, testVariables, DataPackerTypes.JSON_DATA_PACKER);
 	}
 

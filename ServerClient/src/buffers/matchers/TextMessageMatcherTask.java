@@ -2,7 +2,6 @@ package buffers.matchers;
 
 import java.time.Duration;
 import java.time.LocalTime;
-import java.util.Objects;
 import java.util.Queue;
 import java.util.regex.Pattern;
 
@@ -11,6 +10,7 @@ import com.google.gson.Gson;
 import types.IncomingMessageType;
 import types.LogLevels;
 import utils.Logger;
+import utils.Utils;
 
 public class TextMessageMatcherTask extends MessageMatcher {
 
@@ -22,7 +22,7 @@ public class TextMessageMatcherTask extends MessageMatcher {
 	{
 		super(pattern, deviceSourceId, queue, timeout);
 		
-		Objects.requireNonNull(pattern);
+		Utils.requireNonNull(pattern);
 		
 		this.messageType = IncomingMessageType.TEXT;
 		this.patternString = ".*" + this.pattern.toLowerCase() + ".*";
@@ -31,15 +31,15 @@ public class TextMessageMatcherTask extends MessageMatcher {
 	@Override
 	public String match() {
 		String answer = null;
-		final LocalTime startTime = LocalTime.now();
+		LocalTime startTime = LocalTime.now();
 		long diffMiliSeconds = 0;
 		TRACE_FOUND_LABEL:{
 			do {
-				for(final String message : this.queue){
+				for(String message : this.queue){
 					//Logger.log(LogLevels.TRACE, this, curMessage);
-					final ParsedIncomingMessage currentMessage = this.jsonParser.fromJson(message, ParsedIncomingMessage.class);
+					ParsedIncomingMessage currentMessage = this.jsonParser.fromJson(message, ParsedIncomingMessage.class);
 					if(currentMessage != null && 
-							this.deviceSourceId == currentMessage.getId() &&
+							currentMessage.equalsMessageId(deviceSourceId) &&
 							currentMessage.equalsType(this.messageType))
 					{
 						String messageData = currentMessage.getData().toLowerCase();

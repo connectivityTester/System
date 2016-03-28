@@ -1,7 +1,7 @@
 package buffers.matchers;
-
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+
+import utils.Utils;
 
 public class AnswerPattern {
 	
@@ -11,7 +11,7 @@ public class AnswerPattern {
 	private long spentTime;
 	
 	public AnswerPattern(final int deviceSourceId, final String pattern) {
-		Objects.requireNonNull(pattern);
+		Utils.requireNonNull(pattern);
 		
 		this.deviceSourceId = deviceSourceId;
 		this.pattern = pattern;
@@ -23,7 +23,7 @@ public class AnswerPattern {
 	public long getSpentTime() 		{	return this.spentTime;							}
 
 	public void setSpentTime(final long spentTime, final TimeUnit timeUnit) {	
-		Objects.requireNonNull(timeUnit);
+		Utils.requireNonNull(timeUnit);
 		
 		this.spentTime = spentTime;	
 		this.timeUnit = timeUnit;

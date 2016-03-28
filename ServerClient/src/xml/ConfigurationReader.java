@@ -24,12 +24,14 @@ public class ConfigurationReader extends AbstractReader{
 	
 	private final Pattern PATTERN = Pattern.compile("^(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])$");
 	
-	public ConfigurationReader(String shemaPath) {
+	public ConfigurationReader(final String shemaPath) {
 		super(shemaPath);
 	}
 	
 	@Override
-	protected SystemConfig readContext(String filePath) throws FileNotFoundException, Exception {
+	protected SystemConfig readContext(final String filePath) throws FileNotFoundException, Exception {
+		utils.Utils.requireNonNull(filePath);
+		
 		File file = new File(filePath);
 		Document xmlDoc = null;
 		if (file.exists() && file.isFile()) {
@@ -94,7 +96,9 @@ public class ConfigurationReader extends AbstractReader{
 	}
 
 	@Override
-	protected Context validateReadContext(Context context) throws ContentException {
+	protected Context validateReadContext(final Context context) throws ContentException {
+		utils.Utils.requireNonNull(context);
+		
 		SystemConfig systemConfig = (SystemConfig)context;
 		// check test directory is exists
 		File testDirectory = new File(systemConfig.getTestRootDirectory());

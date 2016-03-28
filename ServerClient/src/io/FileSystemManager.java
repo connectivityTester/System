@@ -3,19 +3,17 @@ package io;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.Arrays;
-import java.util.Objects;
-
 import javax.swing.JOptionPane;
-
 import types.LogLevels;
 import utils.Logger;
+import utils.Utils;
 
 public class FileSystemManager {
 	
 	private String[] getSubFolders(final String folder){
-		Objects.requireNonNull(folder);
+		Utils.requireNonNull(folder);
 		
-		String [] subfolders = new File(folder).list(new FilenameFilter() {
+		final String [] subfolders = new File(folder).list(new FilenameFilter() {
 			@Override
 			public boolean accept(File dir, String name) {
 				return new File(dir+"\\"+name).isDirectory();
@@ -25,9 +23,9 @@ public class FileSystemManager {
 	}
 	
 	private String[] getSubFiles(final String folder){
-		Objects.requireNonNull(folder);
+		Utils.requireNonNull(folder);
 		
-		String [] subfiles = new File(folder).list(new FilenameFilter() {
+		final String [] subfiles = new File(folder).list(new FilenameFilter() {
 			@Override
 			public boolean accept(File dir, String name) {
 				if(new File(dir+"\\"+name).isFile() && name.endsWith(".test")){
@@ -43,7 +41,7 @@ public class FileSystemManager {
 	}
 	
 	public FileItem getStructure(final String folder){
-		Objects.requireNonNull(folder);
+		Utils.requireNonNull(folder);
 		
 		File directory = new File(folder);
 		FileItem result = null;

@@ -5,7 +5,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import common.DeviceSource;
@@ -14,6 +13,7 @@ import types.DeviceSourceStatus;
 import types.LogLevels;
 import types.MessageLogTypes;
 import utils.Logger;
+import utils.Utils;
 import xml.SystemConfig;
 
 public class DeviceSourceConnectionController extends Thread{
@@ -24,7 +24,7 @@ public class DeviceSourceConnectionController extends Thread{
 	private final DeviceSourceConnectionBuilder connectionFactory = new DeviceSourceConnectionBuilder(this);
 	
 	public DeviceSourceConnectionController(final WorkSpace workSpace){
-		Objects.requireNonNull(workSpace);
+		Utils.requireNonNull(workSpace);
 		
 		this.workSpace = workSpace;
 		ServerSocket socket = null;
@@ -41,7 +41,7 @@ public class DeviceSourceConnectionController extends Thread{
 	
 	@Override
 	public void run() {
-		Objects.requireNonNull(this.serverSocket); 
+		Utils.requireNonNull(this.serverSocket); 
 		
 		while(true){
 			Socket socket = null;
@@ -51,7 +51,7 @@ public class DeviceSourceConnectionController extends Thread{
 				Logger.log(LogLevels.EXCEPTION, this, "Could not make socket from incoming device connection");
 			}
 			if(socket != null){
-				final DeviceSourceConnection newConnection = this.connectionFactory.createDeviceSourceConnection(socket);
+				DeviceSourceConnection newConnection = this.connectionFactory.createDeviceSourceConnection(socket);
 				if(newConnection != null ){
 					this.connectionList.add(newConnection);
 					final Thread thread = new Thread(newConnection);
@@ -64,8 +64,7 @@ public class DeviceSourceConnectionController extends Thread{
 	}
 	
 	public boolean sendTestDataToDeviceSource(final DeviceSource deviceSource, final String testDataString){
-		Objects.requireNonNull(deviceSource);
-		Objects.requireNonNull(testDataString);
+		Utils.requireNonNull(deviceSource, testDataString);
 		
 		boolean result = true;
 		Optional<DeviceSourceConnection> deviceConnection = this.connectionList.stream()
@@ -92,7 +91,7 @@ public class DeviceSourceConnectionController extends Thread{
 	}
 	
 	void removeDisconnectedConnection(final DeviceSource deviceSource){
-		Objects.requireNonNull(deviceSource);
+		Utils.requireNonNull(deviceSource);
 		
 		for(DeviceSourceConnection connection : this.connectionList){
 			if(connection.equalsDeviceId(deviceSource.getId())){

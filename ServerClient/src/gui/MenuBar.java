@@ -1,13 +1,12 @@
 package gui;
 
-import java.util.Objects;
-
 import javax.swing.ButtonGroup;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JRadioButtonMenuItem;
 
 import types.GuiModes;
+import utils.Utils;
 
 @SuppressWarnings("serial")
 public class MenuBar extends JMenuBar{
@@ -17,7 +16,7 @@ public class MenuBar extends JMenuBar{
 	
 	public MenuBar(final WorkSpace workSpace)
 	{
-		Objects.requireNonNull(workSpace);
+		Utils.requireNonNull(workSpace);
 		
 		this.workSpace = workSpace;
 		this.constructorMode = new JRadioButtonMenuItem("Constuctor mode");

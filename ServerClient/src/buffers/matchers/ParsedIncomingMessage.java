@@ -26,6 +26,10 @@ public class ParsedIncomingMessage
 		
 		return type == IncomingMessageType.defineIncomingMessageType(this.type);
 	}
+	
+	public boolean equalsMessageId(final int messageId){
+		return messageId == this.id;
+	}
 
 	@Override
 	public String toString() {

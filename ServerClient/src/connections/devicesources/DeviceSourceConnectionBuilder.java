@@ -2,13 +2,13 @@ package connections.devicesources;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.Objects;
 import java.util.Optional;
 
 import common.DeviceSource;
 import types.LogLevels;
 import types.MessageLogTypes;
 import utils.Logger;
+import utils.Utils;
 import xml.SystemConfig;
 
 public class DeviceSourceConnectionBuilder {
@@ -20,7 +20,7 @@ public class DeviceSourceConnectionBuilder {
 	}
 	
 	public DeviceSourceConnection createDeviceSourceConnection(final Socket clientSocket){
-		Objects.requireNonNull(clientSocket);
+		Utils.requireNonNull(clientSocket);
 		
 		Logger.log(LogLevels.INFO, this, "Method run, incoming device source ip address: " + clientSocket.getInetAddress().getHostAddress());
 		Optional<DeviceSource> incDeviceSource = SystemConfig.getInstance().getDeviceSources().stream()

@@ -3,12 +3,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import buffers.BufferManager;
 import common.DeviceSource;
 import types.MessageLogTypes;
 import utils.Logger;
+import utils.Utils;
 
 public class DeviceSourceInputConnection implements Runnable{
 	
@@ -19,9 +19,7 @@ public class DeviceSourceInputConnection implements Runnable{
 	public DeviceSourceInputConnection(final DeviceSource devSource, final InputStream inStream , 
 										final DeviceSourceConnectionController controller) 
 	{
-		Objects.requireNonNull(devSource);
-		Objects.requireNonNull(inStream);
-		Objects.requireNonNull(controller);
+		Utils.requireNonNull(devSource,inStream, controller);
 		
 		this.deviceSourceConnectionController = controller;
 		this.deviceSource = devSource;

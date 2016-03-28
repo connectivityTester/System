@@ -2,7 +2,6 @@ package test;
 
 import java.util.Collections;
 import java.util.List;
-
 import buffers.BufferManager;
 import common.DeviceSource;
 import test.actions.Action;
@@ -24,7 +23,9 @@ public class Test implements Context{
 	private List<Action> testActions;
 	private List<Variable> testVariables;
 	
-	public Test(List<Variable> testVariables, List<Action> testActions) {
+	public Test(final List<Variable> testVariables, final List<Action> testActions) {
+		utils.Utils.requireNonNull(testActions, testVariables);
+		
 		this.testVariables = testVariables;
 		this.testActions = testActions; 
 	}
@@ -76,7 +77,9 @@ public class Test implements Context{
 		Logger.logToUser( "----- Test \""+this.testName+"\" was finished -----", this, MessageLogTypes.HEADER);
 	}
 	
-	private ActionDataHanlder defineDataHandler(DeviceSource deviceSource) {
+	private ActionDataHanlder defineDataHandler(final DeviceSource deviceSource) {
+		utils.Utils.requireNonNull(deviceSource);
+		
 		ActionDataHanlder dataHanlder = null;
 		switch(deviceSource.getSourceType()){
 			case EXTERNAL_SOURCE: 
@@ -128,10 +131,12 @@ public class Test implements Context{
 
 	public List<Variable> getSortedTestVariables(){
 		Collections.sort(this.testVariables);
-		return this.testVariables;
+		return (List<Variable>) Collections.unmodifiableCollection(this.testVariables);
 	}
 	
-	public Variable getVariableByName(String variableName){
+	public Variable getVariableByName(final String variableName){
+		utils.Utils.requireNonNull(variableName);
+		
 		for(Variable variable : this.testVariables){
 			if(variable.getName().equals(variableName)){
 				return variable;

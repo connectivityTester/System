@@ -24,11 +24,15 @@ public abstract class AbstractReader {
 	
 	protected final String shemaPath;
 	
-	protected AbstractReader (String shemaPath){
+	protected AbstractReader (final String shemaPath){
+		utils.Utils.requireNonNull(shemaPath);
+		
 		this.shemaPath = shemaPath;
 	}
 	
-	public Context createContext(String filePath) throws FileNotFoundException, ContentException, Exception{
+	public final Context getContext(String filePath) throws FileNotFoundException, ContentException, Exception{
+		utils.Utils.requireNonNull(filePath);
+		
 		if(this.validateFileContext(filePath, this.shemaPath)){
 			Logger.log(LogLevels.TRACE, this, "File \"" + filePath + " was validated successfully!");
 			Context context = this.readContext(filePath);
@@ -40,10 +44,12 @@ public abstract class AbstractReader {
 		}
 	}
 	
-	protected abstract Context readContext(String filePath) throws FileNotFoundException, Exception;
-	protected abstract Context validateReadContext(Context context) throws ContentException;
+	protected abstract Context readContext(final String filePath) throws FileNotFoundException, Exception;
+	protected abstract Context validateReadContext(final Context context) throws ContentException;
 	
-	protected boolean validateFileContext(String filePath, String shemaPath) throws ContentException{
+	protected boolean validateFileContext(final String filePath, final String shemaPath) throws ContentException{
+		utils.Utils.requireNonNull(filePath, shemaPath);
+		
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 		factory.setValidating(false); 
 		factory.setNamespaceAware(true);		

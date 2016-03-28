@@ -1,37 +1,33 @@
 package starters;
-
-import java.util.Iterator;
-import java.util.concurrent.CopyOnWriteArrayList;
-
+import java.util.List;
 import gui.WorkSpace;
 import types.DeviceSourceStatus;
 import types.MessageLogTypes;
 import utils.Logger;
+import utils.Utils;
 
 public class DeviceSourceProcessChecker implements Runnable{
 	
-	private final CopyOnWriteArrayList<DeviceSourceProcess> startedProcesses;
+	private final List<DeviceSourceProcess> startedProcesses;
 	private final WorkSpace workSpace;
 	
-	DeviceSourceProcessChecker(CopyOnWriteArrayList<DeviceSourceProcess> startedProcesses, WorkSpace workSpace) {
+	DeviceSourceProcessChecker(final List<DeviceSourceProcess> startedProcesses, final WorkSpace workSpace) {
+		Utils.requireNonNull(startedProcesses, workSpace);
+		
 		this.workSpace = workSpace;
 		this.startedProcesses = startedProcesses;
 	}
 	
 	@Override
 	public void run() {
-		DeviceSourceProcess process = null;
-		Iterator<DeviceSourceProcess> iterator = null;
 		while(true){
-			iterator = this.startedProcesses.iterator();
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			while(iterator.hasNext()){
-				process = iterator.next();
-				if(process.getProcess() != null && !process.getProcess().isAlive()){
+			this.startedProcesses.parallelStream().forEach(process ->{
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				if(process.getProcess() != null && !process.isAlive()){
 					this.workSpace.updateDeviceStatus(process.getDeviceSource(), DeviceSourceStatus.STOPED);
 					StringBuffer logMessage = new StringBuffer("Device source \"");
 					logMessage.append(process.getDeviceSource().getName());
@@ -43,8 +39,7 @@ public class DeviceSourceProcessChecker implements Runnable{
 					Logger.logToUser(logMessage.toString(), this, MessageLogTypes.INFO);
 					this.startedProcesses.remove(process);
 				}
-			}
-			
+			});
 		}
 	}
 }

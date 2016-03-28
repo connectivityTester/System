@@ -25,18 +25,23 @@ import xml.TestReader;
 
 public class TestExecutor implements Runnable{
 	
+	private static final String ERROR_TITLE = "Error during test loading";
 	private final static SimpleDateFormat format = new SimpleDateFormat("yyMMdd_HHmmss");
 	private final List<Test> testToExecute;
 	private final boolean doReport;
 	private final AbstractReader reader = new TestReader(SystemConstants.testShemaPath);;
 	
-	public TestExecutor(TreePath [] paths, boolean withReport){
+	public TestExecutor(final TreePath [] paths, final boolean withReport){
+		utils.Utils.requireNonNull((Object []) paths);
+		
 		this.testToExecute = this.loadTestList(paths);
 		this.doReport = withReport;
 	}
 
-	private List<Test> loadTestList(TreePath [] paths) {
-		List<Test> tests = new ArrayList<Test>();
+	private List<Test> loadTestList(final TreePath [] paths) {
+		utils.Utils.requireNonNull((Object []) paths);
+		
+		final List<Test> tests = new ArrayList<Test>();
 		for(TreePath path : paths){
 			TreeNode node = (TreeNode)path.getLastPathComponent();
 			if(node.isLeaf()){
@@ -44,20 +49,8 @@ public class TestExecutor implements Runnable{
 				if(absolutePath.isEmpty()){
 					continue;
 				}
-				Test test = null;
-				try {
-					test = (Test) this.reader.createContext(absolutePath);
-				} catch (Exception e) {
-					e.printStackTrace();
-					JOptionPane.showMessageDialog(
-							null, 
-							"<html><body><p style='width: 150px;'>File: "+
-							node.toString()+
-							".</p><p> "
-							+e.getMessage()+
-							". </p><p>Execution of tests was interrupted</p></body></html>", 
-							"Error during test loading", 
-							JOptionPane.ERROR_MESSAGE);
+				Test test = createTest(node, absolutePath);
+				if(test == null){
 					return null;
 				}
 				test.setTestName(node.toString());
@@ -66,16 +59,8 @@ public class TestExecutor implements Runnable{
 			else{
 				List<TreeNode> children = this.getChildren(node);
 				for(TreeNode child : children){
-					String pathToTest = this.getAbsoluteTestFilePath(child);
-					Test test = null;
-					try {
-						test = (Test) this.reader.createContext(pathToTest);
-					} catch (Exception e) {
-						JOptionPane.showMessageDialog(
-								null, 
-								"<html><body><p style='width: 150px;'>File: "+pathToTest+".</p><p> "+e.getMessage()+". </p><p>Execution of tests was interrupted</p></body></html>", 
-								"Error during test loading", 
-								JOptionPane.ERROR_MESSAGE);
+					Test test = createTest(child);
+					if(test == null){
 						return null;
 					}
 					test.setTestName(child.toString());
@@ -84,6 +69,41 @@ public class TestExecutor implements Runnable{
 			}
 		}
 		return tests;
+	}
+
+	private Test createTest(final TreeNode child) {
+		utils.Utils.requireNonNull(child);
+		
+		String pathToTest = this.getAbsoluteTestFilePath(child);
+		Test test = null;
+		try {
+			test = (Test) this.reader.getContext(pathToTest);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(
+					null, "<html><body><p style='width: 150px;'>File: " + 
+					pathToTest+".</p><p> "+e.getMessage()+
+					". </p><p>Execution of tests was interrupted</p></body></html>", 
+					ERROR_TITLE, 
+					JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+		return test;
+	}
+
+	private Test createTest(TreeNode node, String absolutePath) {
+		Test test = null;
+		try {
+			test = (Test) this.reader.getContext(absolutePath);
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(
+					null, "<html><body><p style='width: 150px;'>File: "+
+					node.toString() + ".</p><p> "	+ e.getMessage()+
+					". </p><p>Execution of tests was interrupted</p></body></html>", 
+					ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+		return test;
 	}
 	
 	
@@ -99,9 +119,7 @@ public class TestExecutor implements Runnable{
 		if(this.testToExecute == null){
 			return;
 		}	
-		for(Test test : this.testToExecute){			
-			test.executeTest();			
-		}
+		this.testToExecute.forEach(test -> test.executeTest());
 		if(this.doReport){
 			Logger.logToUser("Report generation was started", this, MessageLogTypes.HEADER);			
 			this.generateReport(this.testToExecute, ReportTypes.EXCEL_REPORT);			

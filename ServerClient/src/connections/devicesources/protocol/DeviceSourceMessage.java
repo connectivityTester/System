@@ -1,7 +1,7 @@
 package connections.devicesources.protocol;
 
 import java.util.List;
-import java.util.Objects;
+import utils.Utils;
 
 public class DeviceSourceMessage {
 	
@@ -10,8 +10,7 @@ public class DeviceSourceMessage {
 	private List<DeviceSourceParameter> parameters;
 	
 	public DeviceSourceMessage(final String commandName, final int id, final List<DeviceSourceParameter> parameters) {
-		Objects.requireNonNull(commandName);
-		Objects.requireNonNull(parameters);
+		Utils.requireNonNull(commandName, parameters);
 		
 		this.commandName = commandName;
 		this.id = id;

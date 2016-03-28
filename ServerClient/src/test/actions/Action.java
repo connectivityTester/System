@@ -1,5 +1,6 @@
 package test.actions;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,10 +31,12 @@ public class Action {
 	private FailReaction reaction;
 	private int retry;
 
-	public Action(Command command, List<Parameter> commandParametes, 
-					List<Action> thenBlock, List<Action> elseBlock, List<Action> loopBodyBlock, 
-					FailReaction failReaction, int retry) 
+	public Action(final Command command, final List<Parameter> commandParametes, 
+					final List<Action> thenBlock, final List<Action> elseBlock,
+					final List<Action> loopBodyBlock, final FailReaction failReaction, int retry) 
 	{
+		utils.Utils.requireNonNull(command, commandParametes, failReaction);
+		
 		this.command = command;
 		this.commandType = this.defineCommandType(command.getDeviceSource().getId());
 		this.commandParametes = commandParametes;
@@ -45,7 +48,9 @@ public class Action {
 		this.retry = retry;
 	}
 	
-	public String getParamValue(String paramName){
+	public String getParamValue(final String paramName){
+		utils.Utils.requireNonNull(paramName);
+		
 		for(Parameter param : this.commandParametes){
 			if(param.getName() != null && param.getName().equals(paramName)){
 				return param.getValue();
@@ -54,7 +59,9 @@ public class Action {
 		return null;
 	}
 	
-	public List<AnswerPattern> getAnswerPatternsByType(IncomingMessageType type){
+	public List<AnswerPattern> getAnswerPatternsByType(final IncomingMessageType type){
+		utils.Utils.requireNonNull(type);
+		
 		List<AnswerPattern> answerPatterns = null;
 		for(Parameter parameter : this.commandParametes){
 			if(parameter.getMessageType() == type){
@@ -110,29 +117,39 @@ public class Action {
 	}
 	
 	private CommandTypes defineCommandType(int devicesourceId){
-		return devicesourceId != SystemConstants.systemDeviceSourceId ? CommandTypes.EXTERNAL_COMMAND : CommandTypes.SYSTEM_COMMAND;
+		return devicesourceId != SystemConstants.systemDeviceSourceId ? 
+									CommandTypes.EXTERNAL_COMMAND : 
+										CommandTypes.SYSTEM_COMMAND;
 	}
 	
 	public CommandTypes getCommandType() {	return commandType;	}
 	
-	public String packActionToString(DeviceSource devSource, DataPackerTypes dataPackerType, List<Variable> testVariables){
+	public String packActionToString(final DeviceSource devSource, final DataPackerTypes dataPackerType, 
+										final List<Variable> testVariables)
+	{
+		utils.Utils.requireNonNull(devSource, dataPackerType, testVariables);
+		
 		DeviceSourceMessage deviceSourceMessage = null;
 		if(this.commandParametes != null){
 			List<DeviceSourceParameter> deviceSourceParameters = new LinkedList<>();
-			for(Parameter parameter : this.commandParametes){
-				if(!parameter.isVariable()){
-					deviceSourceParameters.add(new DeviceSourceParameter(parameter.getName(), parameter.getValue()));
-				}
-				else{
-					deviceSourceParameters.add(new DeviceSourceParameter(parameter.getName(), Utils.prepareSingleParameterValue(parameter, testVariables)));
-				}
-			}
-			deviceSourceMessage = new DeviceSourceMessage(this.command.getCommandName(), this.command.getDeviceSource().getId(), deviceSourceParameters);
+			this.commandParametes.forEach(param -> {
+					if(!param.isVariable()){
+						deviceSourceParameters.add(new DeviceSourceParameter(param.getName(), param.getValue()));
+					}
+					else{
+						deviceSourceParameters.add(new DeviceSourceParameter(param.getName(), 
+												Utils.prepareSingleParameterValue(param, testVariables)));
+					}
+			});
+			deviceSourceMessage = new DeviceSourceMessage(this.command.getCommandName(), 
+															this.command.getDeviceSource().getId(), 
+																deviceSourceParameters);
 		}
 		else{
-			deviceSourceMessage = new DeviceSourceMessage(this.command.getCommandName(), this.command.getDeviceSource().getId(), null);
+			deviceSourceMessage = new DeviceSourceMessage(this.command.getCommandName(), 
+																this.command.getDeviceSource().getId(), null);
 		}
-		String commandString = new Gson().toJson(deviceSourceMessage, DeviceSourceMessage.class);
+		final String commandString = new Gson().toJson(deviceSourceMessage, DeviceSourceMessage.class);
 		Logger.logToUser("Command \"" + commandString + "\" will be sent", this, MessageLogTypes.INFO);
 		return commandString;
 	}

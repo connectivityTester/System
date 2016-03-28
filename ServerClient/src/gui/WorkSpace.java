@@ -3,17 +3,13 @@ package gui;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Objects;
-
 import io.FileSystemManager;
 import starters.DeviceSourceRunManager;
-
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-
 import common.DeviceSource;
 import gui.constructor.listeners.ConstructorPanel;
 import gui.runner.DeviceSourcePanel;
@@ -23,6 +19,7 @@ import types.DeviceSourceStatus;
 import types.GuiModes;
 import types.MessageLogTypes;
 import utils.Logger;
+import utils.Utils;
 
 @SuppressWarnings("serial")
 public class WorkSpace extends JFrame{
@@ -37,7 +34,7 @@ public class WorkSpace extends JFrame{
 	public WorkSpace(final FileSystemManager fileSystemManager){
 		super("Connectivity testing tool");
 		
-		Objects.requireNonNull(fileSystemManager);
+		Utils.requireNonNull(fileSystemManager);
 		
 		this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
 		this.deviceSourcePanel = new DeviceSourcePanel();
@@ -75,8 +72,7 @@ public class WorkSpace extends JFrame{
 	}
 
 	public void showLog(final String messageLog, final MessageLogTypes messageType){
-		Objects.requireNonNull(messageLog);
-		Objects.requireNonNull(messageType);
+		Utils.requireNonNull(messageLog, messageType);
 		
 		if(this.currentMode == GuiModes.EXECUTION_MODE){
 			((LogPanel)this.workPanel).addLog(messageLog, messageType);
@@ -84,7 +80,7 @@ public class WorkSpace extends JFrame{
 	}
 
 	public void setMode(final GuiModes newMode) {
-		Objects.requireNonNull(newMode);
+		Utils.requireNonNull(newMode);
 		
 		this.currentMode = newMode;
 		switch(newMode){
@@ -101,8 +97,7 @@ public class WorkSpace extends JFrame{
 	}
 
 	public void updateDeviceStatus(final DeviceSource deviceSource, final DeviceSourceStatus status) {
-		Objects.requireNonNull(deviceSource);
-		Objects.requireNonNull(status);
+		Utils.requireNonNull(deviceSource, status);
 		
 		this.deviceSourcePanel.updateDeviceStatus(deviceSource, status);
 	}

@@ -2,11 +2,11 @@ package buffers;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import buffers.matchers.AnswerPattern;
 import exceptions.UnknownMessageTypeException;
 import types.IncomingMessageType;
+import utils.Utils;
 
 public class BufferManager {
 
@@ -19,7 +19,7 @@ public class BufferManager {
 	public void setIsAllowAddition(boolean isAllow)	{	this.allowAddition = isAllow;				}
 	
 	public void addMessageToBuffer(final List<String> messages)	{
-		Objects.requireNonNull(messages);
+		Utils.requireNonNull(messages);
 		
 		if(this.allowAddition){
 			this.incomingMessagesBuffer.addToBuffer(messages);	

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.Objects;
 
+import utils.Utils;
 import common.DeviceSource;
 
 public class DeviceSourceConnection implements Runnable{
@@ -16,8 +17,7 @@ public class DeviceSourceConnection implements Runnable{
 	DeviceSourceConnection(final Socket socket, final DeviceSource deviceSource,
 							final DeviceSourceConnectionController controller) throws IOException
 	{
-		Objects.requireNonNull(socket);
-		Objects.requireNonNull(controller);
+		Utils.requireNonNull(socket, controller);
 		
 		this.deviceSource = deviceSource;
 		this.deviceSourceSocket = socket;
@@ -32,7 +32,7 @@ public class DeviceSourceConnection implements Runnable{
 	
 	@Override
 	public void run() {
-		final Thread inputConnectionThread = new Thread(this.inputConnection);
+		Thread inputConnectionThread = new Thread(this.inputConnection);
 		inputConnectionThread.setPriority(Thread.MIN_PRIORITY);
 		inputConnectionThread.start();
 	}

@@ -1,7 +1,6 @@
 package connections;
 
 import java.util.List;
-import java.util.Objects;
 
 import common.DeviceSource;
 import connections.devicesources.DeviceSourceConnectionController;
@@ -14,18 +13,17 @@ import types.DataPackerTypes;
 import types.LogLevels;
 import types.MessageLogTypes;
 import utils.Logger;
+import utils.Utils;
 
 public class ConnenctionController {
 	
 	private DeviceSourceConnectionController deviceSourceConnectionController;
 	private final static ConnenctionController connenctionController = new ConnenctionController();
 		
-	public static ConnenctionController getInstatnce(){
-		return connenctionController;
-	}
+	public static ConnenctionController getInstatnce()	{	return connenctionController;	}
 	
 	public void startAllConnections(final WorkSpace workSpace){
-		Objects.requireNonNull(workSpace);
+		Utils.requireNonNull(workSpace);
 		
 		if(this.deviceSourceConnectionController == null){
 			this.deviceSourceConnectionController = new DeviceSourceConnectionController(workSpace);
@@ -34,8 +32,7 @@ public class ConnenctionController {
 	}
 	
 	public ActionResult handleTestData(final Action action, final List<Variable> testVariables, final DataPackerTypes dataPackerType){
-		Objects.requireNonNull(action);
-		Objects.requireNonNull(dataPackerType);
+		Utils.requireNonNull(action, dataPackerType);
 		
 		ActionResult result = new ActionResult(ActionResultTypes.OK, null);
 		switch(action.getCommandType()){
@@ -53,7 +50,7 @@ public class ConnenctionController {
 				Logger.logToUser(logMessage.toString(), connenctionController, MessageLogTypes.INFO);
 				final DeviceSource devSource = action.getCommand().getDeviceSource();
 				final String testDataString = action.packActionToString(devSource, dataPackerType, testVariables);
-				final boolean sendResult = this.deviceSourceConnectionController.sendTestDataToDeviceSource(devSource, testDataString);
+				boolean sendResult = this.deviceSourceConnectionController.sendTestDataToDeviceSource(devSource, testDataString);
 				if(!sendResult){
 					result = new ActionResult(ActionResultTypes.NOK, "Action data was not successfully sent to device source");
 					logMessage.append("\nwas sent to ");

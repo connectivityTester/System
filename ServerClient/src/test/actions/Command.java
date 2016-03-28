@@ -8,14 +8,14 @@ public class Command {
 	private String commandName;
 	private DeviceSource deviceSource;
 
-	public Command(String command, int deviceSourceId) {
+	public Command(final String command, final int deviceSourceId) {
+		utils.Utils.requireNonNull(command);
+		
 		this.commandName = command;
-		this.deviceSource = SystemConfig.getInstance().getSystemDeviceSource();
-		for(DeviceSource deviceSource : SystemConfig.getInstance().getDeviceSources()){
-			if(deviceSource.getId() == deviceSourceId){
-				this.deviceSource = deviceSource;
-			}
-		}
+		this.deviceSource = SystemConfig.getInstance().getDeviceSources().stream()
+			.filter(deviceSource -> deviceSource.equalsId(deviceSourceId))
+			.findFirst()
+			.orElse(SystemConfig.getInstance().getSystemDeviceSource());
 	}
 
 	@Override

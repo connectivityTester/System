@@ -3,7 +3,6 @@ package buffers;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
 
@@ -14,6 +13,7 @@ import exceptions.UnknownMessageTypeException;
 import types.IncomingMessageType;
 import types.LogLevels;
 import utils.Logger;
+import utils.Utils;
 
 class Buffer{	
 	
@@ -27,7 +27,7 @@ class Buffer{
 	}
 	
 	void addToBuffer(final List<String> messages){
-		Objects.requireNonNull(messages);
+		Utils.requireNonNull(messages);
 		
 		if(this.bufferCapacity <= this.queue.size()){
 			Logger.log(LogLevels.TRACE, this, "Method addToBuffer, buffer is full, oldest message will be deleted");
@@ -39,12 +39,12 @@ class Buffer{
 	void clearBuffer(){	queue.clear();	}
 
 	public Object findPattern(final AnswerPattern pattern, final IncomingMessageType type, final int timeout) throws UnknownMessageTypeException {
-		Objects.requireNonNull(pattern);
+		Utils.requireNonNull(pattern);
 		
 		if(type == IncomingMessageType.UNKNOWN_TYPE){
 			throw new UnknownMessageTypeException("Unknown message type: " + type.toString());
 		}
-		final MessageMatcher messageMatcher = this.messageMatcherFactory.createMessageMatcher(pattern, timeout, type);
+		MessageMatcher messageMatcher = this.messageMatcherFactory.createMessageMatcher(pattern, timeout, type);
 		LocalTime startTime = LocalTime.now();
 		final Object foundAnswer = messageMatcher.match();
 		pattern.setSpentTime(Duration.between(startTime, LocalTime.now()).getNano()/1_000_000, TimeUnit.MILLISECONDS);
@@ -63,6 +63,7 @@ class Buffer{
 													final int timeout, final IncomingMessageType type) 
 																	throws UnknownMessageTypeException
 		{
+			Utils.requireNonNull(answerPattern);
 			MessageMatcher messageMatcher = null;
 			switch (type) {
 				case TEXT:	messageMatcher = new TextMessageMatcherTask(answerPattern.getPattern(), 

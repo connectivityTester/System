@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
@@ -19,14 +20,17 @@ import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 
 import test.Test;
-import test.actions.Action;
 import types.ActionResultTypes;
 import types.FailReaction;
 import types.LogLevels;
 import utils.Logger;
+import utils.Utils;
 
 public class ExcelReport extends Report{
 	
+	private static final byte blueColor = (byte) 255;
+	private static final byte greenColor = (byte)106;
+	private static final byte redColor = (byte)181;
 	private int currentRowNumber = 0;
 	private final HSSFWorkbook document;
 	private final HSSFSheet mainSheet;
@@ -37,12 +41,14 @@ public class ExcelReport extends Report{
 	}
 
 	@Override
-	public void setDataToFile(List<Test> executedTest) {
-		for(Test test : executedTest){
+	public void setDataToFile(final List<Test> executedTests) {
+		Utils.requireNonNull(executedTests);
+		
+		executedTests.forEach(test ->{
 			this.createTestHeader(this.mainSheet, test.getTestName());
 			this.setData(this.mainSheet, test);
 			this.currentRowNumber++;
-		}
+		});
 		this.mainSheet.autoSizeColumn(0, true);
 		this.mainSheet.autoSizeColumn(1, true);
 		this.mainSheet.autoSizeColumn(2, true);
@@ -50,7 +56,9 @@ public class ExcelReport extends Report{
 	}
 
 	@Override
-	public void saveDataToFile(String pathTofile) throws FileNotFoundException, Exception {
+	public void saveDataToFile(final String pathTofile) throws FileNotFoundException, Exception {
+		Utils.requireNonNull(pathTofile);
+		
 		FileOutputStream outputStream = new FileOutputStream(
 				new File(Report.reportFilesDirectory.getAbsolutePath()
 						+ "/" + pathTofile));
@@ -59,7 +67,9 @@ public class ExcelReport extends Report{
 		outputStream.close();
 	}
 	
-	private void createTestHeader(HSSFSheet sheet, String testName){
+	private void createTestHeader(final HSSFSheet sheet, final String testName){
+		Utils.requireNonNull(sheet, testName);
+		
 		CellRangeAddress mergedCells = new CellRangeAddress(this.currentRowNumber, this.currentRowNumber, 0, 2);
 		sheet.addMergedRegion(mergedCells);
 		HSSFCell headerCell = sheet.createRow(this.currentRowNumber).createCell(0);
@@ -109,9 +119,10 @@ public class ExcelReport extends Report{
 		this.currentRowNumber++;
 	}
 	
-	private void setData(HSSFSheet sheet, Test executedTest){
-		for(Action action : executedTest.getTestActions()){
-			
+	private void setData(final HSSFSheet sheet, final Test executedTest){
+		Utils.requireNonNull(sheet, executedTest);
+		
+		executedTest.getTestActions().stream().forEach(action -> {
 			HSSFRow currentCommandRow = sheet.createRow(this.currentRowNumber);
 			HSSFCell currentCell = currentCommandRow.createCell(0);
 			currentCell.setCellValue(action.getCommand().getCommandName());
@@ -122,7 +133,7 @@ public class ExcelReport extends Report{
 				currentCell.setCellStyle(createStyle(HSSFColor.BRIGHT_GREEN.index));
 			}
 			else if(action.getFailReaction() == FailReaction.SKIP){
-				HSSFColor skipColor = this.setColor((byte)181, (byte)106,(byte) 255);
+				HSSFColor skipColor = this.setColor(redColor, greenColor, blueColor);
 				if(skipColor != null){
 					currentCell.setCellStyle(createStyle(skipColor.getIndex()));
 				}
@@ -137,10 +148,10 @@ public class ExcelReport extends Report{
 			currentCell.setCellValue(action.getActionResult().getReason());
 			currentCell.setCellStyle(createStyle(HSSFColor.WHITE.index));
 			this.currentRowNumber++;
-		}
+		});
 	}
 	
-	private HSSFColor setColor(byte r,byte g, byte b){
+	private HSSFColor setColor(final byte r, final byte g, final byte b){
 		HSSFPalette palette = this.document.getCustomPalette();
 		HSSFColor hssfColor = null;
 		hssfColor= palette.findColor(r, g, b); 
@@ -151,9 +162,9 @@ public class ExcelReport extends Report{
 		return hssfColor;
 		}
 	
-	private HSSFCellStyle createStyle(short color)
+	private HSSFCellStyle createStyle(final short color)
 	{
-		HSSFCellStyle dataCellStyle = this.document.createCellStyle();
+		final HSSFCellStyle dataCellStyle = this.document.createCellStyle();
 		dataCellStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
 		dataCellStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
 		dataCellStyle.setBorderBottom(HSSFCellStyle.BORDER_MEDIUM);
@@ -166,11 +177,10 @@ public class ExcelReport extends Report{
 	}
 
 	@Override
-	public boolean openReportFile(String pathTofile) {
+	public boolean openReportFile(final String pathTofile) {
+		Utils.requireNonNull(pathTofile);
+		
 		boolean result = false;
-		if (!Desktop.isDesktopSupported()) {
-		    Logger.log(LogLevels.ERROR, "ExcelReport", "Function openReportFile, desktop is not supported");
-		}
 		if(!result){
 			Desktop desktop = Desktop.getDesktop();
 			if (!desktop.isSupported(Desktop.Action.EDIT)) {

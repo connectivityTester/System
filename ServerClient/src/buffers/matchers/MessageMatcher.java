@@ -1,8 +1,8 @@
 package buffers.matchers;
-import java.util.Objects;
 import java.util.Queue;
 
 import types.IncomingMessageType;
+import utils.Utils;
 
 public abstract class MessageMatcher {
 	
@@ -13,8 +13,7 @@ public abstract class MessageMatcher {
 	protected IncomingMessageType  messageType = IncomingMessageType.UNKNOWN_TYPE;
 	
 	MessageMatcher(final String pattern, final int deviceSourceDeviceId, final Queue<String> queue, final int timeout) {
-		Objects.requireNonNull(pattern);
-		Objects.requireNonNull(queue);
+		Utils.requireNonNull(pattern, queue);
 		
 		this.pattern = pattern;
 		this.queue = queue;

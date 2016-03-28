@@ -28,11 +28,13 @@ import utils.Logger;
 
 public class TestReader extends AbstractReader{
 
-	public TestReader(String shemaPath) {
+	public TestReader(final String shemaPath) {
 		super(shemaPath);
 	}
 
-	protected Context readContext(String filePath) throws FileNotFoundException, Exception {
+	protected Context readContext(final String filePath) throws FileNotFoundException, Exception {
+		utils.Utils.requireNonNull(filePath);
+		
 		File file = new File(filePath);
 		Document xmlDoc = null;
 		if (file.exists() && file.isFile()) {
@@ -61,13 +63,14 @@ public class TestReader extends AbstractReader{
 				testActions.add(parseElemToAction(action));
 			}
 		}
-		Test test = new Test(testVariables, testActions);
+		final Test test = new Test(testVariables, testActions);
 		return test;
 	}
 
 	@Override
-	protected Test validateReadContext(Context context) throws ContentException {
-		Test test = (Test) context;
+	protected Test validateReadContext(final Context context) throws ContentException {
+		utils.Utils.requireNonNull(context);
+		final Test test = (Test) context;
 		for(Variable variable : test.getTestVariables()){
 			if(variable.getName().isEmpty()){
 				throw new ContentException("Variable name can't be empty. Please correct and rerun again");
@@ -79,7 +82,9 @@ public class TestReader extends AbstractReader{
 		return test;
 	}
 
-	private Variable parseElemToVariable(Element varElem) throws XMLException {
+	private Variable parseElemToVariable(final Element varElem) throws XMLException {
+		utils.Utils.requireNonNull(varElem);
+		
 		Attribute nameAtrib = varElem.getAttribute("name");
 		if(nameAtrib == null){
 			Logger.log(LogLevels.EXCEPTION, this,"Variable has to have \"name\" attribute");
@@ -92,7 +97,9 @@ public class TestReader extends AbstractReader{
 		return new Variable(nameAtrib.getValue().toString(), valueAtrib.getValue().toString());
 	}
 	
-	private Action parseElemToAction(Element actionElem) throws XMLException {
+	private Action parseElemToAction(final Element actionElem) throws XMLException {
+		utils.Utils.requireNonNull(actionElem);
+		
 		Element commandElem = actionElem.getChild("command");
 		if(commandElem == null){
 			Logger.log(LogLevels.EXCEPTION, this,"Action should contains \"command\" child\r"+actionElem.toString());
@@ -189,10 +196,12 @@ public class TestReader extends AbstractReader{
 				throw new XMLException("Action \"loop\" should contains \"loop_body\" block\r");
 			}
 		}
-		return new Action (command, commandParametes,thenBlock,elseBlock,loopBodyBlock, reaction, retry);
+		return new Action (command, commandParametes, thenBlock, elseBlock, loopBodyBlock, reaction, retry);
 	}
 
-	private Parameter parseElemToParameter(Element paramElem) throws XMLException {
+	private Parameter parseElemToParameter(final Element paramElem) throws XMLException {
+		utils.Utils.requireNonNull(paramElem);
+		
 		String name = null;
 		String device = null;
 		String value = null;
@@ -229,7 +238,9 @@ public class TestReader extends AbstractReader{
 		return new Parameter(name, device, type, value);
 	}
 	
-	private void validateAction(Action action) throws ContentException {
+	private void validateAction(final Action action) throws ContentException {
+		utils.Utils.requireNonNull(action);
+		
 		if(action.getCommandType() == CommandTypes.SYSTEM_COMMAND){
 			switch (SystemCommandType.defineCommandType(action.getCommand().getCommandName())) {
 			case ANSWERS:
@@ -260,7 +271,9 @@ public class TestReader extends AbstractReader{
 		}
 	}
 
-	private void checkAnswersCommand(Action action) throws ContentException {
+	private void checkAnswersCommand(final Action action) throws ContentException {
+		utils.Utils.requireNonNull(action);
+		
 		if(action.getParamValue("timeout") == null){
 			throw new ContentException("Command \"answer\" should contain \"timeout\" parameter");
 		}
@@ -277,7 +290,9 @@ public class TestReader extends AbstractReader{
 		}
 	}
 
-	private void checkArithmeticOperation(Action action, String operation) throws ContentException {
+	private void checkArithmeticOperation(final Action action, final String operation) throws ContentException {
+		utils.Utils.requireNonNull(action, operation);
+		
 		if(action.getParamValue("operand1") == null){
 			throw new ContentException("Command \"" + operation + "\" should contain \"operand1\" parameter");
 		}

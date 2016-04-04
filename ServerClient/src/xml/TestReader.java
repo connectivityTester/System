@@ -68,7 +68,7 @@ public class TestReader extends AbstractReader{
 	}
 
 	@Override
-	protected Test validateReadContext(final Context context) throws ContentException {
+	protected Test validateReadContext(final Context context) throws FileNotFoundException, Exception {
 		utils.Utils.requireNonNull(context);
 		final Test test = (Test) context;
 		for(Variable variable : test.getTestVariables()){
@@ -76,9 +76,14 @@ public class TestReader extends AbstractReader{
 				throw new ContentException("Variable name can't be empty. Please correct and rerun again");
 			}
 		}
-		for(Action action : test.getTestActions()){
-			this.validateAction(action);			
-		}			
+		for(int i = 0; i < test.getTestActions().size(); ++i){
+			Test library = this.validateAction(test.getTestActions().get(i));	
+			if(library != null){
+				test.getTestActions().remove(i);
+				test.getTestActions().addAll(i, library.getTestActions());
+				test.addLibraryVariables(library.getTestVariables());
+			}
+		}		
 		return test;
 	}
 
@@ -238,9 +243,10 @@ public class TestReader extends AbstractReader{
 		return new Parameter(name, device, type, value);
 	}
 	
-	private void validateAction(final Action action) throws ContentException {
+	private Test validateAction(final Action action) throws FileNotFoundException, Exception {
 		utils.Utils.requireNonNull(action);
-		
+
+		Test libraryActions = null;
 		if(action.getCommandType() == CommandTypes.SYSTEM_COMMAND){
 			switch (SystemCommandType.defineCommandType(action.getCommand().getCommandName())) {
 			case ANSWERS:
@@ -266,8 +272,37 @@ public class TestReader extends AbstractReader{
 					throw new ContentException("Command \"sleep\" should contain \"timeout\" parameter");
 				}
 				break;
+			case EXEC_LIB:
+				String libraryPath = action.getParamValue("path");
+				if(libraryPath != null){
+					libraryPath = checkLibraryPath(libraryPath);
+					libraryActions = (Test) this.readContext(libraryPath);
+					if(libraryActions != null &&
+							libraryActions.getTestActions().isEmpty() &&
+							libraryActions.getTestVariables().isEmpty())
+					{
+						throw new ContentException("Library \"" 
+								+ libraryPath + "\"should contain at least one action or variable");
+					}
+				}
+				else{
+					throw new ContentException("Command \"exec_lib\" should contain parameter "
+																		+ "with path to library.");
+				}
 			default: break;
 			}
+		}
+		return libraryActions;
+	}
+
+	private String checkLibraryPath(final String libraryPath) {
+		utils.Utils.requireNonNull(libraryPath);
+		
+		if(new File(libraryPath).exists()){
+			return libraryPath;
+		}
+		else{
+			return SystemConfig.getInstance().getTestRootDirectory() + libraryPath;
 		}
 	}
 

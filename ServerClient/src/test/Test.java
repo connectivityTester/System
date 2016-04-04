@@ -144,5 +144,22 @@ public class Test implements Context{
 		}
 		return null;
 	}
-
+	
+	public void addLibraryVariables(final List<Variable> libVariables){
+		utils.Utils.requireNonNull(libVariables);
+		
+		for(Variable libVariable : libVariables){
+			String libVariableName = libVariable.getName();
+			boolean varExist = false;
+			for(Variable testVariable : testVariables){
+				if(testVariable.equalsByName(libVariableName)){
+					varExist = true;
+					break;
+				}
+			}
+			if(!varExist){
+				testVariables.add(libVariable);
+			}
+		}
+	}
 }

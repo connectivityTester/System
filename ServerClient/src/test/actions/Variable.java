@@ -39,5 +39,9 @@ public class Variable implements Comparable<Variable> {
 	public int compareTo(final Variable variable) {
 		return this.name.compareTo(variable.getName());
 	}
+	
+	public boolean equalsByName (String name){
+		return this.name.equals(name);
+	}
 
 }

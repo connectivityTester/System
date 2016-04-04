@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<test>
+	<variables>
+		<variable name="BT_DEVICE_ADDRESS1" value="18:3A:2D:4F:DB:EE"/> <!-- GALAXY NOTE 4 -->
+	</variables>
+	<actions>
+		<action>
+			<command device="3">execute_callback</command>
+			<params>
+				<param name="process" value="ScpCtrl_HU"/>
+				<param name="callback_name" value="DIS2_SCP_BluetoothProj_ConnectDevice"/>
+				<param name="callback_value" value="~BT_DEVICE_ADDRESS1~"/>
+			</params>
+		</action>
+		<action>
+			<command>answers</command>
+			<params>
+				<param device="3" value="BtPrjC.*requestConnectDevice" type="text"/>
+				<param device="3" value="BtPrjC.*informationDeviceStatusChanged.*CS_NOT_CONNECTED.*LCS_CONNECTING.*ChangeReason=DSCR_DEVICE_CONNECTION_CHANGED" type="text"/>
+				<param device="3" value="BtPrjC.*ConnDeviceCmd.*ActivateDiscovModeCmd.*C_S" type="text"/>
+				<param device="3" value="BtPrjC.*ConnDeviceCmd.*ActivateDiscovModeCmd.*AM_NOT_ACCESSIBLE" type="text"/>
+				<param device="3" value="BtPrjC.*ConnDeviceCmd.*ActivateDiscovModeCmd.*C_F.*Res=S" type="text"/>
+				<param device="3" value="BtPrjC.*informationDeviceStatusChanged.*CS_CONNECTING.*LCS_CONNECTING.*ChangeReason=DSCR_DEVICE_CONNECTION_CHANGED" type="text"/>
+				<param device="3" value="BtPrjC.*informationDeviceStatusChanged.*btServiceType=ST_TELEPHONY_HFP.*btServiceActive=CS_NOT_CONNECTED" type="text"/>
+				<param device="3" value="BtPrjC.*informationDeviceStatusChanged.*CS_CONNECTED.*LCS_CONNECTING.*ChangeReason=DSCR_DEVICE_CONNECTION_CHANGED" type="text"/>
+				<param device="3" value="BtPrjC.*ConnDeviceCmd.*responseConnectDevice.*Result=True" type="text"/>
+				<param device="3" value="BtPrjC.*ConnDeviceCmd.*requestConnectionOfService.*ServiceType=ST_TELEPHONY_HFP" type="text"/>
+				<param device="3" value="BtPrjC.*ConnDeviceCmd.*ConnServiceCmd.*C_S" type="text"/>
+				<param device="3" value="BtPrjC.*ConnDeviceCmd.*ConnServiceCmd.*requestConnectionOfService.*ServiceType=ST_TELEPHONY_HFP	" type="text"/>
+				<param device="3" value="BtPrjC.*informationDeviceStatusChanged.*CS_CONNECTED.*LCS_CONNECTING.*ChangeReason=DSCR_SERVICE_CONNECTION_CHANGED" type="text"/>
+				<param device="3" value="BtPrjC.*informationDeviceStatusChanged.*btServiceType=ST_TELEPHONY_HFP.*btServiceActive=CS_NOT_CONNECTED" type="text"/>
+				<param device="3" value="BtPrjC.*informationDeviceStatusChanged.*CS_CONNECTED.*LCS_CONNECTING.*ChangeReason=DSCR_SERVICE_CONNECTION_CHANGED" type="text"/>
+				<param device="3" value="BtPrjC.*informationDeviceStatusChanged.*btServiceType=ST_TELEPHONY_HFP.*btServiceActive=CS_CONNECTED" type="text"/>
+				<param device="3" value="BtPrjC.*ConnDeviceCmd.*ConnServiceCmd.*responseConnectService.*BtServiceType=ST_TELEPHONY_HFP.*Result=RESULT_OK" type="text"/>
+				<param device="3" value="BtPrjC.*ConnDeviceCmd.*ConnServiceCmd.*C_F.*Res=S" type="text"/>
+				<param device="3" value="BtPrjC.*ConnDeviceCmd.*GetBtDeviceInfoCmd.*C_S" type="text"/>
+				<param device="3" value="BtPrjC.*ConnDeviceCmd.*GetBtDeviceInfoCmd.*C_F.*Res=S" type="text"/>
+				<param device="3" value="BtPrjC.*ConnDeviceCmd.*requestConnectionOfService.*ServiceType=ST_AUDIO_SINK" type="text"/>
+				<param device="3" value="BtPrjC.*ConnDeviceCmd.*ConnServiceCmd.*C_S" type="text"/>
+				<param device="3" value="BtPrjC.*ConnDeviceCmd.*ConnServiceCmd.*requestConnectionOfService.*ServiceType=ST_AUDIO_SINK" type="text"/>
+				<param device="3" value="BtPrjC.*informationDeviceStatusChanged.*CS_CONNECTED.*LCS_CONNECTING.*ChangeReason=DSCR_SERVICE_CONNECTION_CHANGED" type="text"/>
+				<param device="3" value="BtPrjC.*informationDeviceStatusChanged.*btServiceType=ST_TELEPHONY_HFP.*btServiceActive=CS_CONNECTED" type="text"/>
+				<param device="3" value="BtPrjC.*informationDeviceStatusChanged.*btServiceType=ST_AUDIO_SINK.*btServiceActive=CS_CONNECTED" type="text"/>
+				<param device="3" value="BtPrjC.*informationDeviceStatusChanged.*btServiceType=ST_AVRCP_TARGET.*btServiceActive=CS_NOT_CONNECTED" type="text"/>
+				<param device="3" value="BtPrjC.*informationDeviceStatusChanged.*CS_CONNECTED.*LCS_CONNECTING.*ChangeReason=DSCR_SERVICE_CONNECTION_CHANGED" type="text"/>
+				<param device="3" value="BtPrjC.*informationDeviceStatusChanged.*btServiceType=ST_TELEPHONY_HFP.*btServiceActive=CS_CONNECTED" type="text"/>
+				<param device="3" value="BtPrjC.*informationDeviceStatusChanged.*btServiceType=ST_AUDIO_SINK.*btServiceActive=CS_CONNECTED" type="text"/>
+				<param device="3" value="BtPrjC.*informationDeviceStatusChanged.*btServiceType=ST_AVRCP_TARGET.*btServiceActive=CS_CONNECTED" type="text"/>
+				<param device="3" value="BtPrjC.*ConnDeviceCmd.*ConnServiceCmd.*responseConnectService.*BtServiceType=ST_AUDIO_SINK.*Result=RESULT_OK" type="text"/>
+				<param device="3" value="BtPrjC.*ConnDeviceCmd.*ConnServiceCmd.*C_F.*Res=S" type="text"/>
+				<param device="3" value="BtPrjC.*ConnDeviceCmd.*isAnyServiceConnected.*Services.*status.*HFP=Connected.*A2DP=Connected" type="text"/>
+				<param device="3" value="BtPrjC.*ConnDeviceCmd.*Device.*connection.*SUCCESS" type="text"/>
+				<param device="3" value="BtPrjC.*ConnDeviceCmd.*sendEvent.*EventName=EV_DEVICECONNECTIONSUCCESS.*EventState=ServicesConnectionFinished" type="text"/>
+				<param device="3" value="BtPrjC.*Stat.*setDeviceLogicalConnectionStatus.*ConnStatus=LCS_CONNECTED" type="text"/>
+				<param device="3" value="BtPrjC.*ConnDeviceCmd.*C_F.*Res=S" type="text"/>
+				<param device="3" value="BtPrjC.*responseConnectDevice.*Result=RESULT_OK.*ErrorReason=ERROR_NONE" type="text"/>
+				<param name="timeout" value="10000"/>
+			</params>
+		</action>
+	</actions>
+</test>

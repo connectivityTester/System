@@ -1,11 +1,8 @@
 package test.actions;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-
 import com.google.gson.Gson;
-
 import buffers.matchers.AnswerPattern;
 import common.DeviceSource;
 import common.SystemConstants;

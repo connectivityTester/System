@@ -14,7 +14,8 @@ public abstract class Report {
 	static{
 		reportFilesDirectory = new File(System.getProperty("user.dir")+"/Reports");
 		if(!reportFilesDirectory.exists()){
-			Logger.log(LogLevels.TRACE, "", "Report directory was create with result: " + reportFilesDirectory.mkdir());
+			boolean result = reportFilesDirectory.mkdirs();
+			Logger.log(LogLevels.TRACE, "", "Report directory was create with result: " + result);
 		}
 	}
 	

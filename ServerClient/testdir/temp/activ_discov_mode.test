@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<test>
+	<actions>
+		<action>
+			<command device="3">execute_callback</command>
+			<params>
+				<param name="process" value="ScpCtrl_HU"/>
+				<param name="callback_name" value="DIS2_SCP_BluetoothProj_ActivateDiscoverableMode"/>
+				<param name="callback_value" value="1"/>
+			</params>
+		</action>
+		<action>
+			<command>answers</command>
+			<params>
+				<param device="3" value="BtPrjC.*requestActivateDiscoverableMode.*Activate=True" type="text"/>
+				<param device="3" value="BtPrjC.*ActivateDiscovModeCmd.*C_S" type="text"/>
+				<param device="3" value="BtPrjC.*ActivateDiscovModeCmd.*AM_GENERAL_ACCESSIBLE" type="text"/>
+				<param device="3" value="BtPrjC.*ActivateDiscovModeCmd.*ActivDiscovMod.*disconnect.*current.*connected.*device" type="text"/>
+				<param device="3" value="BtPrjC.*ActivateDiscovModeCmd.*reqDisconnecting.*requestSetAccessibleMode.*Mode.*AM_GENERAL_ACCESSIBLE" type="text"/>
+				<param device="3" value="BtPrjC.*ActivateDiscovModeCmd.*responseSetAccessibleMode.*was.*successful.*Finishing.*command.*Mode.*AM_GENERAL_ACCESSIBLE" type="text"/>
+				<param device="3" value="BtPrjC.*ActivateDiscovModeCmd.*C_F.*Res=S" type="text"/>
+				<param device="3" value="BtPrjC.*responseActivateDiscoverableMode.*Result=RESULT_OK" type="text"/>
+				<param name="timeout" value="2000"/>
+			</params>
+			<fail retry="0">skip</fail>
+		</action>
+	</actions>
+</test>

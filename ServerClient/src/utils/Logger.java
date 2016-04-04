@@ -26,7 +26,7 @@ public class Logger {
 	static{
 		logFilesDirectory = new File(System.getProperty("user.dir")+"/SystemLogs");
 		if(!logFilesDirectory.exists()){
-			logFilesDirectory.mkdir();
+			logFilesDirectory.mkdirs();
 		}
 	}
 	

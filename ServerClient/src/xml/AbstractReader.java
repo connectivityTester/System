@@ -45,7 +45,7 @@ public abstract class AbstractReader {
 	}
 	
 	protected abstract Context readContext(final String filePath) throws FileNotFoundException, Exception;
-	protected abstract Context validateReadContext(final Context context) throws ContentException;
+	protected abstract Context validateReadContext(final Context context) throws ContentException, FileNotFoundException, Exception;
 	
 	protected boolean validateFileContext(final String filePath, final String shemaPath) throws ContentException{
 		utils.Utils.requireNonNull(filePath, shemaPath);

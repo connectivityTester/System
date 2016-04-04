@@ -2,7 +2,6 @@ package connections.devicesources;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Objects;
 
 import common.DeviceSource;
 import types.LogLevels;

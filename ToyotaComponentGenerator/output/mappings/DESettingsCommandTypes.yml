@@ -1,0 +1,19 @@
+Configuration_Mapping:
+  Mappings:
+    Generic:
+      EntityTypes:
+        Class: cpp\Class.twig
+        Interface: cpp\Class.twig
+        Variable: cpp\Variable.twig
+        Enum: cpp\Enum.twig
+        TemplateMethods: cpp\TemplateMethods.twig
+      OutputTypes:
+        Source: cpp\Source.twig
+        Header: cpp\Header.twig
+    Output:
+    - Path: .\private
+      Name: DESettingsCommandTypes.hpp
+      Type: Header
+      Entities: [ DESettingsCommandTypes ]
+      Imports:
+      - api/sys/colibry/pf/base/src/CHBString.hpp

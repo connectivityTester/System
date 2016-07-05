@@ -1,0 +1,1 @@
+php generate_description.php --config_file==config.yml

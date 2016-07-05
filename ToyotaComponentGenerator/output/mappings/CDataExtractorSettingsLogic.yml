@@ -1,0 +1,36 @@
+Configuration_Mapping:
+  Mappings:
+    Generic:
+      EntityTypes:
+        Class: cpp\Class.twig
+        Interface: cpp\Class.twig
+        Variable: cpp\Variable.twig
+        Enum: cpp\Enum.twig
+        TemplateMethods: cpp\TemplateMethods.twig
+      OutputTypes:
+        Source: cpp\Source.twig
+        Header: cpp\Header.twig
+    Output:
+    - Path: .\private
+      Name: CDataExtractorSettingsLogic.hpp
+      Type: Header
+      Entities: [ CDataExtractorSettingsLogic ]
+      Imports:
+      - api/sys/mocca/pf/comm/component/src/CHBComponent.hpp
+      - imp/common/DebugMessages/CPDebugMessages.hpp
+      - api/AVCLan/DAVCLanSettingsStub.hpp
+      - imp/AVCLan/ProtocolMessaging/interface/CAVCLanProtocolMessagingClientBase.hpp
+      - imp/common/CommandsQueue/CPCommandsQueue.hpp
+    - Path: .\private
+      Name: CDataExtractorSettingsLogic.cpp
+      Type: Source
+      Entities: [CDataExtractorSettingsLogic]
+      Imports:
+      - CDataExtractorSettingsLogic.hpp
+      - api/sys/mocca/pf/trace/src/HBTrace.h
+      - imp/AVCLan/DESettings/src/private/CDAVCLanSettingsImpl.hpp
+      - imp/AVCLan/DESettings/src/private/CAVCLanSettingsProtocolMessagingClient.hpp
+      - imp/AVCLan/DESettings/src/private/DESettingsCommandTypes.hpp
+      - imp/AVCLan/common/src/private/TAVCLanSerializationCmd.hpp
+      - imp/AVCLan/common/src/private/TAVCLanDeserializationCmd.hpp
+      - imp/AVCLan/DESettings/src/private/Commands/CCommandSpecificLogic.hpp

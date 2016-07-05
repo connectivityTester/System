@@ -1,0 +1,27 @@
+Configuration_Mapping:
+  Mappings:
+    Generic:
+      EntityTypes:
+        Class: cpp\Class.twig
+        Interface: cpp\Class.twig
+        Variable: cpp\Variable.twig
+        Enum: cpp\Enum.twig
+        TemplateMethods: cpp\TemplateMethods.twig
+      OutputTypes:
+        Source: cpp\Source.twig
+        Header: cpp\Header.twig
+    Output:
+    - Path: .\private
+      Name: CDAVCLanSettingsImpl.hpp
+      Type: Header
+      Entities: [ CDAVCLanSettingsImpl ]
+      Imports:
+      - api/AVCLan/CCommandSpecificLogic.hpp
+    - Path: .\private
+      Name: CDAVCLanSettingsImpl.cpp
+      Type: Source
+      Entities: [CDAVCLanSettingsImpl]
+      Imports:
+      - imp/AVCLan/DESettings/src/private/CDAVCLanSettingsImpl.hpp
+      - imp/AVCLan/DESettings/src/CDataExtractorSettingsComponent.hpp
+      - imp/AVCLan/DESettings/src/private/CDataExtractorSettingsLogic.hpp

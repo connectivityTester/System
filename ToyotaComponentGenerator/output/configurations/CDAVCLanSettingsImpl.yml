@@ -1,0 +1,825 @@
+Configuration_Classes:
+  Entities:
+    CDAVCLanSettingsImpl:
+      Type: Class
+      Namespace: []
+      Name: CDAVCLanSettingsImpl
+      Visibility: public
+      TypeParameters: []
+      IsAbstract: 0
+      IsConstant: 0
+      Parents:
+        Interfaces: []
+        Logic:
+        - Name: CDAVCLanSettingsStub
+          Parameters: []
+          Visibility: public
+      Variables:
+      - Name: mpLogic
+        Visibility: private
+        IsStatic: 0
+        IsConstant: 0
+        Value: 
+        Type: CDataExtractorSettingsLogic*
+      Methods:
+      - Visibility: public
+        Name: setLogic
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 1
+        IsVirtual: 0
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 0
+          Type: CDataExtractorSettingsLogic*
+          Name: pLogic
+          Value: 
+        InitList: []
+        Content:
+          Text: []
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: ""
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 0
+        IsConstant: 0
+        IsConstructor: 1
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: 
+        Parameters:
+        - IsConstant: 0
+          Type: CDataExtractorSettingsComponent&
+          Name: parent
+          Value: 
+        InitList:
+        - Name: mpLogic
+          Value: 0
+        Content:
+          Text:
+          - "mpLogic = &( parent.getLogic() );"
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: 
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 0
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 1
+        Return:
+          IsConstant: 0
+          Type: 
+        Parameters: []
+        InitList: []
+        Content:
+          Text:
+          - "mpLogic = 0;"
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: informationSettingLinkedNotification_01B9
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 1
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: SettingLinkedNotificationType
+          Name: tSettingLinkedNotification
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - "CDAVCLanSettingsStub::informationSettingLinkedNotification_01B9( tSettingLinkedNotification
+            );"
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: informationSettingOperationNotification_02A2
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 1
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: SettingOperationNotificationType
+          Name: tSettingsOperationNotification
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - "CDAVCLanSettingsStub::informationSettingOperationNotification_02A2(
+            tSettingsOperationNotification );"
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: informationMeterMMUnitLinkedNotification_03FD
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 1
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: MeterMMUnitLinkedNotificationType
+          Name: tMeterMMUnitLinkedNotification
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - "CDAVCLanSettingsStub::informationMeterMMUnitLinkedNotification_03FD(
+            tMeterMMUnitLinkedNotification );"
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: informationMonitorUnitStatusNotification_00F1
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 1
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: MonitorUnitStatusNotificationType
+          Name: tMonitorUnitStatusNotification
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - "CDAVCLanSettingsStub::informationMonitorUnitStatusNotification_00F1(
+            tMonitorUnitStatusNotification );"
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: informationExtendedBeepUnitNotification_0061
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 1
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: ExtendedBeepUnitNotificationType
+          Name: tExtendedBeepUnitNotification
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - "CDAVCLanSettingsStub::informationExtendedBeepUnitNotification_0061(
+            tExtendedBeepUnitNotification );"
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: informationSettingLinkedNotification_01B9
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 1
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: SettingLinkedNotificationType
+          Name: tSettingLinkedNotification
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - "CDAVCLanSettingsStub::informationSettingLinkedNotification_01B9( tSettingLinkedNotification
+            );"
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: informationSettingOperationNotification_02A2
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 1
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: SettingOperationNotificationType
+          Name: tSettingsOperationNotification
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - "CDAVCLanSettingsStub::informationSettingOperationNotification_02A2(
+            tSettingsOperationNotification );"
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: informationMeterMMUnitLinkedNotification_03FD
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 1
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: MeterMMUnitLinkedNotificationType
+          Name: tMeterMMUnitLinkedNotification
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - "CDAVCLanSettingsStub::informationMeterMMUnitLinkedNotification_03FD(
+            tMeterMMUnitLinkedNotification );"
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: informationMonitorUnitStatusNotification_00F1
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 1
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: MonitorUnitStatusNotificationType
+          Name: tMonitorUnitStatusNotification
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - "CDAVCLanSettingsStub::informationMonitorUnitStatusNotification_00F1(
+            tMonitorUnitStatusNotification );"
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: informationExtendedBeepUnitNotification_0061
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 1
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: ExtendedBeepUnitNotificationType
+          Name: tExtendedBeepUnitNotification
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - "CDAVCLanSettingsStub::informationExtendedBeepUnitNotification_0061(
+            tExtendedBeepUnitNotification );"
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: requestSettingInformationNotification_02A1
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 1
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: DAVCLanSettings::SettingInformationNotificationType
+          Name: tSettingInformationNotification
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - "ASSERTMSG ( ''mpLogic is 0'', 0 != mpLogic );"
+          - "mpLogic->requestSettingInformationNotification_02A1( tSettingInformationNotification
+            );"
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: requestSettingStatusUpdateNotification_02A0
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 1
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: DAVCLanSettings::SettingStatusUpdateNotificationType
+          Name: eSettingStatusUpdateNotification
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - "ASSERTMSG ( ''mpLogic is 0'', 0 != mpLogic );"
+          - "mpLogic->requestSettingStatusUpdateNotification_02A0( eSettingStatusUpdateNotification
+            );"
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: requestHomeSettingStatusNotification_0288
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 1
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: DAVCLanSettings::HomeSettingStatusNotificationType
+          Name: tHomeSettingStatusNotification
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - "ASSERTMSG ( ''mpLogic is 0'', 0 != mpLogic );"
+          - "mpLogic->requestHomeSettingStatusNotification_0288( tHomeSettingStatusNotification
+            );"
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: requestBeepNotification_60
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 1
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: DAVCLanSettings::BeepNotificationType
+          Name: tBeepNotification
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - "ASSERTMSG ( ''mpLogic is 0'', 0 != mpLogic );"
+          - "mpLogic->requestBeepNotification_60( tBeepNotification );"
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: requestForcedBeepNotification_64
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 1
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: DAVCLanSettings::ForcedBeepNotificationType
+          Name: tForcedBeepNotification
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - "ASSERTMSG ( ''mpLogic is 0'', 0 != mpLogic );"
+          - "mpLogic->requestForcedBeepNotification_64( tForcedBeepNotification );"
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: requestAllAtOnceInitializationCompletionNotification_02BB
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 1
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: DAVCLanSettings::AllAtOnceInitializationCompletionNotificationType
+          Name: tAllAtOnceInitializationCompletionNotification
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - "ASSERTMSG ( ''mpLogic is 0'', 0 != mpLogic );"
+          - "mpLogic->requestAllAtOnceInitializationCompletionNotification_02BB(
+            tAllAtOnceInitializationCompletionNotification );"
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: requestGPSTimeDataNotification_029D
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 1
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: DAVCLanSettings::GPSTimeDataNotificationType
+          Name: tGPSTimeDataNotification
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - "ASSERTMSG ( ''mpLogic is 0'', 0 != mpLogic );"
+          - "mpLogic->requestGPSTimeDataNotification_029D( tGPSTimeDataNotification
+            );"
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: requestDSTStatusNotification_0298
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 1
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: DAVCLanSettings::DSTStatusNotificationType
+          Name: tDSTStatusNotification
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - "ASSERTMSG ( ''mpLogic is 0'', 0 != mpLogic );"
+          - "mpLogic->requestDSTStatusNotification_0298( tDSTStatusNotification );"
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: requestTZStatusNotification_0299
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 1
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: DAVCLanSettings::TZStatusNotificationType
+          Name: tTZStatusNotification
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - "ASSERTMSG ( ''mpLogic is 0'', 0 != mpLogic );"
+          - "mpLogic->requestTZStatusNotification_0299( tTZStatusNotification );"
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: responseSettingInformationNotification_02A1
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 1
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: bool
+          Name: bResult
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - "CDAVCLanSettingsStub::responseSettingInformationNotification_02A1( bResult
+            );"
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: responseSettingStatusUpdateNotification_02A0
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 1
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: bool
+          Name: bResult
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - "CDAVCLanSettingsStub::responseSettingStatusUpdateNotification_02A0(
+            bResult );"
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: responseHomeSettingStatusNotification_0288
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 1
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: bool
+          Name: bResult
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - "CDAVCLanSettingsStub::responseHomeSettingStatusNotification_0288( bResult
+            );"
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: responseBeepNotification_60
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 1
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: bool
+          Name: bResult
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - "CDAVCLanSettingsStub::responseBeepNotification_60( bResult );"
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: responseForcedBeepNotification_64
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 1
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: bool
+          Name: bResult
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - "CDAVCLanSettingsStub::responseForcedBeepNotification_64( bResult );"
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: responseAllAtOnceInitializationCompletionNotification_02BB
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 1
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: bool
+          Name: bResult
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - "CDAVCLanSettingsStub::responseAllAtOnceInitializationCompletionNotification_02BB(
+            bResult );"
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: responseGPSTimeDataNotification_029D
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 1
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: bool
+          Name: bResult
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - "CDAVCLanSettingsStub::responseGPSTimeDataNotification_029D( bResult
+            );"
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: responseDSTStatusNotification_0298
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 1
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: bool
+          Name: bResult
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - "CDAVCLanSettingsStub::responseDSTStatusNotification_0298( bResult );"
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: responseTZStatusNotification_0299
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 1
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: bool
+          Name: bResult
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - "CDAVCLanSettingsStub::responseTZStatusNotification_0299( bResult );"
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path:

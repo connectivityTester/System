@@ -1,0 +1,358 @@
+{% macro variable_full_type( variable ) -%}
+   {%- if variable.IsStatic == true %}static {% endif %}{% if variable.IsConst == true %}const {% endif %}{{ variable.Type|raw -}}
+{%- endmacro %}
+
+{% macro global_variable_full_type( variable ) -%}
+   {%- if variable.IsStatic == true %}static {% endif %}{% if variable.IsConstant == true %}const {% endif %}{{ variable.DataType|raw -}}
+{%- endmacro %}
+
+{% macro variable_declaration( variable, with_value ) %}
+   {%- import _self as This -%}
+   {{- This.variable_full_type(variable) }} {{ variable.Name|raw }}{% if with_value == true and variable.InitialValue is not empty %} = {{ variable.InitialValue|raw }}{% endif %}
+{% endmacro %}
+
+{% macro global_variable_declaration( variable, with_value ) %}
+   {%- import _self as This -%}
+   {{- This.global_variable_full_type(variable) }} {{ variable.Name|raw }}{% if with_value == true and variable.InitialValue is not empty %} = {{ variable.InitialValue|raw }}{% endif %}
+{% endmacro %}
+
+
+{# New macro #}
+{% macro static_variable_declaration( class, variable ) %}
+   {%- import _self as This -%}
+   {%- set namespace_string = class.Namespace -%}
+   {%- if variable.IsConst == true %}const {% endif %}{{ variable.Type|raw }} {{ This.namespaces_chain_and_class_name(class) }}::{{ variable.Name }}{% if variable.InitialValue is not empty %} = {{ variable.InitialValue|raw }}{% endif -%};
+{% endmacro %}
+
+{# New macro #}
+{% macro namespaces_chain_and_class_name ( class ) -%}
+{%- import _self as This -%}
+{%- for namespace in class.Namespace.asArray() -%}
+   {{ namespace }}::
+{%- endfor -%}
+{%- if class is not null and class.Type.Value !="Method" -%}
+   {{ class.Name }}{{ This.template_definition(class, true) }}
+{%- endif -%}
+{%- endmacro -%}
+
+
+{% macro method_name( class, method, with_namespaces ) %}
+{%- import _self as This -%}
+{%- if with_namespaces == true -%}
+   {{ This.namespaces_chain_and_class_name(class) }}{% if class.Type.Value !="Method" %}::{% endif %}
+{%- endif -%}
+{%- if method.IsConstructor == true and class is not null -%}
+   {{ class.Name }}
+{%- elseif method.IsDestructor == true and class is not null -%}
+   ~{{ class.Name }}
+{%- else -%}
+   {{ method.Name }}
+{%- endif -%}
+{% endmacro %}
+
+
+{% macro method_parameters( method, with_value ) -%}
+   {%- import _self as This -%}
+   {%- for variable in method.Parameters -%}
+      {%- if loop.first != true -%}, {% endif -%} {{ This.variable_declaration( variable, with_value )| raw -}} 
+   {%- endfor -%}
+{% endmacro %}
+
+
+{% macro method_declaration( class, method, with_namespaces, without_content ) %}
+   {%- import _self as This -%}
+   {% if with_namespaces -%}
+      {%- if class is not null -%}
+         {{ This.template_definition(class, false) }}{{ " " -}}
+      {%- endif -%}
+   {%- endif -%}
+   {%- if method.IsInline == true and with_namespaces -%}inline {% endif -%}
+   {%- if method.IsStatic == true and not with_namespaces %}static {% endif -%}
+   {%- if method.IsVirtual == true and not with_namespaces or method.IsAbstract %}virtual {% endif -%}
+   {%- if not method.IsConstructor and not method.IsDestructor -%}
+      {{- This.variable_full_type(method.ReturnType) -}}
+   {%- endif -%}
+   {{- " " -}}{{ This.method_name(class, method, with_namespaces) -}}
+   ({{ This.method_parameters(method, not with_namespaces) }})
+   {%- if method.IsConstant == true %}{% if method.IsStatic == true %} /*static method can not be constant*/ {% else %}const{% endif -%}{% endif -%}
+   {%- if method.IsAbstract and not with_namespaces and not method.IsDestructor and not method.IsConstructor %} = 0{% endif -%}
+   {%- if not with_namespaces %}{% if without_content %};{% endif %}{% endif %}
+{% endmacro %}
+
+
+{% macro class_constructor_initializers( class ) %}
+{% set initializer_started = false %}
+{%- for p in class.Parents.Interfaces -%}
+   {% set initializer_started = true %}
+   {%- if loop.first == true %}{{ "\t" -}}: {% endif -%}
+   {{- p.Name }}({{ p.Parameters|join(',')|raw }})
+   {%- if loop.last != true -%}{{- "\n\t" -}}, {% endif -%}
+{% endfor %}
+{%- for p in class.Parents.Logic -%}
+   {%- if loop.first == true and not initializer_started -%}{{ "\t" -}}: {% else -%}{{- "\t" -}}, {% endif -%}
+   {%- set initializer_started = true -%}
+   {{- p.Name }}({{ p.Parameters|raw|join(',') }})
+   {# {%- if loop.last != true %}{{- "\n\t" -}} {% endif %} #}
+{%- endfor -%}
+{% set initializable_variables = [] %}
+{% for variable in class.Variables if variable.InitialValue is not empty -%}
+   {%- set initializable_variables = initializable_variables|merge({ (loop.index0): variable}) -%}
+{%- endfor -%}
+{%- for variable in initializable_variables -%}
+   {%- if loop.first == true -%}{% if not initializer_started %}{{ "\t" -}}: {%- else -%}{{- "\n\t" -}}, {% endif %}{% endif -%}
+   {{- variable.Name }}({{ variable.InitialValue|raw }})
+   {%- if loop.last != true -%}{{- "\n\t" -}}, {% endif %}
+{% endfor %}
+{% endmacro %}
+
+{% macro method_definition( class, method ) -%}
+   {% import _self as This -%}
+   {{ This.method_declaration( class, method, true, true ) }}{{ "\n" -}}
+   {%- if method.IsConstructor == true -%}
+      {{- This.class_constructor_initializers(class) }}
+      {% set has_parents = false %}
+      {%- for p in class.Parents.Interfaces -%}
+         {% set has_parents = true %}
+      {% endfor %}
+      {%- for p in class.Parents.Logic -%}
+         {%- set has_parents = true -%}
+      {%- endfor -%}
+      {{ This.initialization_list(method, has_parents)}}   {{ "\n" -}}
+   {% endif -%}
+   { {{- "\n" -}}
+      {{ "\t" -}}{{ This.method_content(method) }}{{ "\n" -}}
+   }{{ "\n" -}}
+{% endmacro %}
+
+{% macro method_content( method) %}
+   {%- for line in method.Content.Text -%}
+      {{line|raw}}
+   {% endfor %}
+{% endmacro %}
+
+{% macro initialization_list( method, has_parents ) %}
+{%- if has_parents == false and method.InitList is not empty -%}:{% endif -%}
+{%- if has_parents == true and method.InitList is not empty-%},{% endif -%}
+{% for item in method.InitList -%}
+   {{item.Name|raw}}( {{item.InitialValue|raw}} ){{ "\n" -}}{%- if loop.last != true -%}, {% endif %}
+{%- endfor -%}
+{% endmacro %}
+
+{% macro class_parents( class ) %}
+{% if class.Parents.Interfaces|length > 0 or class.Parents.Logic|length > 0 %}
+: {% for p in class.Parents.Interfaces %}public {{ p.Name }}{% if loop.last != true %}, {% endif %}{% endfor %}
+{% for p in class.Parents.Logic %}{% if loop.first == true and class.Parents.Interfaces|length > 0 %}, {% endif %}public {{ p.Name }}{% if loop.last != true %}, {% endif %}{% endfor %}
+{% endif %}
+{% endmacro %}
+
+
+{% macro template_definition(class, only_name) -%}
+{%- if class.TypeParameters|length >0 -%}
+{%- set typeParamsArray = [] -%}
+{%- set typeParamString = '' -%}
+{%- for typeParam in class.TypeParameters -%}
+	{%- if only_name -%}{%- set typeParamString = typeParam.Name -%}{%- else -%}
+	{%- set typeParamString = typeParam.Type ~ " " ~ typeParam.Name -%}
+	{%- if typeParam.InitialValue != '' -%}{%- set typeParamString = typeParamString ~ ' = ' ~ typeParam.InitialValue -%}{%- endif -%}
+	{%- endif -%}
+	{%- set typeParamsArray = typeParamsArray|merge({ (loop.index0): typeParamString}) -%}
+{%- endfor -%}
+{% if not only_name %}template {% endif %}<{{ typeParamsArray|join(', ') }}>
+{%- endif -%}
+{%- endmacro %}
+
+
+{% macro class( class, type ) %}
+{%- import _self as This -%}
+{% if class.IsAbstract %}
+   {%- set abstract_methods = [] -%}
+   {%- for method in class.Methods if method.IsAbstract -%}
+      {%- set abstract_methods = abstract_methods|merge({ (loop.index0): method}) -%}
+   {%- endfor -%}
+   {%- if abstract_methods|length == 0 -%}
+   /* GENERATOR WARNING! Class defined like abstract might have 
+ * at least 1 pure virtual method in C++{{ "\n*/\n" -}}
+   {%- endif -%}
+{%- endif -%}
+{# TODO: check if abstract! #}
+{% if class.IsConstant == true %} /* C++ class can not be const */ {% endif %}{% if class.IsAbstract == true %} /*abstract*/ {% endif %}{{ This.template_definition(class, false) }} {{ type }} {{ class.Name }} {{ This.class_parents(class) }} {
+          
+{{ "\n" -}}
+      {%- if true == class.Methods|hasPrivate  -%}
+         {{ "\n" -}}private: {{ "\n" -}}{{ "\n" -}}
+         {%- for method in class.Methods if method.Visibility.Value == "default"-%}
+            {{- This.method_declaration( class, method, false, true ) }}{{ "\n" -}}
+         {% endfor %}
+         {%- for method in class.Methods if method.Visibility.Value == "private"-%}
+            {{- This.method_declaration( class, method, false, true ) }}{{ "\n" -}}
+         {% endfor %}
+      {%- endif -%}
+      {%- if class.Methods|hasPublic -%}
+         {{ "\n" -}}public:{{ "\n" -}}{{ "\n" -}}
+         {%- for method in class.Methods if method.Visibility.Value == "public"-%}
+            {{- This.method_declaration( class, method, false, true ) }}{{ "\n" -}}
+         {% endfor %}
+      {%- endif -%}
+      {%- if class.Methods|hasProtected -%}
+         {{ "\n" -}}protected:{{ "\n" -}}{{ "\n" -}}
+         {%- for method in class.Methods if method.Visibility.Value == "protected"-%}
+            {{- This.method_declaration( class, method, false, true ) }}{{ "\n" -}}
+         {% endfor %}
+      {%- endif -%} 
+{{ "\n" -}}
+      {%- if class.Variables|hasPrivate -%}
+         {{ "\n" -}}private:{{ "\n" -}}{{ "\n" -}}
+         {%- for variable in class.Variables if variable.Visibility.Value == "default"-%}
+            {%- if variable.InitialValue is not empty and not variable.IsStatic and variable.Visibility.Value!="public" -%}/*WARNING!!! This class should have constructor to set initial values of fields*/{{ "\n" -}}{%- endif -%}
+            {{- This.variable_declaration( variable, false ) -}};{{ "\n" -}}
+         {% endfor -%} 
+      {%- endif -%}   
+      {%- for variable in class.Variables if variable.Visibility.Value == "private"-%}
+         {%- if variable.InitialValue is not empty and not variable.IsStatic and variable.Visibility.Value!="public" -%}/*WARNING!!! This class should have constructor to set initial values of fields*/{{ "\n" -}}{%- endif -%}
+         {{- This.variable_declaration( variable, false ) -}};{{ "\n" -}}
+      {% endfor -%} 
+      {%- if class.Variables|hasPublic -%}
+         {{ "\n" -}}public: {{ "\n" -}}{{ "\n" -}}
+         {%- for variable in class.Variables if variable.Visibility.Value == "public"-%}
+            {%- if variable.InitialValue is not empty and not variable.IsStatic and variable.Visibility.Value!="public" -%}/*WARNING!!! This class should have constructor to set initial values of fields*/{{ "\n" -}}{%- endif -%}
+            {{- This.variable_declaration( variable, false ) -}};{{ "\n" -}}
+         {% endfor -%}   
+      {%- endif -%}  
+      {%- if class.Variables|hasProtected -%}
+         {{ "\n" -}}protected: {{ "\n" -}}{{ "\n" -}}
+         {%- for variable in class.Variables if variable.Visibility.Value == "protected"-%}
+            {%- if variable.InitialValue is not empty and not variable.IsStatic and variable.Visibility.Value!="public" -%}/*WARNING!!! This class should have constructor to set initial values of fields*/{{ "\n" -}}{%- endif -%}
+            {{- This.variable_declaration( variable, false ) -}};{{ "\n" -}}
+         {% endfor -%} 
+      {%- endif -%}   
+   };
+{% endmacro %}
+
+
+{%- macro class_definition_with_namespaces( class, startLevel ) -%}
+{%- import _self as This -%}
+{%- set namespaces = class.Namespace.asArray() -%}
+{%- set entity_type = class.Type.Value|lower-%}
+{%- if namespaces[startLevel] -%}
+   namespace {{ namespaces[startLevel] }} {
+      {{- "\n" }}{{ This.class_definition_with_namespaces(class, startLevel+1) -}}
+      {% if namespaces[startLevel+1] is not defined %}{{ "\n" -}}
+         {{This.class( class, entity_type ) }}
+      {%- endif %}{{ "\n" -}}
+   }
+{%- endif %}
+{%- if namespaces|length == 0 -%}
+   {{This.class( class, entity_type ) }}
+{%- endif -%}
+{% endmacro %}
+
+{%- macro variable_definition_with_namespaces( variable, startLevel ) -%}
+
+{%- import _self as This -%}
+{%- set namespaces = variable.Namespace.asArray() -%}
+{%- if namespaces[startLevel] -%}
+   namespace {{ namespaces[startLevel] }} {
+      {{- "\n" }}{{ This.variable_definition_with_namespaces(variable, startLevel+1) -}}
+      {% if namespaces[startLevel+1] is not defined %}{{ "\n" -}}
+         {{This.variable_declaration(variable, true) }}
+      {%- endif %}{{ "\n" -}}
+   }
+{%- endif -%}
+{%- if namespaces|length == 0 -%}
+   {{- This.variable_declaration(variable, true) -}};
+{%- endif %}
+{% endmacro %}
+
+{%- macro global_variable_definition_with_namespaces( variable, startLevel ) -%}
+{%- import _self as This -%}
+{%- set namespaces = variable.Namespace.asArray() -%}
+{%- if namespaces[startLevel] -%}
+   namespace {{ namespaces[startLevel] }} {
+      {{- "\n" }}{{ This.variable_definition_with_namespaces(variable, startLevel+1) -}}
+      {% if namespaces[startLevel+1] is not defined %}{{ "\n" -}}
+         {{This.global_variable_declaration(variable, true) }}
+      {%- endif %}{{ "\n" -}}
+   }
+{%- endif -%}
+{%- if namespaces|length == 0 -%}
+   {{- This.global_variable_declaration(variable, true) -}};
+{%- endif %}
+{% endmacro %}
+
+
+
+{%- macro global_method_declaration_with_namespaces( method, startLevel ) -%}
+{%- import _self as This -%}
+{%- set namespaces = method.Namespace.asArray() -%}
+{%- if namespaces[startLevel] -%}
+   namespace {{ namespaces[startLevel] }}{
+   {%- if namespaces[startLevel+1] is defined -%}
+      {{- "\n" }}{{ This.global_method_declaration_with_namespaces(method, startLevel+1) -}}
+   {%- else -%}
+      {{- "\n\t" }}{{ This.method_declaration( null, method.CodeModel, false, true ) }}{{- "\n" }}
+   {%- endif -%}
+   }{{- "\n" }}
+{%- endif -%}
+{%- if namespaces|length == 0 -%}
+   {{- "\n\t" }}{{ This.method_declaration( null, method.CodeModel, false, true ) }}
+{% endif -%}
+{%- endmacro -%}
+
+{%- macro enum_declaration( enum ) -%}
+	{{- "\n" }}enum {{ enum.Name -}}{{- "\n" -}}{{- "\n" -}}
+	{ {{- "\n" }}
+      {{enum.EnumItems|join(",\n")}}{{ "\n" -}}
+	};
+{% endmacro %}
+
+{%- macro enum_declaration_with_namespaces( enum, startLevel ) -%}
+{%- import _self as This -%}{{ "\n" -}}
+{%- set namespaces = enum.Namespace.asArray() -%}
+{%- if namespaces[startLevel] -%}
+   namespace {{ namespaces[startLevel] }}
+   {
+      {% if namespaces[startLevel+1] is defined %}{{ "\n" -}}
+      {{- "\n" }}{{ This.enum_declaration_with_namespaces(enum, startLevel+1) -}}
+      {% else %}
+         {{ This.enum_declaration(enum) }}
+      {%- endif %}{{ "\n" -}}
+   }
+{%- endif -%}
+{%- if namespaces|length == 0 -%}
+	{{ This.enum_declaration(enum) }}
+{%- endif %}
+{% endmacro %}
+
+{% macro declarate_imports( imports ) %}{% import _self as This %}
+{% for import in imports %}
+{{ This.declarate_single_import( import )}}
+{% endfor %}
+{% endmacro %}
+   
+{% macro declarate_single_import( import ) %}#include {%if '<' in import %}{{import|raw}}{% else %}"{{import|raw}}"{% endif %}{% endmacro %}
+
+{% macro declarate_template_methods_with_namespace(entity, with_content) %}
+{%- import _self as This -%}{{ "\n" -}}
+namespace {{entity.Namespace.asArray()[0]}}
+ { 
+ {{ "\n" }}
+   {%- if with_content == true -%}
+      {{entity.Typedefs|join("\n")|raw}}{{ "\n" }}
+   {% else  %}
+      {% set scopes= entity.Methods|getTRC_SCOPE_DEF %}
+      {%- for scope in scopes -%}
+         {{scope}}
+      {% endfor %}
+      {{ "\n" }}
+   {% endif %}
+   {% for method in entity.Methods -%}      {{ This.template_method_declaration(method, with_content)}}   {%- endfor -%}{{ "\n" }}
+
+}
+{% endmacro %}
+
+{% macro template_method_declaration( method, with_content ) %} {%- import _self as This -%}
+   {{- This.variable_full_type(method.ReturnType) }} {{ method.Name }}(
+   {%- for variable in method.Parameters -%} {%- if loop.first != true -%}, {% endif -%} {{- This.variable_declaration( variable, with_value ) -}} 
+   {%- endfor -%})
+   {%- if with_content == true -%}   ;   {%- else -%}  { {{ This.method_content(method)}} } {%- endif -%}
+{% endmacro %}

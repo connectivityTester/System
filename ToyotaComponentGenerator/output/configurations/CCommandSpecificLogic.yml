@@ -1,0 +1,995 @@
+Configuration_Classes:
+  Entities:
+    CCommandSpecificLogic:
+      Type: TemplateMethods
+      Namespace:
+      - AVCLanDESettingsCommands
+      Name: CCommandSpecificLogic
+      Visibility: public
+      Typedefs:
+      - typedef TAVCLanDeserializationCmd<AVCLanDESettingsCommandTypes::CommandClassID,
+        DAVCLanSettings::SettingLinkedNotificationType> CSettingLinkedNotification_01B9DeserializationCommand;
+      - typedef TAVCLanSerializationCmd<AVCLanDESettingsCommandTypes::CommandClassID,
+        DAVCLanSettings::SettingInformationNotificationType> CSettingInformationNotification_02A1SerializationCommand;
+      - typedef TAVCLanDeserializationCmd<AVCLanDESettingsCommandTypes::CommandClassID,
+        DAVCLanSettings::SettingOperationNotificationType> CSettingOperationNotification_02A2DeserializationCommand;
+      - typedef TAVCLanSerializationCmd<AVCLanDESettingsCommandTypes::CommandClassID,
+        DAVCLanSettings::SettingStatusUpdateNotificationType> CSettingStatusUpdateNotification_02A0SerializationCommand;
+      - typedef TAVCLanSerializationCmd<AVCLanDESettingsCommandTypes::CommandClassID,
+        DAVCLanSettings::HomeSettingStatusNotificationType> CHomeSettingStatusNotification_0288SerializationCommand;
+      - typedef TAVCLanDeserializationCmd<AVCLanDESettingsCommandTypes::CommandClassID,
+        DAVCLanSettings::MeterMMUnitLinkedNotificationType> CMeterMMUnitLinkedNotification_03FDDeserializationCommand;
+      - typedef TAVCLanSerializationCmd<AVCLanDESettingsCommandTypes::CommandClassID,
+        DAVCLanSettings::BeepNotificationType> CBeepNotification_60SerializationCommand;
+      - typedef TAVCLanSerializationCmd<AVCLanDESettingsCommandTypes::CommandClassID,
+        DAVCLanSettings::ForcedBeepNotificationType> CForcedBeepNotification_64SerializationCommand;
+      - typedef TAVCLanSerializationCmd<AVCLanDESettingsCommandTypes::CommandClassID,
+        DAVCLanSettings::AllAtOnceInitializationCompletionNotificationType> CAllAtOnceInitializationCompletionNotification_02BBSerializationCommand;
+      - typedef TAVCLanSerializationCmd<AVCLanDESettingsCommandTypes::CommandClassID,
+        DAVCLanSettings::GPSTimeDataNotificationType> CGPSTimeDataNotification_029DSerializationCommand;
+      - typedef TAVCLanSerializationCmd<AVCLanDESettingsCommandTypes::CommandClassID,
+        DAVCLanSettings::DSTStatusNotificationType> CDSTStatusNotification_0298SerializationCommand;
+      - typedef TAVCLanSerializationCmd<AVCLanDESettingsCommandTypes::CommandClassID,
+        DAVCLanSettings::TZStatusNotificationType> CTZStatusNotification_0299SerializationCommand;
+      - typedef TAVCLanDeserializationCmd<AVCLanDESettingsCommandTypes::CommandClassID,
+        DAVCLanSettings::MonitorUnitStatusNotificationType> CMonitorUnitStatusNotification_00F1DeserializationCommand;
+      - typedef TAVCLanDeserializationCmd<AVCLanDESettingsCommandTypes::CommandClassID,
+        DAVCLanSettings::ExtendedBeepUnitNotificationType> CExtendedBeepUnitNotification_0061DeserializationCommand;
+      Methods:
+      - Visibility: public
+        Name: packerSettingInformationNotification_02A1
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 0
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: AVCLanProtocolMessagingTypes::eMessagingResult
+        Parameters:
+        - IsConstant: 1
+          Type: 'DAVCLanSettings::SettingInformationNotification_02A1 & '
+          Name: data
+          Value: 
+        - IsConstant: 0
+          Type: AVCLanProtocolMessagingTypes::sAVCLanProtocolMessage &
+          Name: outMessage
+          Value: 
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: fullPrefix
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - TRC_SCOPE( imp_meu_swsystems_avclan,AVCLanDESettingsCommands, packerSettingInformationNotification_02A1
+            );
+          - 'DBG_MSG(( "%s pack: DstLogAddr(%d), SrcLogAddr(%d), SrcDevAddr(%d)",
+            fullPrefix.getBuffer(), data.routingInfo.DestinationLogicalAddress, data.routingInfo.SourceLogicalAddress,
+            data.routingInfo.SourceDeviceAddress ));'
+          - return true;
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: packerSettingStatusUpdateNotification_02A0
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 0
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: AVCLanProtocolMessagingTypes::eMessagingResult
+        Parameters:
+        - IsConstant: 1
+          Type: 'DAVCLanSettings::SettingStatusUpdateNotification_02A0 & '
+          Name: data
+          Value: 
+        - IsConstant: 0
+          Type: AVCLanProtocolMessagingTypes::sAVCLanProtocolMessage &
+          Name: outMessage
+          Value: 
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: fullPrefix
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - TRC_SCOPE( imp_meu_swsystems_avclan,AVCLanDESettingsCommands, packerSettingStatusUpdateNotification_02A0
+            );
+          - 'DBG_MSG(( "%s pack: DstLogAddr(%d), SrcLogAddr(%d), SrcDevAddr(%d)",
+            fullPrefix.getBuffer(), data.routingInfo.DestinationLogicalAddress, data.routingInfo.SourceLogicalAddress,
+            data.routingInfo.SourceDeviceAddress ));'
+          - return true;
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: packerHomeSettingStatusNotification_0288
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 0
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: AVCLanProtocolMessagingTypes::eMessagingResult
+        Parameters:
+        - IsConstant: 1
+          Type: 'DAVCLanSettings::HomeSettingStatusNotification_0288 & '
+          Name: data
+          Value: 
+        - IsConstant: 0
+          Type: AVCLanProtocolMessagingTypes::sAVCLanProtocolMessage &
+          Name: outMessage
+          Value: 
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: fullPrefix
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - TRC_SCOPE( imp_meu_swsystems_avclan,AVCLanDESettingsCommands, packerHomeSettingStatusNotification_0288
+            );
+          - 'DBG_MSG(( "%s pack: DstLogAddr(%d), SrcLogAddr(%d), SrcDevAddr(%d)",
+            fullPrefix.getBuffer(), data.routingInfo.DestinationLogicalAddress, data.routingInfo.SourceLogicalAddress,
+            data.routingInfo.SourceDeviceAddress ));'
+          - return true;
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: packerBeepNotification_60
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 0
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: AVCLanProtocolMessagingTypes::eMessagingResult
+        Parameters:
+        - IsConstant: 1
+          Type: 'DAVCLanSettings::BeepNotification_60 & '
+          Name: data
+          Value: 
+        - IsConstant: 0
+          Type: AVCLanProtocolMessagingTypes::sAVCLanProtocolMessage &
+          Name: outMessage
+          Value: 
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: fullPrefix
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - TRC_SCOPE( imp_meu_swsystems_avclan,AVCLanDESettingsCommands, packerBeepNotification_60
+            );
+          - 'DBG_MSG(( "%s pack: DstLogAddr(%d), SrcLogAddr(%d), SrcDevAddr(%d)",
+            fullPrefix.getBuffer(), data.routingInfo.DestinationLogicalAddress, data.routingInfo.SourceLogicalAddress,
+            data.routingInfo.SourceDeviceAddress ));'
+          - return true;
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: packerForcedBeepNotification_64
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 0
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: AVCLanProtocolMessagingTypes::eMessagingResult
+        Parameters:
+        - IsConstant: 1
+          Type: 'DAVCLanSettings::ForcedBeepNotification_64 & '
+          Name: data
+          Value: 
+        - IsConstant: 0
+          Type: AVCLanProtocolMessagingTypes::sAVCLanProtocolMessage &
+          Name: outMessage
+          Value: 
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: fullPrefix
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - TRC_SCOPE( imp_meu_swsystems_avclan,AVCLanDESettingsCommands, packerForcedBeepNotification_64
+            );
+          - 'DBG_MSG(( "%s pack: DstLogAddr(%d), SrcLogAddr(%d), SrcDevAddr(%d)",
+            fullPrefix.getBuffer(), data.routingInfo.DestinationLogicalAddress, data.routingInfo.SourceLogicalAddress,
+            data.routingInfo.SourceDeviceAddress ));'
+          - return true;
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: packerAllAtOnceInitializationCompletionNotification_02BB
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 0
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: AVCLanProtocolMessagingTypes::eMessagingResult
+        Parameters:
+        - IsConstant: 1
+          Type: 'DAVCLanSettings::AllAtOnceInitializationCompletionNotification_02BB
+            & '
+          Name: data
+          Value: 
+        - IsConstant: 0
+          Type: AVCLanProtocolMessagingTypes::sAVCLanProtocolMessage &
+          Name: outMessage
+          Value: 
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: fullPrefix
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - TRC_SCOPE( imp_meu_swsystems_avclan,AVCLanDESettingsCommands, packerAllAtOnceInitializationCompletionNotification_02BB
+            );
+          - 'DBG_MSG(( "%s pack: DstLogAddr(%d), SrcLogAddr(%d), SrcDevAddr(%d)",
+            fullPrefix.getBuffer(), data.routingInfo.DestinationLogicalAddress, data.routingInfo.SourceLogicalAddress,
+            data.routingInfo.SourceDeviceAddress ));'
+          - return true;
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: packerGPSTimeDataNotification_029D
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 0
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: AVCLanProtocolMessagingTypes::eMessagingResult
+        Parameters:
+        - IsConstant: 1
+          Type: 'DAVCLanSettings::GPSTimeDataNotification_029D & '
+          Name: data
+          Value: 
+        - IsConstant: 0
+          Type: AVCLanProtocolMessagingTypes::sAVCLanProtocolMessage &
+          Name: outMessage
+          Value: 
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: fullPrefix
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - TRC_SCOPE( imp_meu_swsystems_avclan,AVCLanDESettingsCommands, packerGPSTimeDataNotification_029D
+            );
+          - 'DBG_MSG(( "%s pack: DstLogAddr(%d), SrcLogAddr(%d), SrcDevAddr(%d)",
+            fullPrefix.getBuffer(), data.routingInfo.DestinationLogicalAddress, data.routingInfo.SourceLogicalAddress,
+            data.routingInfo.SourceDeviceAddress ));'
+          - return true;
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: packerDSTStatusNotification_0298
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 0
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: AVCLanProtocolMessagingTypes::eMessagingResult
+        Parameters:
+        - IsConstant: 1
+          Type: 'DAVCLanSettings::DSTStatusNotification_0298 & '
+          Name: data
+          Value: 
+        - IsConstant: 0
+          Type: AVCLanProtocolMessagingTypes::sAVCLanProtocolMessage &
+          Name: outMessage
+          Value: 
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: fullPrefix
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - TRC_SCOPE( imp_meu_swsystems_avclan,AVCLanDESettingsCommands, packerDSTStatusNotification_0298
+            );
+          - 'DBG_MSG(( "%s pack: DstLogAddr(%d), SrcLogAddr(%d), SrcDevAddr(%d)",
+            fullPrefix.getBuffer(), data.routingInfo.DestinationLogicalAddress, data.routingInfo.SourceLogicalAddress,
+            data.routingInfo.SourceDeviceAddress ));'
+          - return true;
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: packerTZStatusNotification_0299
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 0
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: AVCLanProtocolMessagingTypes::eMessagingResult
+        Parameters:
+        - IsConstant: 1
+          Type: 'DAVCLanSettings::TZStatusNotification_0299 & '
+          Name: data
+          Value: 
+        - IsConstant: 0
+          Type: AVCLanProtocolMessagingTypes::sAVCLanProtocolMessage &
+          Name: outMessage
+          Value: 
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: fullPrefix
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - TRC_SCOPE( imp_meu_swsystems_avclan,AVCLanDESettingsCommands, packerTZStatusNotification_0299
+            );
+          - 'DBG_MSG(( "%s pack: DstLogAddr(%d), SrcLogAddr(%d), SrcDevAddr(%d)",
+            fullPrefix.getBuffer(), data.routingInfo.DestinationLogicalAddress, data.routingInfo.SourceLogicalAddress,
+            data.routingInfo.SourceDeviceAddress ));'
+          - return true;
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: unpackerSettingLinkedNotification_01B9
+        Return:
+          IsConstant: 0
+          Type: AVCLanProtocolMessagingTypes::eMessagingResult
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 0
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Parameters:
+        - IsConstant: 1
+          Type: AVCLanProtocolMessagingTypes::sAVCLanProtocolMessage &
+          Name: inputMessage
+          Value: 
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: fullPrefix
+          Value: 
+        - IsConstant: 0
+          Type: 'DAVCLanSettings::SettingLinkedNotificationType & '
+          Name: 'outData '
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - TRC_SCOPE( imp_meu_swsystems_avclan,AVCLanDESettingsCommands, unpackerSettingLinkedNotification_01B9
+            );
+          - DBG_MSG(( "%s unpack()", fullPrefix.getBuffer() ));
+          - return null;
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: unpackerSettingOperationNotification_02A2
+        Return:
+          IsConstant: 0
+          Type: AVCLanProtocolMessagingTypes::eMessagingResult
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 0
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Parameters:
+        - IsConstant: 1
+          Type: AVCLanProtocolMessagingTypes::sAVCLanProtocolMessage &
+          Name: inputMessage
+          Value: 
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: fullPrefix
+          Value: 
+        - IsConstant: 0
+          Type: 'DAVCLanSettings::SettingOperationNotificationType & '
+          Name: 'outData '
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - TRC_SCOPE( imp_meu_swsystems_avclan,AVCLanDESettingsCommands, unpackerSettingOperationNotification_02A2
+            );
+          - DBG_MSG(( "%s unpack()", fullPrefix.getBuffer() ));
+          - return null;
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: unpackerMeterMMUnitLinkedNotification_03FD
+        Return:
+          IsConstant: 0
+          Type: AVCLanProtocolMessagingTypes::eMessagingResult
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 0
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Parameters:
+        - IsConstant: 1
+          Type: AVCLanProtocolMessagingTypes::sAVCLanProtocolMessage &
+          Name: inputMessage
+          Value: 
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: fullPrefix
+          Value: 
+        - IsConstant: 0
+          Type: 'DAVCLanSettings::MeterMMUnitLinkedNotificationType & '
+          Name: 'outData '
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - TRC_SCOPE( imp_meu_swsystems_avclan,AVCLanDESettingsCommands, unpackerMeterMMUnitLinkedNotification_03FD
+            );
+          - DBG_MSG(( "%s unpack()", fullPrefix.getBuffer() ));
+          - return null;
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: unpackerMonitorUnitStatusNotification_00F1
+        Return:
+          IsConstant: 0
+          Type: AVCLanProtocolMessagingTypes::eMessagingResult
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 0
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Parameters:
+        - IsConstant: 1
+          Type: AVCLanProtocolMessagingTypes::sAVCLanProtocolMessage &
+          Name: inputMessage
+          Value: 
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: fullPrefix
+          Value: 
+        - IsConstant: 0
+          Type: 'DAVCLanSettings::MonitorUnitStatusNotificationType & '
+          Name: 'outData '
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - TRC_SCOPE( imp_meu_swsystems_avclan,AVCLanDESettingsCommands, unpackerMonitorUnitStatusNotification_00F1
+            );
+          - DBG_MSG(( "%s unpack()", fullPrefix.getBuffer() ));
+          - return null;
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: unpackerExtendedBeepUnitNotification_0061
+        Return:
+          IsConstant: 0
+          Type: AVCLanProtocolMessagingTypes::eMessagingResult
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 0
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Parameters:
+        - IsConstant: 1
+          Type: AVCLanProtocolMessagingTypes::sAVCLanProtocolMessage &
+          Name: inputMessage
+          Value: 
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: fullPrefix
+          Value: 
+        - IsConstant: 0
+          Type: 'DAVCLanSettings::ExtendedBeepUnitNotificationType & '
+          Name: 'outData '
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - TRC_SCOPE( imp_meu_swsystems_avclan,AVCLanDESettingsCommands, unpackerExtendedBeepUnitNotification_0061
+            );
+          - DBG_MSG(( "%s unpack()", fullPrefix.getBuffer() ));
+          - return null;
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: debugSettingLinkedNotification_01B9
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 0
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: fullPrefix
+          Value: 
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: message
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - TRC_SCOPE( imp_meu_swsystems_avclan,AVCLanDESettingsCommands, debugSettingLinkedNotification_01B9
+            );
+          - DBG_MSG(( "%s %s",  fullPrefix.getBuffer(), message.getBuffer() ));
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: debugSettingInformationNotification_02A1
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 0
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: fullPrefix
+          Value: 
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: message
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - TRC_SCOPE( imp_meu_swsystems_avclan,AVCLanDESettingsCommands, debugSettingInformationNotification_02A1
+            );
+          - DBG_MSG(( "%s %s",  fullPrefix.getBuffer(), message.getBuffer() ));
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: debugSettingOperationNotification_02A2
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 0
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: fullPrefix
+          Value: 
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: message
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - TRC_SCOPE( imp_meu_swsystems_avclan,AVCLanDESettingsCommands, debugSettingOperationNotification_02A2
+            );
+          - DBG_MSG(( "%s %s",  fullPrefix.getBuffer(), message.getBuffer() ));
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: debugSettingStatusUpdateNotification_02A0
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 0
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: fullPrefix
+          Value: 
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: message
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - TRC_SCOPE( imp_meu_swsystems_avclan,AVCLanDESettingsCommands, debugSettingStatusUpdateNotification_02A0
+            );
+          - DBG_MSG(( "%s %s",  fullPrefix.getBuffer(), message.getBuffer() ));
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: debugHomeSettingStatusNotification_0288
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 0
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: fullPrefix
+          Value: 
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: message
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - TRC_SCOPE( imp_meu_swsystems_avclan,AVCLanDESettingsCommands, debugHomeSettingStatusNotification_0288
+            );
+          - DBG_MSG(( "%s %s",  fullPrefix.getBuffer(), message.getBuffer() ));
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: debugMeterMMUnitLinkedNotification_03FD
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 0
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: fullPrefix
+          Value: 
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: message
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - TRC_SCOPE( imp_meu_swsystems_avclan,AVCLanDESettingsCommands, debugMeterMMUnitLinkedNotification_03FD
+            );
+          - DBG_MSG(( "%s %s",  fullPrefix.getBuffer(), message.getBuffer() ));
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: debugBeepNotification_60
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 0
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: fullPrefix
+          Value: 
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: message
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - TRC_SCOPE( imp_meu_swsystems_avclan,AVCLanDESettingsCommands, debugBeepNotification_60
+            );
+          - DBG_MSG(( "%s %s",  fullPrefix.getBuffer(), message.getBuffer() ));
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: debugForcedBeepNotification_64
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 0
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: fullPrefix
+          Value: 
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: message
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - TRC_SCOPE( imp_meu_swsystems_avclan,AVCLanDESettingsCommands, debugForcedBeepNotification_64
+            );
+          - DBG_MSG(( "%s %s",  fullPrefix.getBuffer(), message.getBuffer() ));
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: debugAllAtOnceInitializationCompletionNotification_02BB
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 0
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: fullPrefix
+          Value: 
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: message
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - TRC_SCOPE( imp_meu_swsystems_avclan,AVCLanDESettingsCommands, debugAllAtOnceInitializationCompletionNotification_02BB
+            );
+          - DBG_MSG(( "%s %s",  fullPrefix.getBuffer(), message.getBuffer() ));
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: debugGPSTimeDataNotification_029D
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 0
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: fullPrefix
+          Value: 
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: message
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - TRC_SCOPE( imp_meu_swsystems_avclan,AVCLanDESettingsCommands, debugGPSTimeDataNotification_029D
+            );
+          - DBG_MSG(( "%s %s",  fullPrefix.getBuffer(), message.getBuffer() ));
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: debugDSTStatusNotification_0298
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 0
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: fullPrefix
+          Value: 
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: message
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - TRC_SCOPE( imp_meu_swsystems_avclan,AVCLanDESettingsCommands, debugDSTStatusNotification_0298
+            );
+          - DBG_MSG(( "%s %s",  fullPrefix.getBuffer(), message.getBuffer() ));
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: debugTZStatusNotification_0299
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 0
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: fullPrefix
+          Value: 
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: message
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - TRC_SCOPE( imp_meu_swsystems_avclan,AVCLanDESettingsCommands, debugTZStatusNotification_0299
+            );
+          - DBG_MSG(( "%s %s",  fullPrefix.getBuffer(), message.getBuffer() ));
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: debugMonitorUnitStatusNotification_00F1
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 0
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: fullPrefix
+          Value: 
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: message
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - TRC_SCOPE( imp_meu_swsystems_avclan,AVCLanDESettingsCommands, debugMonitorUnitStatusNotification_00F1
+            );
+          - DBG_MSG(( "%s %s",  fullPrefix.getBuffer(), message.getBuffer() ));
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path: 
+      - Visibility: public
+        Name: debugExtendedBeepUnitNotification_0061
+        IsAbstract: 0
+        IsStatic: 0
+        IsInline: 0
+        IsVirtual: 0
+        IsConstant: 0
+        IsConstructor: 0
+        IsDestructor: 0
+        Return:
+          IsConstant: 0
+          Type: void
+        Parameters:
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: fullPrefix
+          Value: 
+        - IsConstant: 1
+          Type: 'CHBString & '
+          Name: message
+          Value: 
+        InitList: []
+        Content:
+          Text:
+          - TRC_SCOPE( imp_meu_swsystems_avclan,AVCLanDESettingsCommands, debugExtendedBeepUnitNotification_0061
+            );
+          - DBG_MSG(( "%s %s",  fullPrefix.getBuffer(), message.getBuffer() ));
+          SourseRoutingInfo: 
+          OperationCode: 
+          Pack: []
+          Path:

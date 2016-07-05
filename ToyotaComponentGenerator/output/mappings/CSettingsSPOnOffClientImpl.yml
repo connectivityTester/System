@@ -1,0 +1,26 @@
+Configuration_Mapping:
+  Mappings:
+    Generic:
+      EntityTypes:
+        Class: cpp\Class.twig
+        Interface: cpp\Class.twig
+        Variable: cpp\Variable.twig
+        Enum: cpp\Enum.twig
+        TemplateMethods: cpp\TemplateMethods.twig
+      OutputTypes:
+        Source: cpp\Source.twig
+        Header: cpp\Header.twig
+    Output:
+    - Path: .\private
+      Name: CSettingsSPOnOffClientImpl.hpp
+      Type: Header
+      Entities: [ CSettingsSPOnOffClientImpl ]
+      Imports:
+      - api/OnOff/CSPOnOffClientStub.hpp
+    - Path: .\private
+      Name: CSettingsSPOnOffClientImpl.cpp
+      Type: Source
+      Entities: [CSettingsSPOnOffClientImpl]
+      Imports:
+      - imp/AVCLan/DESettings/src/private/CDAVCLanSettingsImpl.hpp
+      - imp/AVCLan/DESettings/src/CDataExtractorSettingsComponent.hpp

@@ -1,0 +1,29 @@
+Configuration_Mapping:
+  Mappings:
+    Generic:
+      EntityTypes:
+        Class: cpp\Class.twig
+        Interface: cpp\Class.twig
+        Variable: cpp\Variable.twig
+        Enum: cpp\Enum.twig
+        TemplateMethods: cpp\TemplateMethods.twig
+      OutputTypes:
+        Source: cpp\Source.twig
+        Header: cpp\Header.twig
+    Output:
+    - Path: .
+      Name: CDataExtractorSettingsComponent.hpp
+      Type: Header
+      Entities: [ CDataExtractorSettingsComponent ]
+      Imports:
+      - api/sys/mocca/pf/comm/component/src/CHBComponent.hpp
+      - private/CDAVCLanSettingsImpl.hpp
+      - private/CDataExtractorSettingsLogic.hpp
+      - private/CAVCLanSettingsProtocolMessagingClient.hpp
+    - Path: .\private
+      Name: CDataExtractorSettingsComponent.cpp
+      Type: Source
+      Entities: [CDataExtractorSettingsComponent]
+      Imports:
+      - imp/AVCLan/DESettings/src/CDataExtractorSettingsComponent.hpp
+      - imp/AVCLan/DESettings/src/private/InternalVersion.hpp

@@ -1,0 +1,12 @@
+{# Template expects variable "entity" of type EntityM as parameter #}
+{# Template expects variable "output" of type Output as parameter #}
+{% import "cpp/Helpers.twig" as Helpers %}
+{% if output.Type == 'Header' -%}
+#ifndef {{ entity.CodeModel.Name|upper }}_H
+#define {{ entity.CodeModel.Name|upper }}_H
+{{ Helpers.global_method_declaration_with_namespaces( entity, 0 ) -}}
+#endif // {{ entity.CodeModel.Name|upper }}_H
+{%- else -%} 
+{{ Helpers.method_definition( entity, entity.CodeModel ) }}{{- "\n" }}
+{%- endif -%}
+// {{ entity.CodeModel.Name|upper }} was created

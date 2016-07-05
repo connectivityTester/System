@@ -1,0 +1,27 @@
+Configuration_Mapping:
+  Mappings:
+    Generic:
+      EntityTypes:
+        Class: cpp\Class.twig
+        Interface: cpp\Class.twig
+        Variable: cpp\Variable.twig
+        Enum: cpp\Enum.twig
+        TemplateMethods: cpp\TemplateMethods.twig
+      OutputTypes:
+        Source: cpp\Source.twig
+        Header: cpp\Header.twig
+    Output:
+    - Path: .\private
+      Name: CAVCLanSettingsProtocolMessagingClient.hpp
+      Type: Header
+      Entities: [ CAVCLanSettingsProtocolMessagingClient ]
+      Imports:
+      - imp/AVCLan/ProtocolMessaging/interface/CAVCLanProtocolMessagingClientBase.hpp
+    - Path: .\private
+      Name: CAVCLanSettingsProtocolMessagingClient.cpp
+      Type: Source
+      Entities: [CAVCLanSettingsProtocolMessagingClient]
+      Imports:
+      - imp/AVCLan/DESettings/src/private/CAVCLanSettingsProtocolMessagingClient.hpp
+      - imp/AVCLan/DESettings/src/CDataExtractorSettingsComponent.hpp
+      - imp/AVCLan/common/src/private/include/CommonAvcLanTypes.h

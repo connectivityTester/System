@@ -1,6 +1,0 @@
-Формат ответа: json строка + \n
-
-
-{"id":"1","TEXT": "PICTURE","data": "YOUR_TRACE_MESSAGE1"}
-{"id":"1","AUDIO": "PICTURE","data": "YOUR_TRACE_MESSAGE2"}
-{"id":"1","PICTURE": "PICTURE","data": "YOUR_TRACE_MESSAGE3"}

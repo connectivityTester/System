@@ -1,8 +1,0 @@
-{# Template expects variable "entity" of type EntityM as parameter #}
-{# Template expects variable "output" of type Output as parameter #}
-{%- import "cpp/Helpers.twig" as Helpers -%}
-{% if output.Type == 'Header' %}
-{{Helpers.declarate_template_methods_with_namespace(entity, true)}}
-{% else%}
-{{Helpers.declarate_template_methods_with_namespace(entity, false)}}
-{% endif %}

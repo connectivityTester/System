@@ -1,9 +1,0 @@
-{# Template expects variable "output" of type Output as parameter #}
-{# Template expects variable "entities" of type Entities as parameter #}
-{# Template expects variable "generic_mappings" of type GenericMappings as parameter #}
-{# Template expects variable "imports" of type Imports as parameter #}
-{% import "cpp/Helpers.twig" as Helpers %}
-{% for entity_key in output.Entities %}
-{% set template = generic_mappings["EntityTypes"][entities[entity_key].Type.Value] %}
-{% include template with { "entity":entities[entity_key], "output":output } %}
-{% endfor %}
